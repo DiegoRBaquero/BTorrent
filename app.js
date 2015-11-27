@@ -64,7 +64,7 @@ angular.module('bTorrent', [], function ($compileProvider, $locationProvider) {
     };
     $scope.uploadFile2 = function(elem) {
         $scope.client.processing = true;
-        $scope.client.seed(elem.files, $scope.onTorrent());
+        $scope.client.seed(elem.files, $scope.onTorrent);
     };
 
     $scope.fromInput = function() {
