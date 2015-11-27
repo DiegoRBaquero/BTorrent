@@ -64,7 +64,7 @@ angular.module('bTorrent', [], function ($compileProvider, $locationProvider) {
     };
     $scope.uploadFile2 = function(elem) {
         $scope.client.processing = true;
-        $scope.client.seed(elem.files, $scope.onSeed);
+        $scope.client.seed(elem.files, $scope.onTorrent());
     };
 
     $scope.fromInput = function() {
@@ -86,18 +86,6 @@ angular.module('bTorrent', [], function ($compileProvider, $locationProvider) {
             torrent.showFiles = true;
             $scope.sTorrent = torrent;
         }
-    };
-
-    $scope.onSeed = function(torrent) {
-        if($scope.seedIt) {
-            if(DEBUG) $log.debug("Seed it");
-            $http.get("seedIt.php?hash=" + torrent.infoHash).then(function(response) {
-                if(DEBUG) $log.debug("Sent to seeder!");
-            }, function(response) {
-                if(DEBUG) $log.debug("Error sending to seeder!");
-            });
-        }
-        $scope.onTorrent(torrent);
     };
 
     $scope.onTorrent = function(torrent) {
