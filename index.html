@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html ng-app="bTorrent" lang="en">
+<head>
+    <base href="">
+    <meta charset="UTF-8">
+    <title>βTorrent: Browser WebTorrent Client</title>
+
+    <meta name="description" content="βTorrent: Browser WebTorrent Client">
+    <meta name="keywords" content="βTorrent, btorrent, webtorrent client, webtorrent">
+    <meta name="author" content="Diego Rodríguez Baquero">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://cdn.jsdelivr.net/g/webtorrent@0.62.3,momentjs@2.10.6,angularjs@1.4.6"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header style="text-align: center">
+    <h1>βTorrent<span class="version"> v0.3</span></h1>
+</header>
+<div class="container" ng-controller="bTorrentCtrl" ng-cloak>
+    <div class="row">
+        <div class="twelve columns">
+            <div class="row">
+                <div class="five columns"><input type="text" class="u-full-width" placeholder="magnet link or hash" id="torrentInput" ng-model="torrentInput"></div>
+                <div class="two columns"><button class="button-primary" ng-click="fromInput()"><i class="fa fa-download"></i> Download</button></div>
+                <div class="five columns u-pull-right">
+                    <input type="file" style="display: none;" id="fileUpload" onchange="angular.element(this).scope().uploadFile2(this)">
+                    <label class="u-pull-right">
+                        <input type="checkbox" ng-model="seedIt">
+                        <span class="label-body">Help me seed it (10MB Max)</span>
+                        <button class="button-primary" ng-click="uploadFile()" ><i class="fa fa-upload"></i> Seed a file</button>
+                    </label>
+                </div>
+            </div>sdf
+            <table class="u-full-width">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th ng-hide="client.done()">Downloaded</th>
+                    <th ng-hide="client.done()">Remaining</th>
+                    <th ng-hide="client.downloading()">Uploaded</th>
+                    <th>Peers</th>
+                    <th>Share</th>
+                </tr>
+                </thead>
+                <tbody ng-hide="client.torrents.length">
+                <tr>
+                    <td colspan="100" class="center">Add a torrent o seed a file!</td>
+                </tr>
+                </tbody>
+                <tbody ng-repeat="torrent in client.torrents" ng-if="torrent.name">
+                <tr class="torrentRow" ng-class="{selectedTorrent: torrent.showFiles}" ng-click="toggleTorrent(torrent)">
+                    <td><i class="fa fa-cloud-download" ng-hide="torrent.done"></i><i class="fa fa-check" ng-show="torrent.done"></i> {{torrent.name}}<br /><span class="subInfo">{{torrent.pSize}} in {{torrent.files.length}} files</span></td>
+                    <td ng-hide="client.done()">{{torrent.pDownloaded}} <span class="subInfo">({{torrent.pProgress}}%)</span><br /><span class="subInfo">@ {{torrent.pDownloadSpeed}}/s</span></td>
+                    <td ng-hide="client.done()">{{torrent.tRemaining}}</td>
+                    <td ng-hide="client.downloading()">{{torrent.pUploaded}}<br /><span class="subInfo">@ {{torrent.pUploadSpeed}}/s</span></td>
+                    <td>{{torrent.swarm.wires.length}}</td>
+                    <td>
+                        <a href="#{{torrent.infoHash}}" target="_blank">βTorrent</a>
+                        | <a href="{{torrent.magnetURI}}" target="_blank">Magnet URI</a>
+                        | <a href="{{torrent.oTorrentFileURL}}" target="_blank" download="{{torrent.fileName}}">.torrent</a>
+                        <br><span class="subInfo">{{torrent.infoHash}}</span>
+                    </td>
+                </tr>
+                <tr ng-show="torrent.showFiles">
+                    <td class="files" colspan="100">
+                        <div class="row">
+                            <div class="two columns center"><i class="fa fa-file"></i> <strong>Files:</strong></div>
+                            <div class="ten columns fix-height">
+                                <ul class="no-margin">
+                                    <li ng-repeat="file in torrent.files">
+                                        <span ng-hide="file.done">{{file.status}}: {{file.name}}</span><a href="{{file.url}}" download="{{file.name}}" target="_blank" ng-show="file.done">{{file.name}}</a> <span class="subInfo">{{file.pSize}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+                <tbody ng-show="client.processing">
+                <tr>
+                    <td colspan="100" class="center">Please wait a few seconds!</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<footer>
+    <small>Made in Bogotá, Colombia by <a href="http://diegorbaquero.com">DiegoRBaquero</a><br><small><a href="https://webtorrent.io">WebTorrent</a> is powered by JavaScript and WebRTC. Works in Chrome, Firefox, and Opera (desktop and Android).</small></p>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>

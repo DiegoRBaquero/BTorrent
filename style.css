@@ -1,0 +1,45 @@
+body {
+    height: 100%;
+    width: 100%;
+}
+
+.version {
+    color: #ccc;
+    font-size: 0.3em;
+}
+
+.torrentRow {
+    line-height: 1.2;
+    border-bottom: 0;
+}
+
+.subInfo {
+    color: #bbbbbb;
+    font-size: 0.7em;
+}
+
+footer, .center {
+    text-align: center;
+}
+
+.column, .columns {
+    margin-left: 1%;
+}
+
+.files {
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+.fix-height {
+    max-height: 24px;
+}
+
+.no-margin {
+    margin: 0;
+}
+
+.selectedTorrent {
+    background: rgb(100,100,100);
+    background: rgba(100,100,100,.06);
+}
