@@ -6,21 +6,21 @@
     <title>βTorrent: Browser WebTorrent Client</title>
 
     <meta name="description" content="βTorrent: Browser WebTorrent Client">
-    <meta name="keywords" content="βTorrent, btorrent, webtorrent client, webtorrent">
-    <meta name="author" content="Diego Rodríguez Baquero">
+    <meta name="keywords" content="βTorrent, btorrent, client, webtorrent, browser, torrent">
+    <meta name="author" content="Diego Rodríguez Baquero - DiegoRBaquero">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <script src="https://cdn.jsdelivr.net/g/webtorrent@0.62.3,momentjs@2.10.6,angularjs@1.4.6"></script>
+    <script src="https://cdn.jsdelivr.net/g/webtorrent@0.62,momentjs@2.10,angularjs@1.4"></script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/g/normalize@3.0,skeleton@2.0">
+    <link rel="stylesheet" href="http://cdn.jsdelivr.net/fontawesome/4.5/css/font-awesome.min.css">
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header style="text-align: center">
-    <h1>βTorrent<span class="version"> v0.3</span></h1>
+<header>
+    <h1>βTorrent<span class="version"> v0.4</span></h1>
 </header>
 <div class="container" ng-controller="bTorrentCtrl" ng-cloak>
     <div class="row">
@@ -44,6 +44,7 @@
                     <th ng-hide="client.downloading()">Uploaded</th>
                     <th>Peers</th>
                     <th>Share</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody ng-hide="client.torrents.length">
@@ -52,8 +53,8 @@
                 </tr>
                 </tbody>
                 <tbody ng-repeat="torrent in client.torrents" ng-if="torrent.name">
-                <tr class="torrentRow" ng-class="{selectedTorrent: torrent.showFiles}" ng-click="toggleTorrent(torrent)">
-                    <td><i class="fa fa-cloud-download" ng-hide="torrent.done"></i><i class="fa fa-check" ng-show="torrent.done"></i> {{torrent.name}}<br /><span class="subInfo">{{torrent.pSize}} in {{torrent.files.length}} files</span></td>
+                <tr class="torrentRow" ng-class="{selectedTorrent: torrent.showFiles}">
+                    <td><div><i class="fa fa-cloud-download" ng-hide="torrent.done"></i><i class="fa fa-check" ng-show="torrent.done"></i> {{torrent.name}}</div><span class="subInfo">{{torrent.pSize}} in <a href="#" onclick="return false;" ng-click="toggleTorrent(torrent)">{{torrent.files.length}} files</a></span></td>
                     <td ng-hide="client.done()">{{torrent.pDownloaded}} <span class="subInfo">({{torrent.pProgress}}%)</span><br /><span class="subInfo">@ {{torrent.pDownloadSpeed}}/s</span></td>
                     <td ng-hide="client.done()">{{torrent.tRemaining}}</td>
                     <td ng-hide="client.downloading()">{{torrent.pUploaded}}<br /><span class="subInfo">@ {{torrent.pUploadSpeed}}/s</span></td>
@@ -62,8 +63,9 @@
                         <a href="#{{torrent.infoHash}}" target="_blank">βTorrent</a>
                         | <a href="{{torrent.magnetURI}}" target="_blank">Magnet URI</a>
                         | <a href="{{torrent.oTorrentFileURL}}" target="_blank" download="{{torrent.fileName}}">.torrent</a>
-                        <br><span class="subInfo">{{torrent.infoHash}}</span>
+                        <br><span class="subInfo"><i class="fa fa-hashtag"></i>{{torrent.infoHash}}</span>
                     </td>
+                    <td><i class="fa fa-times" ng-click="client.remove(torrent, destroyedTorrent)"></i></td>
                 </tr>
                 <tr ng-show="torrent.showFiles">
                     <td class="files" colspan="100">
@@ -90,7 +92,7 @@
     </div>
 </div>
 <footer>
-    <small>Made in Bogotá, Colombia by <a href="http://diegorbaquero.com">DiegoRBaquero</a><br><small><a href="https://webtorrent.io">WebTorrent</a> is powered by JavaScript and WebRTC. Works in Chrome, Firefox, and Opera (desktop and Android).</small></p>
+    Made in Bogotá, Colombia by <a href="http://diegorbaquero.com">DiegoRBaquero</a><br><small><a href="https://webtorrent.io">WebTorrent</a> is powered by JavaScript and WebRTC. Works in Chrome, Firefox, and Opera (desktop and Android).</small></p>
 </footer>
 <script src="app.js"></script>
 </body>

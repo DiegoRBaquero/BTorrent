@@ -3,6 +3,18 @@ body {
     width: 100%;
 }
 
+header, footer, .center {
+    text-align: center;
+}
+
+th, td {
+    padding-left: 10px;
+    padding-right: 10px;
+    max-width: 200px;
+    overflow: scroll;
+    white-space: nowrap;
+}
+
 .version {
     color: #ccc;
     font-size: 0.3em;
@@ -18,9 +30,7 @@ body {
     font-size: 0.7em;
 }
 
-footer, .center {
-    text-align: center;
-}
+
 
 .column, .columns {
     margin-left: 1%;
