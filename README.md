@@ -24,7 +24,7 @@ Website powered by [jsDelivr] and [CloudFlare]. I use [nginx] in my server.
 ### Easily built, tested and served
 **I use [Harp] to rapidly test the proyect and also to compile it**
 
-Build the proyect into HTML, JS and CSS easily. Just use: 
+Build the proyect into HTML, JS and CSS easily. Just use:
 ```bash
 harp compile
 ```
@@ -46,7 +46,7 @@ localStorage.debug = '*'
 ```
 
 ### Help βTorrent
-- **[Create a new issue](https://github.com/feross/fastcast/issues/new)** to report bugs or suggest new features
+- **[Create a new issue](https://github.com/DiegoRBaquero/bTorrent/issues/new)** to report bugs or suggest new features
 
 ### License
 MIT. Copyright (c) [Diego Rodríguez Baquero](http://diegorbaquero.com)
