@@ -1,0 +1,104 @@
+doctype html
+html(ng-app='bTorrent', lang='en')
+    head
+        base(href='')
+        meta(charset='UTF-8')
+        title βTorrent: Browser WebTorrent Client
+        meta(name='description', content='βTorrent: Browser WebTorrent Client')
+        meta(name='keywords', content='βTorrent, btorrent, client, webtorrent, browser, torrent')
+        meta(name='author', content='Diego Rodríguez Baquero - DiegoRBaquero')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        script(src='https://cdn.jsdelivr.net/g/webtorrent@0.62,momentjs@2.10,angularjs@1.4')
+        link(rel='stylesheet', href='https://cdn.jsdelivr.net/g/normalize@3.0,skeleton@2.0')
+        link(rel='stylesheet', href='https://cdn.jsdelivr.net/fontawesome/4.5/css/font-awesome.min.css')
+        link(rel='stylesheet', href='style.css')
+    body
+        header
+            h1
+                | βTorrent
+                span.version  v0.4.1
+        .container(ng-controller='bTorrentCtrl', ng-cloak='')
+            .row
+                .twelve.columns
+                    .row
+                        .five.columns
+                            input#torrentInput.u-full-width(type='text', placeholder='magnet link or hash', ng-model='torrentInput')
+                        .two.columns
+                            button.button-primary(ng-click='fromInput()')
+                                i.fa.fa-download
+                                |  Download
+                        .five.columns.u-pull-right
+                            input#fileUpload(type='file', style='display: none;', onchange='angular.element(this).scope().uploadFile2(this)')
+                            label.u-pull-right
+                                button.button-primary(ng-click='uploadFile()')
+                                    i.fa.fa-upload
+                                    |  Seed a file
+                    table.u-full-width
+                        thead
+                            tr
+                                th Name
+                                th(ng-hide='client.done()') Downloaded
+                                th(ng-hide='client.done()') Remaining
+                                th(ng-hide='client.downloading()') Uploaded
+                                th Peers
+                                th Share
+                                th Actions
+                        tbody(ng-hide='client.torrents.length')
+                            tr
+                                td.center(colspan='100') Add a torrent o seed a file!
+                        tbody(ng-repeat='torrent in client.torrents', ng-if='torrent.name')
+                            tr.torrentRow(ng-class='{selectedTorrent: torrent.showFiles}')
+                                td
+                                    div
+                                        i.fa.fa-cloud-download(ng-hide='torrent.done')
+                                        i.fa.fa-check(ng-show='torrent.done')
+                                        |  {{torrent.name}}
+                                    span.subInfo
+                                        | {{torrent.length | pbytes}} in 
+                                        a(href='#', onclick='return false;', ng-click='toggleTorrent(torrent)') {{torrent.files.length}} files
+                                td(ng-hide='client.done()')
+                                    | {{torrent.downloaded | pbytes}}
+                                    span.subInfo ({{torrent.pProgress}}%)
+                                    br
+                                    span.subInfo @ {{torrent.downloadSpeed() | pbytes}}/s
+                                td(ng-hide='client.done()') {{torrent.tRemaining}}
+                                td(ng-hide='client.downloading()') {{torrent.uploaded | pbytes}}
+                                    br
+                                    span.subInfo @ {{torrent.uploadSpeed() | pbytes}}/s
+                                td {{torrent.swarm.wires.length}}
+                                td
+                                    a(href='#{{torrent.infoHash}}', target='_blank') βTorrent
+                                    | 
+                                    a(href='{{torrent.magnetURI}}', target='_blank') Magnet URI
+                                    | 
+                                    a(href='{{torrent.oTorrentFileURL}}', target='_blank', download='{{torrent.fileName}}') .torrent
+                                    br
+                                    span.subInfo
+                                        i.fa.fa-hashtag
+                                        | {{torrent.infoHash}}
+                                td
+                                    i.fa.fa-times(ng-click='client.remove(torrent, destroyedTorrent)')
+                            tr(ng-show='torrent.showFiles')
+                                td.files(colspan='100')
+                                    .row
+                                        .two.columns.center
+                                            i.fa.fa-file
+                                            strong Files:
+                                        .ten.columns.fix-height
+                                            ul.no-margin
+                                                li(ng-repeat='file in torrent.files')
+                                                    span(ng-hide='file.done') {{file.status}}: {{file.name}}
+                                                    a(href='{{file.url}}', download='{{file.name}}', target='_blank', ng-show='file.done') {{file.name}}
+                                                    span.subInfo  {{file.length | pbytes}}
+                        tbody(ng-show='client.processing')
+                            tr
+                                td.center(colspan='100') Please wait a few seconds!
+        footer
+            | Made in Bogotá, Colombia by
+            a(href='http://diegorbaquero.com') DiegoRBaquero
+            br
+            small
+                a(href='https://webtorrent.io') WebTorrent
+                |  is powered by JavaScript and WebRTC. Works in Chrome, Firefox, and Opera (desktop and Android).
+            p
+        script(src='app.js')
