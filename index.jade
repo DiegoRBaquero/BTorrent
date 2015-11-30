@@ -57,7 +57,7 @@ html(ng-app='bTorrent', lang='en')
                                         | {{torrent.length | pbytes}} in 
                                         a(href='#', onclick='return false;', ng-click='toggleTorrent(torrent)') {{torrent.files.length}} files
                                 td(ng-hide='client.done()')
-                                    | {{torrent.downloaded | pbytes}}
+                                    | {{torrent.downloaded | pbytes}} 
                                     span.subInfo ({{torrent.pProgress}}%)
                                     br
                                     span.subInfo @ {{torrent.downloadSpeed() | pbytes}}/s
@@ -83,7 +83,7 @@ html(ng-app='bTorrent', lang='en')
                                     .row
                                         .two.columns.center
                                             i.fa.fa-file
-                                            strong Files:
+                                            strong  Files:
                                         .ten.columns.fix-height
                                             ul.no-margin
                                                 li(ng-repeat='file in torrent.files')

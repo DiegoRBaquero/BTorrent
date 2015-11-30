@@ -1,7 +1,6 @@
 client = new WebTorrent
 debug = true
 
-
 app = angular.module 'bTorrent', [], ['$compileProvider','$locationProvider', ($compileProvider, $locationProvider) ->
   $compileProvider.aHrefSanitizationWhitelist /^\s*(https?|magnet|blob|javascript):/
   $locationProvider.html5Mode(
@@ -55,7 +54,7 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $h
     return
 
   $scope.fromInput = ->
-    if !$scope.torrentInput == ''
+    if $scope.torrentInput.length > 0
       $scope.client.processing = true
       dbg 'Adding ' + $scope.torrentInput
       $scope.client.add $scope.torrentInput, $scope.onTorrent
