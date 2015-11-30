@@ -90,10 +90,6 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $h
 
     torrent.update = ->
       torrent.pProgress = (100 * torrent.progress).toFixed(1)
-      torrent.pDownloaded = torrent.downloaded
-      torrent.pUploaded = torrent.uploaded
-      torrent.pUploadSpeed = torrent.uploadSpeed()
-      torrent.pDownloadSpeed = torrent.downloadSpeed()
       if torrent.done
         torrent.tRemaining = 'Done'
       else
