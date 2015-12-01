@@ -16,7 +16,7 @@ html(ng-app='bTorrent', lang='en')
         header
             h1
                 | βTorrent
-                span.version v0.5
+                span.version v0.5.01
         .container(ng-controller='bTorrentCtrl', ng-cloak='')
             .row
                 .twelve.columns
@@ -46,7 +46,7 @@ html(ng-app='bTorrent', lang='en')
                         tbody(ng-hide='client.torrents.length')
                             tr
                                 td.center(colspan='100') Add a torrent o seed a file!
-                        tbody(ng-repeat='torrent in client.torrents', ng-if='torrent.files')
+                        tbody(ng-repeat='torrent in client.torrents', ng-if='torrent.name')
                             tr.torrentRow(ng-class='{selectedTorrent: torrent.showFiles}')
                                 td
                                     div
@@ -57,7 +57,7 @@ html(ng-app='bTorrent', lang='en')
                                         | {{torrent.pSize | pbytes}} in 
                                         a(href='#', onclick='return false;', ng-click='toggleTorrent(torrent)') {{torrent.files.length}} files
                                 td(ng-hide='client.done()')
-                                    | {{torrent.downloaded | pbytes}}
+                                    | {{torrent.downloaded | pbytes}} 
                                     span.subInfo ({{torrent.pProgress}}%)
                                     br
                                     span.subInfo @ {{torrent.downloadSpeed() | pbytes}}/s

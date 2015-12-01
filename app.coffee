@@ -94,7 +94,8 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $h
     return
 
   $scope.onTorrent = (torrent, isSeed) ->
-    $scope.client.processing = false
+    if !isSeed
+      $scope.client.processing = false
     torrent.pSize = torrent.length
     torrent.showFiles = false
     torrent.fileName = torrent.name + '.torrent'
@@ -120,6 +121,8 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $h
       file.getBlobURL (err, url) ->
         if err
           throw err
+        if isSeed
+          $scope.client.processing = false
         file.url = url
         if !isSeed
           dbg 'Finished downloading file ' + file.name, torrent
@@ -166,6 +169,8 @@ app.filter 'html', ['$sce', ($sce) ->
 
 app.filter 'pbytes', ->
   (num) ->
+    if isNaN(num)
+      return ''
     exponent = undefined
     unit = undefined
     neg = num < 0
