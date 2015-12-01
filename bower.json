@@ -1,5 +1,6 @@
 {
-  "name": "Btorrent",
+  "name": "BTorrent",
+  "version": "0.5.5",
   "description": "Torrent client in the browser",
   "main": "app.coffee",
   "authors": [
