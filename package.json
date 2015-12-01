@@ -3,18 +3,37 @@
   "version": "0.5.4",
   "description": "Torrent client in the browser",
   "scripts": {
-    "test": "./node_modules/.bin/jasmine"
+    "test": "grunt test:client && grunt coverage"
   },
   "dependencies": {
-    "harp": "*"
+    "grunt": "^0.4.5",
+    "harp": "~0.20.1",
+    "jit-grunt": "^0.9.1"
+  },
+  "author": "Diego R Baquero <iegorbaquero@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DiegoRBaquero/BTorrent.git"
+  },
+  "engines": {
+    "node": ">=5.0.0",
+    "npm": ">=3.0.0"
   },
   "devDependencies": {
-    "chai": "^3.4.1",
+    "grunt-karma": "^0.12.1",
+    "grunt-mocha-istanbul": "^3.0.1",
     "istanbul": "^0.4.1",
     "karma": "^0.13.15",
+    "karma-coverage": "^0.5.3",
+    "karma-jasmine": "^0.3.6",
+    "karma-jasmine-html-reporter": "^0.1.8",
+    "karma-mocha-reporter": "^1.1.3",
+    "karma-ng-html2js-preprocessor": "^0.2.0",
+    "karma-phantomjs-launcher": "^0.2.1",
     "lodash": "^3.10.1",
     "mocha": "^2.3.4",
-    "protractor": "^3.0.0",
-    "sinon": "^1.17.2"
+    "phantomjs": "^1.9.19",
+    "protractor": "^3.0.0"
   }
 }

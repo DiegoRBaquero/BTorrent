@@ -1,0 +1,33 @@
+{
+  "name": "Btorrent",
+  "description": "Torrent client in the browser",
+  "main": "app.coffee",
+  "authors": [
+    "Diego R Baquero <iegorbaquero@gmail.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "torrent",
+    "webtorrent",
+    "webrtc",
+    "btorrent"
+  ],
+  "homepage": "https://github.com/whitef0x0/BTorrent",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "webtorrent": "~0.62.3",
+    "moment": "momentjs#~2.10.6",
+    "font-awesome": "fontawesome#~4.5.0",
+    "normalize-strings": "normalize#~1.0.4",
+    "angular": "angularjs#~1.4.8",
+    "skeleton": "~2.0.4"
+  }
+}

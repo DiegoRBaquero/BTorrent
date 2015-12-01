@@ -1,6 +1,14 @@
 βTorrent
 ========
 
+Current stable release: v0.5.3
+
+[![Build Status](https://travis-ci.org/whitef0x0/Btorrent.svg?branch=master)](https://travis-ci.org/whitef0x0/Btorrent)
+[![Dependency Status](https://gemnasium.com/whitef0x0/Btorrent.svg)](https://gemnasium.com/whitef0x0/Btorrent)
+[![Coverage Status](https://coveralls.io/repos/whitef0x0/Btorrent/badge.svg?branch=master&service=github)](https://coveralls.io/github/whitef0x0/Btorrent?branch=master)
+[![Code Climate](https://codeclimate.com/github/whitef0x0/Btorrent/badges/gpa.svg)](https://codeclimate.com/github/whitef0x0/Btorrent)
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
 **[βTorrent]** is a fully-featured **[WebTorrent]** browser client written in [Jade], [CoffeeScript] and [Sass]
 
 ### Features
