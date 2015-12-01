@@ -4,8 +4,7 @@ trackers = [
   [ 'udp://open.demonii.com:1337' ],
   [ 'udp://tracker.webtorrent.io:80' ],
   [ 'wss://tracker.webtorrent.io' ],
-  [ 'wss://tracker.btorrent.xyz' ],
-  [ 'ws://tracker.fastcast.nz' ]
+  [ 'wss://tracker.btorrent.xyz' ]
 ]
 
 opts = {announce: trackers}
