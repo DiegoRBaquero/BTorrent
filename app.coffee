@@ -6,7 +6,6 @@ app = angular.module 'bTorrent', [], ['$compileProvider','$locationProvider', ($
   $locationProvider.html5Mode(
     enabled: true
     requireBase: false).hashPrefix '#'
-  return
 ]
 
 app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $http, $log, $location) ->
@@ -17,8 +16,10 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $h
     if debug
       if torrent
         $log.debug '%c' + torrent.name + ' (' + torrent.infoHash + '): %c' + string, 'color: #33C3F0', 'color: #333'
+        return
       else
         $log.debug '%cClient: %c' + string, 'color: #33C3F0', 'color: #333'
+        return
     return
 
   updateAll = ->
@@ -32,7 +33,7 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $h
     $scope.client.torrents.forEach (torrent) ->
       if !torrent.done
         done = false
-      return
+        return
     done
 
   $scope.client.downloading = ->
@@ -40,7 +41,7 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $h
     $scope.client.torrents.forEach (torrent) ->
       if torrent.done
         downloading = false
-      return
+        return
     downloading
 
   $scope.uploadFile = ->
@@ -54,24 +55,24 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $h
     return
 
   $scope.fromInput = ->
-    if $scope.torrentInput.length > 0
+    if $scope.torrentInput != ''
       $scope.client.processing = true
       dbg 'Adding ' + $scope.torrentInput
       $scope.client.add $scope.torrentInput, $scope.onTorrent
       $scope.torrentInput = ''
-    return
+      return
 
   $scope.toggleTorrent = (torrent) ->
     if torrent.showFiles
       torrent.showFiles = false
       $scope.sTorrent = null
+      return
     else
       $scope.client.torrents.forEach (t) ->
         t.showFiles = false
-        return
       torrent.showFiles = true
       $scope.sTorrent = torrent
-    return
+      return
 
   $scope.destroyedTorrent = (err) ->
     if err
@@ -81,6 +82,7 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $h
 
   $scope.onTorrent = (torrent, isSeed) ->
     $scope.client.processing = false
+    torrent.pSize = torrent.length
     torrent.showFiles = false
     torrent.fileName = torrent.name + '.torrent'
     torrent.oTorrentFileURL = torrent.torrentFileURL
@@ -92,10 +94,11 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $h
       torrent.pProgress = (100 * torrent.progress).toFixed(1)
       if torrent.done
         torrent.tRemaining = 'Done'
+        return
       else
         remaining = moment.duration(torrent.timeRemaining / 1000, 'seconds').humanize()
         torrent.tRemaining = remaining[0].toUpperCase() + remaining.substr(1)
-      return
+        return
 
     torrent.files.forEach (file) ->
       file.pSize = file.length
@@ -108,21 +111,21 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $h
         if !isSeed
           dbg 'Finished downloading file ' + file.name, torrent
         file.status = 'Ready'
-        $scope.$apply()
         return
       if !isSeed
         dbg 'Received file ' + file.name + ' metadata', torrent
-      return
+        return
     torrent.on 'download', (chunkSize) ->
       if !isSeed
         dbg 'Downloaded chunk', torrent
-      return
+        return
     torrent.on 'upload', (chunkSize) ->
       dbg 'Uploaded chunk', torrent
       return
     torrent.on 'done', ->
       if !isSeed
         dbg 'Done', torrent
+        return
       torrent.update()
       return
     torrent.on 'wire', (wire, addr) ->
@@ -131,7 +134,6 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $h
     setInterval torrent.update, 500
     torrent.update()
     return
-
   $scope.onSeed = (torrent) ->
     $scope.onTorrent torrent, true
     return
@@ -140,12 +142,13 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $h
     $scope.client.processing = true
     dbg 'Adding ' + $location.hash()
     client.add $location.hash(), $scope.onTorrent
-  return
+    return
 ]
 
 app.filter 'html', ['$sce', ($sce) ->
   (input) ->
     $sce.trustAsHtml input
+    return
 ]
 
 app.filter 'pbytes', ->
@@ -168,7 +171,7 @@ app.filter 'pbytes', ->
       num = -num
     if num < 1
       return (if neg then '-' else '') + num + ' B'
-    exponent = Math.min(Math.floor(Math.log(num) / Math.log(1000)), units.length - 1)
+    exponent = Math.min(Math.floor(Math.log(num) / Math.log(1000)), 8)
     num = (num / 1000 ** exponent).toFixed(1) * 1
     unit = units[exponent]
     (if neg then '-' else '') + num + ' ' + unit

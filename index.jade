@@ -46,7 +46,7 @@ html(ng-app='bTorrent', lang='en')
                         tbody(ng-hide='client.torrents.length')
                             tr
                                 td.center(colspan='100') Add a torrent o seed a file!
-                        tbody(ng-repeat='torrent in client.torrents', ng-if='torrent.name')
+                        tbody(ng-repeat='torrent in client.torrents', ng-if='torrent.pSize')
                             tr.torrentRow(ng-class='{selectedTorrent: torrent.showFiles}')
                                 td
                                     div
@@ -54,7 +54,7 @@ html(ng-app='bTorrent', lang='en')
                                         i.fa.fa-check(ng-show='torrent.done')
                                         |  {{torrent.name}}
                                     span.subInfo
-                                        | {{torrent.length | pbytes}} in 
+                                        | {{torrent.pSize | pbytes}} in 
                                         a(href='#', onclick='return false;', ng-click='toggleTorrent(torrent)') {{torrent.files.length}} files
                                 td(ng-hide='client.done()')
                                     | {{torrent.downloaded | pbytes}} 
@@ -89,7 +89,7 @@ html(ng-app='bTorrent', lang='en')
                                                 li(ng-repeat='file in torrent.files')
                                                     span(ng-hide='file.done') {{file.status}}: {{file.name}}
                                                     a(href='{{file.url}}', download='{{file.name}}', target='_blank', ng-show='file.done') {{file.name}}
-                                                    span.subInfo  {{file.length | pbytes}}
+                                                    span.subInfo  {{file.pSize | pbytes}}
                         tbody(ng-show='client.processing')
                             tr
                                 td.center(colspan='100') Please wait a few seconds!
