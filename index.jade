@@ -16,7 +16,7 @@ html(ng-app='bTorrent', lang='en')
         header
             h1
                 | βTorrent
-                span.version  v0.5.01
+                span.version  v0.5.02
         .container(ng-controller='bTorrentCtrl', ng-cloak='')
             .row
                 .twelve.columns
@@ -45,7 +45,7 @@ html(ng-app='bTorrent', lang='en')
                                 th Actions
                         tbody(ng-hide='client.torrents.length')
                             tr
-                                td.center(colspan='100') Add a torrent to seed a file!
+                                td.center(colspan='100') Add a torrent or seed a file!
                         tbody(ng-repeat='torrent in client.torrents', ng-if='torrent.name')
                             tr.torrentRow(ng-class='{selectedTorrent: torrent.showFiles}')
                                 td
