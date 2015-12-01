@@ -8,7 +8,7 @@ trackers = [
   [ 'ws://tracker.fastcast.nz' ]
 ]
 
-opts = {announceList: trackers}
+opts = {announce: trackers}
 
 client = new WebTorrent
 debug = true
@@ -70,7 +70,7 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $h
     if $scope.torrentInput != ''
       $scope.client.processing = true
       dbg 'Adding ' + $scope.torrentInput
-      $scope.client.add $scope.torrentInput, $scope.onTorrent
+      $scope.client.add $scope.torrentInput, opts, $scope.onTorrent
       $scope.torrentInput = ''
       return
 

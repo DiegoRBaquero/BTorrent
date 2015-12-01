@@ -57,21 +57,26 @@ html(ng-app='bTorrent', lang='en')
                                         | {{torrent.pSize | pbytes}} in 
                                         a(href='#', onclick='return false;', ng-click='toggleTorrent(torrent)') {{torrent.files.length}} files
                                 td(ng-hide='client.done()')
-                                    | {{torrent.downloaded | pbytes}} 
+                                    | {{torrent.downloaded | pbytes}}
                                     span.subInfo ({{torrent.pProgress}}%)
                                     br
                                     span.subInfo @ {{torrent.downloadSpeed() | pbytes}}/s
-                                td(ng-hide='client.done()') {{torrent.tRemaining}}
-                                td(ng-hide='client.downloading()') {{torrent.uploaded | pbytes}}
+                                td(ng-hide='client.done()')
+                                    | {{torrent.tRemaining}}
+                                td(ng-hide='client.downloading()')
+                                    | {{torrent.uploaded | pbytes}}
                                     br
                                     span.subInfo @ {{torrent.uploadSpeed() | pbytes}}/s
                                 td {{torrent.swarm.wires.length}}
                                 td
-                                    a(ng-href='#{{torrent.infoHash}}', target='_blank') βTorrent
+                                    a(ng-href='#{{torrent.infoHash}}', target='_blank')
+                                        | βTorrent
                                     | 
-                                    a(ng-href='{{torrent.magnetURI}}', target='_blank') Magnet URI
+                                    a(ng-href='{{torrent.magnetURI}}', target='_blank')
+                                        | Magnet URI
                                     | 
-                                    a(ng-href='{{torrent.oTorrentFileURL}}', target='_blank', download='{{torrent.fileName}}') .torrent
+                                    a(ng-href='{{torrent.oTorrentFileURL}}', target='_blank', download='{{torrent.fileName}}')
+                                        | .torrent
                                     br
                                     span.subInfo
                                         i.fa.fa-hashtag
