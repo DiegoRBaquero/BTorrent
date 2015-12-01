@@ -47,6 +47,7 @@ localStorage.removeItem('debug')
 
 ### Help βTorrent
 - **[Create a new issue](https://github.com/DiegoRBaquero/bTorrent/issues/new)** to report bugs or suggest new features
+- **[Send a PR](https://github.com/DiegoRBaquero/BTorrent/pull/new/master)** with your changes
 
 ### License
 MIT. Copyright (c) [Diego Rodríguez Baquero](http://diegorbaquero.com)
