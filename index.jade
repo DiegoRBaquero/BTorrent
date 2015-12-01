@@ -4,8 +4,8 @@ html(ng-app='bTorrent', lang='en')
         base(href='')
         meta(charset='UTF-8')
         title βTorrent: Browser WebTorrent Client
-        meta(name='description', content='βTorrent: Browser WebTorrent Client')
-        meta(name='keywords', content='βTorrent, btorrent, client, webtorrent, browser, torrent')
+        meta(name='description', content='βTorrent: fully-featured Browser WebTorrent Client')
+        meta(name='keywords', content='βTorrent, btorrent, client, webtorrent, browser, torrent, stream, bittorrent')
         meta(name='author', content='Diego Rodríguez Baquero - DiegoRBaquero')
         meta(name='viewport', content='width=device-width, initial-scale=1')
         script(src='https://cdn.jsdelivr.net/g/webtorrent@0.62,momentjs@2.10,angularjs@1.4')
@@ -16,7 +16,7 @@ html(ng-app='bTorrent', lang='en')
         header
             h1
                 | βTorrent
-                span.version  v0.5
+                span.version v0.5
         .container(ng-controller='bTorrentCtrl', ng-cloak='')
             .row
                 .twelve.columns
@@ -103,7 +103,7 @@ html(ng-app='bTorrent', lang='en')
             a(href='http://diegorbaquero.com') DiegoRBaquero
             br
             small
+                | Powered by 
                 a(href='https://webtorrent.io') WebTorrent
-                |  is powered by JavaScript and WebRTC. Works in Chrome, Firefox, and Opera (desktop and Android).
             p
         script(src='app.js')
