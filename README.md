@@ -36,13 +36,13 @@ harp server
 ```
 
 ### Enable Debugging
-Enable debug logs by running this in the developer console:
-```js
-debug = true
-```
-Enable WebTorrent and its submodules debug logs by running this in the developer console:
+Enable βTorrent (Debug logging) and WebTorrent (Logs logging) debug logs by running this in the developer console:
 ```js
 localStorage.debug = '*'
+```
+Disable by running this:
+```js
+localStorage.removeItem('debug')
 ```
 
 ### Help βTorrent

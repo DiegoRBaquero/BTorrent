@@ -11,7 +11,7 @@ trackers = [
 opts = {announce: trackers}
 
 client = new WebTorrent
-debug = true
+debug = window.localStorage ? window.localStorage.getItem('debug') == '*':false
 
 app = angular.module 'bTorrent', [], ['$compileProvider','$locationProvider', ($compileProvider, $locationProvider) ->
   $compileProvider.aHrefSanitizationWhitelist /^\s*(https?|magnet|blob|javascript):/
