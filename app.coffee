@@ -1,3 +1,15 @@
+trackers = [
+  [ 'udp://tracker.publicbt.com:80' ],
+  [ 'udp://tracker.openbittorrent.com:80' ],
+  [ 'udp://open.demonii.com:1337' ],
+  [ 'udp://tracker.webtorrent.io:80' ],
+  [ 'wss://tracker.webtorrent.io' ],
+  [ 'wss://tracker.btorrent.xyz' ],
+  [ 'ws://tracker.fastcast.nz' ]
+]
+
+opts = {announceList: trackers}
+
 client = new WebTorrent
 debug = true
 
@@ -51,7 +63,7 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $h
   $scope.uploadFile2 = (elem) ->
     $scope.client.processing = true
     dbg 'Seeding ' + elem.files[0].name
-    $scope.client.seed elem.files, $scope.onSeed
+    $scope.client.seed elem.files, opts, $scope.onSeed
     return
 
   $scope.fromInput = ->
@@ -75,6 +87,7 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $h
       return
 
   $scope.destroyedTorrent = (err) ->
+    $scope.client.processing = false
     if err
       throw err
     dbg 'Destroyed torrent'

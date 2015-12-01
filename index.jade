@@ -46,7 +46,7 @@ html(ng-app='bTorrent', lang='en')
                         tbody(ng-hide='client.torrents.length')
                             tr
                                 td.center(colspan='100') Add a torrent o seed a file!
-                        tbody(ng-repeat='torrent in client.torrents', ng-if='torrent.pSize')
+                        tbody(ng-repeat='torrent in client.torrents', ng-if='torrent.files')
                             tr.torrentRow(ng-class='{selectedTorrent: torrent.showFiles}')
                                 td
                                     div
@@ -77,7 +77,7 @@ html(ng-app='bTorrent', lang='en')
                                         i.fa.fa-hashtag
                                         | {{torrent.infoHash}}
                                 td
-                                    i.fa.fa-times(ng-click='client.remove(torrent, destroyedTorrent)')
+                                    i.fa.fa-times(ng-click='client.processing = true; client.remove(torrent, destroyedTorrent)')
                             tr(ng-show='torrent.showFiles')
                                 td.files(colspan='100')
                                     .row
