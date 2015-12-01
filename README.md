@@ -4,7 +4,6 @@
 Current stable release: v0.5.3
 
 [![Build Status](https://travis-ci.org/whitef0x0/BTorrent.svg?branch=master)](https://travis-ci.org/whitef0x0/BTorrent)
-[![Dependency Status](https://gemnasium.com/whitef0x0/BTorrent.svg)](https://gemnasium.com/whitef0x0/BTorrent)
 [![Coverage Status](https://coveralls.io/repos/whitef0x0/BTorrent/badge.svg?branch=master&service=github)](https://coveralls.io/github/whitef0x0/BTorrent?branch=master)
 [![Dependency Status](https://gemnasium.com/whitef0x0/BTorrent.svg)](https://gemnasium.com/whitef0x0/BTorrent)
 [![Code Climate](https://codeclimate.com/github/whitef0x0/BTorrent/badges/gpa.svg)](https://codeclimate.com/github/whitef0x0/BTorrent)
