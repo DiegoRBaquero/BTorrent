@@ -1,8 +1,9 @@
 trackers = [
-  [ 'udp://tracker.publicbt.com:80' ],
   [ 'udp://tracker.openbittorrent.com:80' ],
-  [ 'udp://open.demonii.com:1337' ],
-  [ 'udp://tracker.webtorrent.io:80' ],
+  [ 'udp://tracker.internetwarriors.net:1337' ],
+  [ 'udp://tracker.leechers-paradise.org:6969' ],
+  [ 'udp://tracker.coppersurfer.tk:6969' ],
+  [ 'udp://exodus.desync.com:6969' ],
   [ 'wss://tracker.webtorrent.io' ],
   [ 'wss://tracker.btorrent.xyz' ]
 ]
