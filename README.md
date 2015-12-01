@@ -22,9 +22,9 @@
 Website powered by [jsDelivr] and [CloudFlare]. I use [nginx] in my server.
 
 ### Easily built, tested and served
-**I use [Harp] to rapidly test the proyect and also to compile it**
+**I use [Harp] to rapidly test and compile the project**
 
-Build the proyect into HTML, JS and CSS easily. Just use:
+Build the project into HTML, JS and CSS easily. Just use:
 ```bash
 harp compile
 ```
