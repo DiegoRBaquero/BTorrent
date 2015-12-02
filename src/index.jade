@@ -25,10 +25,10 @@ html(ng-app='bTorrent', lang='en')
                         .three.columns
                             input#magnetLinkInput.u-full-width(type='text', placeholder='magnet link or hash', ng-model='magnetLinkInput')
                         .three.columns
-                            button.button-secondary(ng-click='openCreateModal()', ng-disabled="!magnetLinkInput")
+                            button.button-secondary(ng-click='addByMagnet()', ng-disabled="!magnetLinkInput")
                                 | Add Magnet Link
                         .four.columns
-                            button.button-primary(ngf-select='uploadTorrent($file)', ng-disabled="!!magnetLinkInput")
+                            button.button-primary(ngf-select='uploadTorrent($file)')
                                 i.fa.fa-upload
                                 |  Add Torrent File
                         .two.columns.u-pull-right
