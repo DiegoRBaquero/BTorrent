@@ -67,7 +67,7 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $h
     return
 
   $scope.fromInput = ->
-    if $scope.torrentInput != ''
+    if $scope.torrentInput && $scope.torrentInput.length
       $scope.client.processing = true
       dbg('Adding ') + $scope.torrentInput
       $scope.client.add $scope.torrentInput, opts, $scope.onTorrent

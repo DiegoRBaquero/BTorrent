@@ -32,16 +32,11 @@ Website powered by [jsDelivr] and [CloudFlare]. I use [nginx] in my server.
 ### Easily built, tested and served
 **I use [Harp] to rapidly test and compile the project**
 
-Build the project into HTML, JS and CSS easily. Just use:
+To start run 
 ```bash
-harp compile
+grunt default
 ```
-This will create a www folder with the compiled files
-
-If you need to serve the files and view the compiled version instantly just use:
-```bash
-harp server
-```
+This will create a www folder with the compiled files and run a server at localhost:9000
 
 ### Enable Debugging
 Enable βTorrent (Debug logging) and WebTorrent (Logs logging) debug logs by running this in the developer console:

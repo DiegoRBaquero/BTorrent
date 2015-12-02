@@ -1,30 +1,30 @@
-'use strict';
+'use strict'
 
 /**
  * Module dependencies.
  */
-var karmaReporters = ['progress', 'mocha', 'html', 'coverage'];
+var karmaReporters = ['progress', 'mocha', 'html', 'coverage']
 
 // Karma configuration
 module.exports = function (karmaConfig) {
+	var shouldBeSingleRun = false
+	if(process.env.NODE_ENV === 'travis') shouldBeSingleRun = true
+
 	karmaConfig.set({
 		// Frameworks to use
 		frameworks: ['jasmine'],
 
 		preprocessors: {
-			'test/**/*.js': ['coverage'],
-			'www/**.html': ['ng-html2js']
-		},
-
-	ngHtml2JsPreprocessor: {
-			stripPrefix: 'www/',
-
-			// the name of the Angular module to create
-			moduleName: 'templates'
+			'www/*.js': ['coverage'],
 		},
 
 		// List of files / patterns to load in the browser
-		files: ['www/**.html', 'www/**.js', 'www/**.css'],
+		files: ['www/bower_components/angular/angular.js',
+  				'www/bower_components/angular-mocks/angular-mocks.js',
+  				'www/bower_components/*[!angular]*/**.js',
+  				'www/bower_components/*[!angular]*/**.css',
+  				'www/*', 
+  				'test/*/**.js'],
 
 		// Test results reporter to use
 		// Possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
@@ -44,6 +44,14 @@ module.exports = function (karmaConfig) {
 				istanbul: { noCompact: true }
 			}
 		},
+
+		//Make sure we capture console.log output
+		client: {
+			captureConsole: true,
+			mocha: {
+				bail: true
+			}
+	    },
 
 		// Web server port
 		port: 9876,
@@ -69,10 +77,10 @@ module.exports = function (karmaConfig) {
 		browsers: ['PhantomJS'],
 
 		// If browser does not capture in given timeout [ms], kill it
-		captureTimeout: 60000,
+		captureTimeout: 3000,
 
 		// Continuous Integration mode
 		// If true, it capture browsers, run tests and exit
-		singleRun: true
-	});
+		singleRun: shouldBeSingleRun
+	})
 }

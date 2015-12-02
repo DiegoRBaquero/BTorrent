@@ -3,6 +3,25 @@
 module.exports = function (grunt) {
 	require('jit-grunt')(grunt)
 
+	var _ = require('lodash')
+
+	var path = require('path')
+	var bowerFiles = require('main-bower-files')
+
+	var bowerDep = bowerFiles('**/**.js').concat(bowerFiles('**/**.css'))
+	bowerDep = bowerDep.map(function(file_path){
+		var local_path = file_path.split(path.resolve(__dirname))[1]
+
+		if(local_path === '') return '.'+file_path
+		return '.'+local_path
+
+	}).filter(function(file_path){
+		if(file_path === null) return false
+		return true
+	})
+
+	bowerDep = bowerDep.concat(['./bower_components/**/**.ttf', './bower_components/**/**.css'])
+
 	// Project Configuration
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -15,14 +34,14 @@ module.exports = function (grunt) {
 				}
 			},
 			bowerFiles: {
-				files: ['bower_components/**/*.js', 'bower_components/**/*.css', 'bower_components/**/*.json'],
+				files: ['bower_components/**/*.js', 'bower_components/**/*.css', 'bower_components/**/*.ttf'],
 				tasks: ['newer:bower:copy'],
 			},
-			testClient: {
+			testUnit: {
 				files: 'test/unit/**.js',
 				tasks: ['test:client'],
 			},
-			testClient: {
+			testE2E: {
 				files: 'test/e2e/**.js',
 				tasks: ['test:e2e'],
 			}
@@ -50,25 +69,25 @@ module.exports = function (grunt) {
 		  bower: {
 		    files: [
 		      // includes files within path
-		      {expand: true, src: ['bower_components/**/*.js', 'bower_components/**/*.css', 'bower_components/**/*.ttf'], dest: 'src/'},
+		      {expand: true, src: bowerDep, dest: 'src/'},
 		    ],
 		  },
 		},
 		mocha_istanbul: {
 			coverage: {
-					src: 'test/**/*.js'
+				src: 'test/**/*.js'
 			},
 			coveralls: {
-					src: 'test/**/*.js', 
-					options: {
-						coverage: true, // this will make the grunt.event.on('coverage') event listener to be triggered
-						check: {
-								lines: 75,
-								statements: 75
-						},
-						root: './lib', // define where the cover task should consider the root of libraries that are covered by tests
-						reportFormats: ['cobertura','lcovonly']
-					}
+				src: 'test/**/*.js', 
+				options: {
+					coverage: true, // this will make the grunt.event.on('coverage') event listener to be triggered
+					check: {
+						lines: 75,
+						statements: 75
+					},
+					root: './www', // define where the cover task should consider the root of libraries that are covered by tests
+					reportFormats: ['cobertura','lcovonly']
+				}
 			}
 		},
 		istanbul_check_coverage: {
