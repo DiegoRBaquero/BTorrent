@@ -8,10 +8,13 @@ html(ng-app='bTorrent', lang='en')
         meta(name='keywords', content='βTorrent, btorrent, client, webtorrent, browser, torrent, stream, bittorrent')
         meta(name='author', content='Diego Rodríguez Baquero - DiegoRBaquero')
         meta(name='viewport', content='width=device-width, initial-scale=1')
-        script(src='../bower_components/webtorrent/webtorrent.min.js')
-        script(src='https://cdn.jsdelivr.net/g/momentjs@2.10,angularjs@1.4')
-        link(rel='stylesheet', href='https://cdn.jsdelivr.net/g/normalize@3.0,skeleton@2.0')
-        link(rel='stylesheet', href='https://cdn.jsdelivr.net/fontawesome/4.5/css/font-awesome.min.css')
+        //script(src='https://cdn.jsdelivr.net/g/momentjs@2.10,angularjs@1.4')
+        //link(rel='stylesheet', href='https://cdn.jsdelivr.net/g/normalize@3.0,skeleton@2.0')
+        link(rel='stylesheet', href='./bower_components/font-awesome/css/font-awesome.min.css')
+        link(rel='stylesheet', href='./bower_components/font-awesome/fonts/fontawesome-webfont.ttf')
+        link(rel='stylesheet', href='./bower_components/skeleton/css/skeleton.css')
+        link(rel='stylesheet', href='./bower_components/skeleton/css/normalize.css')
+        //link(rel='stylesheet', href='https://cdn.jsdelivr.net/fontawesome/4.5/css/font-awesome.min.css')
         link(rel='stylesheet', href='style.css')
     body
         header
@@ -106,5 +109,11 @@ html(ng-app='bTorrent', lang='en')
             small
                 | Powered by 
                 a(href='https://webtorrent.io') WebTorrent
+                | Source available
+                a(href='https://github.com/diegorbaquero/BTorrent') on Github
             p
+        script(src='./bower_components/webtorrent/webtorrent.min.js')
+        script(src='./bower_components/angular/angular.min.js')
+        script(src='./bower_components/moment/moment.js')
+        script(src='./bower_components/normalize-strings/normalize.min.js')
         script(src='app.js')

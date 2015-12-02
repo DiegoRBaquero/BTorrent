@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "grunt": "^0.4.5",
-    "harp": "~0.20.1",
+    "harp": "^0.20.1",
     "jit-grunt": "^0.9.1"
   },
   "author": "Diego R Baquero <iegorbaquero@gmail.com>",
@@ -21,8 +21,13 @@
     "npm": ">=3.0.0"
   },
   "devDependencies": {
+    "grunt-concurrent": "^2.1.0",
+    "grunt-contrib-copy": "^0.8.2",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-harp": "github:whitef0x0/grunt-harp",
     "grunt-karma": "^0.12.1",
     "grunt-mocha-istanbul": "^3.0.1",
+    "grunt-newer": "^1.1.1",
     "istanbul": "^0.4.1",
     "karma": "^0.13.15",
     "karma-coverage": "^0.5.3",

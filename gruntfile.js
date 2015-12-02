@@ -6,14 +6,53 @@ module.exports = function (grunt) {
 	// Project Configuration
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
+		watch: {
+			harp: {
+				files: ['src/*'],
+				tasks: ['harp:compile'],
+				options: {
+					livereload: true,
+				}
+			},
+			bowerFiles: {
+				files: ['bower_components/**/*.js', 'bower_components/**/*.css', 'bower_components/**/*.json'],
+				tasks: ['newer:bower:copy'],
+			},
+			testClient: {
+				files: 'test/unit/**.js',
+				tasks: ['test:client'],
+			},
+			testClient: {
+				files: 'test/e2e/**.js',
+				tasks: ['test:e2e'],
+			}
+		},
+		concurrent: {
+			default: ['harp:server', 'watch:harp', 'watch:bowerFiles'],
+			options: {
+				logConcurrentOutput: true,
+				limit: 10
+			}
+		},
 		harp: {
+			compile: {
+				server: false,
+				source: 'src',
+				dest: 'www'
+			},
 			server: {
 				server: true,
-				source: 'src'
-			},
-			dist: {
-				source: 'src'
+				source: 'src',
+				dest: 'www'
 			}
+		},
+		copy: {
+		  bower: {
+		    files: [
+		      // includes files within path
+		      {expand: true, src: ['bower_components/**/*.js', 'bower_components/**/*.css', 'bower_components/**/*.ttf'], dest: 'src/'},
+		    ],
+		  },
 		},
 		mocha_istanbul: {
 			coverage: {
@@ -71,14 +110,15 @@ module.exports = function (grunt) {
 			done()
 		})
 	})
-	//grunt.loadNpmTasks('grunt-protractor-coverage')
 
-	grunt.registerTask('default', ['harp:server'])
+	grunt.registerTask('build', ['newer:copy:bower', 'harp:compile']);
 
-	// Run the project tests
-	grunt.registerTask('test:client', ['harp', 'karma:unit'])
-	grunt.registerTask('test:e2e', ['harp:server', 'protractor'])
-	grunt.registerTask('test', ['harp:server', 'test:client', 'test:e2e'])
+	grunt.registerTask('default', ['build', 'concurrent:default'])
+
+	// Run the projects' tests
+	grunt.registerTask('test:client', ['build', 'karma:unit'])
+	grunt.registerTask('test:e2e', ['build', 'harp:server', 'protractor'])
+	grunt.registerTask('test', ['test:client', 'test:e2e'])
 
 	// Run project coverage
 	grunt.registerTask('coverage', ['mocha_istanbul:coverage', 'karma:unit'])
