@@ -30,6 +30,8 @@
     "normalize-strings": "~1.0.4",
     "angular": "~1.4.8",
     "skeleton": "~2.0.4",
-    "angular-mocks": "~1.4.8"
+    "angular-mocks": "~1.4.8",
+    "ng-file-upload": "~10.1.2",
+    "angular-bootstrap": "~0.14.3"
   }
 }

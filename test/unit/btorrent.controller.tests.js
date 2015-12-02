@@ -7,6 +7,7 @@
       $httpBackend,
       $stateParams,
       $location,
+      $compile,
       WebTorrent
 
     // The $resource service augments the response object with methods for updating and deleting the resource.
@@ -52,13 +53,14 @@
     // The injector ignores leading and trailing underscores here (i.e. _$httpBackend_).
     // This allows us to inject a service but then attach it to a variable
     // with the same name as the service.
-    beforeEach(inject(function ($controller, $rootScope, _$location_, _$httpBackend_) {
+    beforeEach(inject(function ($controller, $rootScope, _$location_, _$compile_, _$httpBackend_) {
       // Set a new global scope
       scope = $rootScope.$new()
 
       // Point global variables to injected services
       $httpBackend = _$httpBackend_
       $location = _$location_
+      $compile = _$compile_
 
       // Initialize the Articles controller.
       bTorrentCtrl = $controller('bTorrentCtrl', {
@@ -120,7 +122,7 @@
           showFiles: false
         }]
 
-        spyOn(scope.client, 'add').and.callFake(function(torrentMagnet, opts, cb){
+        spyOn(scope.client, 'add').and.callFake(function (torrentMagnet, opts, cb) {
           scope.client.torrents.push({
             magnetURI: torrentMagnet,
             showFiles: false,
@@ -129,11 +131,11 @@
         })
       })
 
-      it('scope.fromInput() should not do anything if torrentInput is undefined', function () {
-        expect(scope.torrentInput).not.toEqual(jasmine.anything())
+      it('scope.addByMagnet() should not do anything if torrentInput is undefined', function () {
+        expect(scope.magnetLinkInput).not.toEqual(jasmine.anything())
         scope.client.processing = false
         // Run controller functionality
-        scope.fromInput()
+        scope.addByMagnet()
 
         // Test scope value
         expect(scope.client.processing).toBe(false)
@@ -141,10 +143,10 @@
       })
 
       it('scope.fromInput() should not do anything if torrentInput is an empty string', function () {
-        scope.torrentInput = ''
+        scope.magnetLinkInput = ''
         scope.client.processing = false
         // Run controller functionality
-        scope.fromInput()
+        scope.addByMagnet()
 
         // Test scope value
         expect(scope.client.processing).toBe(false)
@@ -152,10 +154,10 @@
       })
 
       it('scope.fromInput() should add torrent if torrentInput is not undefined or empty', function () {
-        scope.torrentInput = 'magnet:?xt=urn:btih:BFE0F947FAF031D7A77E0F582365F0AB4E4E3323&dn=ubuntu+linux+toolbox+1000+commands+for+ubuntu+and+debian+power+users+2nd+edition+true+pdf+by+christopher+negus+pradyutvam2+cpul+wiley+pdf+latest&tr=udp%3A%2F%2F9.rarbg.com%3A2710%2Fannounce&tr=udp%3A%2F%2Fglotorrents.pw%3A6969%2Fannounce'
+        scope.magnetLinkInput = 'magnet:?xt=urn:btih:BFE0F947FAF031D7A77E0F582365F0AB4E4E3323&dn=ubuntu+linux+toolbox+1000+commands+for+ubuntu+and+debian+power+users+2nd+edition+true+pdf+by+christopher+negus+pradyutvam2+cpul+wiley+pdf+latest&tr=udp%3A%2F%2F9.rarbg.com%3A2710%2Fannounce&tr=udp%3A%2F%2Fglotorrents.pw%3A6969%2Fannounce'
         scope.client.processing = false
         // Run controller functionality
-        scope.fromInput()
+        scope.addByMagnet()
 
         // Test scope value
         expect(scope.client.processing).toBe(true)

@@ -3,28 +3,32 @@
 /**
  * Module dependencies.
  */
-var karmaReporters = ['progress', 'mocha', 'html', 'coverage']
+var karmaReporters = ['coverage', 'html', 'progress'];
 
 // Karma configuration
 module.exports = function (karmaConfig) {
-	var shouldBeSingleRun = false
-	if(process.env.NODE_ENV === 'travis') shouldBeSingleRun = true
+	var isTravisCI = false
+	if(process.env.NODE_ENV === 'travis'){
+		isTravisCI = true
+	}
 
 	karmaConfig.set({
 		// Frameworks to use
 		frameworks: ['jasmine'],
 
 		preprocessors: {
-			'www/*.js': ['coverage'],
+			'www/*.js': ['coverage']
 		},
 
 		// List of files / patterns to load in the browser
-		files: ['www/bower_components/angular/angular.js',
-  				'www/bower_components/angular-mocks/angular-mocks.js',
-  				'www/bower_components/*[!angular]*/**.js',
-  				'www/bower_components/*[!angular]*/**.css',
-  				'www/*', 
-  				'test/*/**.js'],
+		files: ['www/bower_components/angular/angular.js', 
+				'www/bower_components/angular-mocks/angular-mocks.js',
+				'www/bower_components/ng-file-upload/ng-file-upload.js',
+				'www/bower_components/ng-file-upload/ng-file-upload-shim.js',
+				'www/bower_components/*[!angular]*/**.js',
+				'www/bower_components/*[!angular]*/**.css',
+				'www/*',
+				'test/*/**.js'],
 
 		// Test results reporter to use
 		// Possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
@@ -45,14 +49,6 @@ module.exports = function (karmaConfig) {
 			}
 		},
 
-		//Make sure we capture console.log output
-		client: {
-			captureConsole: true,
-			mocha: {
-				bail: true
-			}
-	    },
-
 		// Web server port
 		port: 9876,
 
@@ -64,7 +60,7 @@ module.exports = function (karmaConfig) {
 		logLevel: karmaConfig.LOG_INFO,
 
 		// Enable / disable watching file and executing tests whenever any file changes
-		autoWatch: true,
+		autoWatch: !isTravisCI,
 
 		// Start these browsers, currently available:
 		// - Chrome
@@ -81,6 +77,6 @@ module.exports = function (karmaConfig) {
 
 		// Continuous Integration mode
 		// If true, it capture browsers, run tests and exit
-		singleRun: shouldBeSingleRun
+		singleRun: !!isTravisCI
 	})
 }

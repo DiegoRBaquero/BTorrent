@@ -20,7 +20,7 @@ module.exports = function (grunt) {
 		return true
 	})
 
-	bowerDep = bowerDep.concat(['./bower_components/**/**.ttf', './bower_components/**/**.css'])
+	bowerDep = bowerDep.concat(['./bower_components/**/*shim.js', './bower_components/**/**.ttf', './bower_components/**/**.css'])
 
 	// Project Configuration
 	grunt.initConfig({
@@ -28,7 +28,7 @@ module.exports = function (grunt) {
 		watch: {
 			harp: {
 				files: ['src/*'],
-				tasks: ['harp:compile'],
+				tasks: ['harp:compile', 'harp:server'],
 				options: {
 					livereload: true,
 				}
@@ -47,7 +47,7 @@ module.exports = function (grunt) {
 			}
 		},
 		concurrent: {
-			default: ['harp:server', 'watch:harp', 'watch:bowerFiles'],
+			default: ['watch:harp', 'watch:bowerFiles'],
 			options: {
 				logConcurrentOutput: true,
 				limit: 10
@@ -132,7 +132,7 @@ module.exports = function (grunt) {
 
 	grunt.registerTask('build', ['newer:copy:bower', 'harp:compile']);
 
-	grunt.registerTask('default', ['build', 'concurrent:default'])
+	grunt.registerTask('default', ['build', 'harp:server', 'concurrent:default'])
 
 	// Run the projects' tests
 	grunt.registerTask('test:client', ['build', 'karma:unit'])
