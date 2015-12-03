@@ -11,79 +11,84 @@ trackers = [
 opts = {announce: trackers}
 
 client = new WebTorrent
-debug = window.localStorage ? window.localStorage.getItem('debug') == '*':false
 
-app = angular.module 'bTorrent', [], ['$compileProvider','$locationProvider', ($compileProvider, $locationProvider) ->
+dbg = (string, torrent) ->
+  if (window.localStorage ? window.localStorage.getItem('debug') == '*':false)
+    if torrent
+      console.debug '%c' + torrent.name + ' (' + torrent.infoHash + '): %c' + string, 'color: #33C3F0', 'color: #333'
+      return
+    else
+      console.debug '%cClient: %c' + string, 'color: #33C3F0', 'color: #333'
+      return
+  return
+
+app = angular.module 'bTorrent', ['ui.grid', 'ui.grid.resizeColumns', 'ui.grid.selection'], ['$compileProvider','$locationProvider', ($compileProvider, $locationProvider) ->
   $compileProvider.aHrefSanitizationWhitelist /^\s*(https?|magnet|blob|javascript):/
   $locationProvider.html5Mode(
     enabled: true
     requireBase: false).hashPrefix '#'
 ]
 
-app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $http, $log, $location) ->
+app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'uiGridConstants', ($scope, $http, $log, $location, uiGridConstants) ->
   $scope.client = client
   $scope.seedIt = true
-
-  dbg = (string, torrent) ->
-    if debug
-      if torrent
-        $log.debug '%c' + torrent.name + ' (' + torrent.infoHash + '): %c' + string, 'color: #33C3F0', 'color: #333'
-        return
-      else
-        $log.debug '%cClient: %c' + string, 'color: #33C3F0', 'color: #333'
-        return
-    return
+  
+  $scope.columns = [
+    {field: 'name', cellTooltip: true, minWidth: '200'}
+    {field: 'length', name: 'Size', cellFilter: 'pbytes', width: '80'}
+    {field: 'received', displayName: 'Downloaded', cellFilter: 'pbytes', width: '135'}
+    {field: 'downloadSpeed()', displayName: '↓ Speed', cellFilter: 'pbytes:1', width: '100'}
+    {field: 'progress', displayName: 'Progress', cellFilter: 'progress', width: '100'}
+    {field: 'timeRemaining', displayName: 'ETA', cellFilter: 'humanTime', width: '150'}
+    {field: 'uploaded', displayName: 'Uploaded', cellFilter: 'pbytes', width: '125'}
+    {field: 'uploadSpeed()', displayName: '↑ Speed', cellFilter: 'pbytes:1', width: '100'}
+    {field: 'numPeers', displayName: 'Peers', width: '80'}
+    {field: 'ratio', cellFilter: 'number:2', width: '80'}
+  ]
+  
+  $scope.gridOptions =
+    columnDefs: $scope.columns
+    data: $scope.client.torrents
+    enableColumnResizing: true
+    enableColumnMenus: false
+    enableRowSelection: true
+    enableRowHeaderSelection: false
+    multiSelect: false
 
   updateAll = ->
+    if $scope.client.processing
+      return
     $scope.$apply()
     return
 
   setInterval updateAll, 500
 
-  $scope.client.done = ->
-    done = true
-    $scope.client.torrents.forEach (torrent) ->
-      if !torrent.done
-        done = false
-        return
-    done
-
-  $scope.client.downloading = ->
-    downloading = true
-    $scope.client.torrents.forEach (torrent) ->
-      if torrent.done
-        downloading = false
-        return
-    downloading
+  $scope.gridOptions.onRegisterApi = ( gridApi ) ->
+    $scope.gridApi = gridApi
+    gridApi.selection.on.rowSelectionChanged $scope, (row) ->
+      if !row.isSelected && $scope.selectedTorrent? && $scope.selectedTorrent.infoHash = row.entity.infoHash
+        $scope.selectedTorrent = null
+      else 
+        $scope.selectedTorrent = row.entity
 
   $scope.uploadFile = ->
     document.getElementById('fileUpload').click()
     return
 
   $scope.uploadFile2 = (elem) ->
-    $scope.client.processing = true
     dbg 'Seeding ' + elem.files[0].name
+    $scope.client.processing = true
+    $scope.$apply()
     $scope.client.seed elem.files, opts, $scope.onSeed
     return
 
   $scope.fromInput = ->
     if $scope.torrentInput != ''
-      $scope.client.processing = true
       dbg 'Adding ' + $scope.torrentInput
+      $scope.client.processing = true
+      $scope.$apply()
       $scope.client.add $scope.torrentInput, opts, $scope.onTorrent
       $scope.torrentInput = ''
-      return
-
-  $scope.toggleTorrent = (torrent) ->
-    if torrent.showFiles
-      torrent.showFiles = false
-      $scope.sTorrent = null
-      return
-    else
-      $scope.client.torrents.forEach (t) ->
-        t.showFiles = false
-      torrent.showFiles = true
-      $scope.sTorrent = torrent
       return
 
   $scope.destroyedTorrent = (err) ->
@@ -94,39 +99,24 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $h
     return
 
   $scope.onTorrent = (torrent, isSeed) ->
-    if !isSeed
-      $scope.client.processing = false
-    torrent.pSize = torrent.length
-    torrent.showFiles = false
+    torrent.safeTorrentFileURL = torrent.torrentFileURL
     torrent.fileName = torrent.name + '.torrent'
-    torrent.oTorrentFileURL = torrent.torrentFileURL
-    if angular.isUndefined($scope.sTorrent) or $scope.sTorrent == null
-      $scope.sTorrent = torrent
-      torrent.showFiles = true
-
-    torrent.update = ->
-      torrent.pProgress = (100 * torrent.progress).toFixed(1)
-      if torrent.done
-        torrent.tRemaining = 'Done'
-        return
-      else
-        remaining = moment.duration(torrent.timeRemaining / 1000, 'seconds').humanize()
-        torrent.tRemaining = remaining[0].toUpperCase() + remaining.substr(1)
-        return
+    
+    if !isSeed
+      $scope.client.processing = false    
+    if !($scope.selectedTorrent?)
+      $scope.selectedTorrent = torrent
 
     torrent.files.forEach (file) ->
-      file.pSize = file.length
-      file.status = 'Downloading'
-      file.url = 'javascript: return false;'
       file.getBlobURL (err, url) ->
         if err
           throw err
         if isSeed
           $scope.client.processing = false
+          $scope.$apply()
         file.url = url
         if !isSeed
           dbg 'Finished downloading file ' + file.name, torrent
-        file.status = 'Ready'
         return
       if !isSeed
         dbg 'Received file ' + file.name + ' metadata', torrent
@@ -147,8 +137,6 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $h
     torrent.on 'wire', (wire, addr) ->
       dbg 'Wire ' + addr, torrent
       return
-    setInterval torrent.update, 500
-    torrent.update()
     return
   $scope.onSeed = (torrent) ->
     $scope.onTorrent torrent, true
@@ -156,8 +144,10 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $h
 
   if $location.hash() != ''
     $scope.client.processing = true
-    dbg 'Adding ' + $location.hash()
-    client.add $location.hash(), $scope.onTorrent
+    setTimeout ->
+      dbg 'Adding ' + $location.hash()      
+      $scope.client.add $location.hash(), $scope.onTorrent
+    , 500    
     return
 ]
 
@@ -168,28 +158,32 @@ app.filter 'html', ['$sce', ($sce) ->
 ]
 
 app.filter 'pbytes', ->
-  (num) ->
+  (num, speed) ->
     if isNaN(num)
       return ''
     exponent = undefined
     unit = undefined
-    neg = num < 0
     units = [
       'B'
       'kB'
       'MB'
       'GB'
       'TB'
-      'PB'
-      'EB'
-      'ZB'
-      'YB'
     ]
-    if neg
-      num = -num
     if num < 1
-      return (if neg then '-' else '') + num + ' B'
+      return (if speed then '' else '0 B')
     exponent = Math.min(Math.floor(Math.log(num) / Math.log(1000)), 8)
     num = (num / 1000 ** exponent).toFixed(1) * 1
     unit = units[exponent]
-    (if neg then '-' else '') + num + ' ' + unit
+    num + ' ' + unit + (if speed then '/s' else '')
+
+app.filter 'humanTime', ->
+  (millis) ->
+    if millis < 1000
+      return ''
+    remaining = moment.duration(millis / 1000, 'seconds').humanize()
+    remaining[0].toUpperCase() + remaining.substr(1)
+
+app.filter 'progress', ->
+  (num) ->
+    (100 * num).toFixed(1) + '%'
