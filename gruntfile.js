@@ -105,18 +105,6 @@ module.exports = function (grunt) {
 			unit: {
 				configFile: 'karma.conf.js'
 			}
-		},
-		protractor: {
-			options: {
-				configFile: 'protractor.conf.js',
-				noColor: false,
-				webdriverManagerUpdate: true
-			},
-			e2e: {
-				options: {
-					args: {} // Target-specific arguments
-				}
-			}
 		}
 	})
 
@@ -135,9 +123,7 @@ module.exports = function (grunt) {
 	grunt.registerTask('default', ['build', 'harp:server', 'concurrent:default'])
 
 	// Run the projects' tests
-	grunt.registerTask('test:client', ['build', 'karma:unit'])
-	grunt.registerTask('test:e2e', ['build', 'harp:server', 'protractor'])
-	grunt.registerTask('test', ['test:client', 'test:e2e'])
+	grunt.registerTask('test', ['build', 'karma:unit'])
 
 	// Run project coverage
 	grunt.registerTask('coverage', ['mocha_istanbul:coverage', 'karma:unit'])

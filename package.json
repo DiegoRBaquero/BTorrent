@@ -40,7 +40,6 @@
     "lodash": "^3.10.1",
     "main-bower-files": "^2.9.0",
     "mocha": "^2.3.4",
-    "phantomjs": "^1.9.19",
-    "protractor": "^3.0.0"
+    "phantomjs": "^1.9.19"
   }
 }
