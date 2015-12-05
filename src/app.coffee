@@ -56,23 +56,28 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $h
         return
     downloading
 
-  $scope.uploadFile = ->
-    document.getElementById('fileUpload').click()
-    return
+  $scope.uploadSeed = (file) ->
+		$scope.client.processing = true
+		dbg 'Seeding ' + file.name
+		$scope.client.seed file, opts, $scope.onSeed
+		return
+	$scope.uploadTorrent = (file) ->
+		$scope.client.processing = true
+		dbg('Adding ') + file.name
+		$scope.client.add file, opts, $scope.onTorrent
+		$scope.magnetLinkInput = ''
+		return
 
-  $scope.uploadFile2 = (elem) ->
-    $scope.client.processing = true
-    dbg 'Seeding ' + elem.files[0].name
-    $scope.client.seed elem.files, opts, $scope.onSeed
-    return
+	$scope.addByMagnet = () ->
+		if $scope.magnetLinkInput && $scope.magnetLinkInput.length
+			$scope.client.processing = true
+			$scope.magnetLinkInput += ''
 
-  $scope.fromInput = ->
-    if $scope.torrentInput != ''
-      $scope.client.processing = true
-      dbg 'Adding ' + $scope.torrentInput
-      $scope.client.add $scope.torrentInput, opts, $scope.onTorrent
-      $scope.torrentInput = ''
-      return
+			dbg('Adding magnetLinkInput: ' + $scope.magnetLinkInput)
+			$scope.client.add($scope.magnetLinkInput, opts, $scope.onTorrent)
+
+			$scope.magnetLinkInput = ''
+			return
 
   $scope.toggleTorrent = (torrent) ->
     if torrent.showFiles

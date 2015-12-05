@@ -26,13 +26,13 @@ Website powered by [jsDelivr] and [CloudFlare]. I use [nginx] in my server.
 
 Build the project into HTML, JS and CSS easily. Just use:
 ```bash
-harp compile
+harp compile src www
 ```
 This will create a www folder with the compiled files
 
 If you need to serve the files and view the compiled version instantly just use:
 ```bash
-harp server
+harp server www
 ```
 
 ### Enable Debugging
