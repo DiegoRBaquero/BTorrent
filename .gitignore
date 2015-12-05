@@ -1,0 +1,6 @@
+node_modules/
+www/
+npm-debug.log
+coverage/
+bower_components/
+.DS_Store

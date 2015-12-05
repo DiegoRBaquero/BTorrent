@@ -1,6 +1,14 @@
 βTorrent
 ========
 
+Current stable release: v0.5.3
+
+[![Build Status](https://travis-ci.org/whitef0x0/BTorrent.svg?branch=master)](https://travis-ci.org/whitef0x0/BTorrent)
+[![Coverage Status](https://coveralls.io/repos/whitef0x0/BTorrent/badge.svg?branch=master&service=github)](https://coveralls.io/github/whitef0x0/BTorrent?branch=master)
+[![Dependency Status](https://gemnasium.com/whitef0x0/BTorrent.svg)](https://gemnasium.com/whitef0x0/BTorrent)
+[![Code Climate](https://codeclimate.com/github/whitef0x0/BTorrent/badges/gpa.svg)](https://codeclimate.com/github/whitef0x0/BTorrent)
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
 **[βTorrent]** is a fully-featured **[WebTorrent]** browser client written in [Jade], [CoffeeScript] and [Sass]
 
 ### Features
@@ -24,16 +32,11 @@ Website powered by [jsDelivr] and [CloudFlare]. I use [nginx] in my server.
 ### Easily built, tested and served
 **I use [Harp] to rapidly test and compile the project**
 
-Build the project into HTML, JS and CSS easily. Just use:
+To start run 
 ```bash
-harp compile
+grunt default
 ```
-This will create a www folder with the compiled files
-
-If you need to serve the files and view the compiled version instantly just use:
-```bash
-harp server
-```
+This will create a www folder with the compiled files and run a server at localhost:9000
 
 ### Enable Debugging
 Enable βTorrent (Debug logging) and WebTorrent (Logs logging) debug logs by running this in the developer console:

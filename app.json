@@ -1,0 +1,7 @@
+{
+  "name": "Btorrent",
+  "description": "Torrent client in the browser",
+  "repository": "https://github.com/DiegoRBaquero/BTorrent",
+  "logo": "https://node-js-sample.herokuapp.com/node.svg",
+  "keywords": ["webtorrent", "webrtc", "js", "torrent"]
+}
