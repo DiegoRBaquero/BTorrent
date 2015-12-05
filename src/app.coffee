@@ -13,7 +13,8 @@ opts = {announce: trackers}
 client = new WebTorrent
 debug = window.localStorage ? window.localStorage.getItem('debug') == '*':false
 
-app = angular.module 'bTorrent', [], ['$compileProvider','$locationProvider', ($compileProvider, $locationProvider) ->
+app = angular.module 'bTorrent', [], ['$compileProvider','$locationProvider',
+($compileProvider, $locationProvider) ->
   $compileProvider.aHrefSanitizationWhitelist /^\s*(https?|magnet|blob|javascript):/
   $locationProvider.html5Mode(
     enabled: true
@@ -56,22 +57,28 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $h
         return
     downloading
 
-  $scope.uploadFile = ->
-    document.getElementById('fileUpload').click()
-    return
-
-  $scope.uploadFile2 = (elem) ->
+  $scope.uploadSeed = (file) ->
     $scope.client.processing = true
-    dbg 'Seeding ' + elem.files[0].name
-    $scope.client.seed elem.files, opts, $scope.onSeed
+    dbg('Seeding ' + file.name)
+    $scope.client.seed file, opts, $scope.onSeed
     return
 
-  $scope.fromInput = ->
-    if $scope.torrentInput != ''
+  $scope.uploadTorrent = (file) ->
+    $scope.client.processing = true
+    dbg('Adding ') + file.name
+    $scope.client.add file, opts, $scope.onTorrent
+    $scope.magnetLinkInput = ''
+    return
+
+  $scope.addByMagnet = () ->
+    if $scope.magnetLinkInput && $scope.magnetLinkInput.length
       $scope.client.processing = true
-      dbg 'Adding ' + $scope.torrentInput
-      $scope.client.add $scope.torrentInput, opts, $scope.onTorrent
-      $scope.torrentInput = ''
+      $scope.magnetLinkInput += ''
+
+      dbg('Adding magnetLinkInput: ' + $scope.magnetLinkInput)
+      $scope.client.add($scope.magnetLinkInput, opts, $scope.onTorrent)
+
+      $scope.magnetLinkInput = ''
       return
 
   $scope.toggleTorrent = (torrent) ->
