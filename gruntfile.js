@@ -126,5 +126,5 @@ module.exports = function (grunt) {
 	grunt.registerTask('test', ['build', 'karma:unit'])
 
 	// Run project coverage
-	grunt.registerTask('coverage', ['mocha_istanbul:coverage', 'karma:unit'])
+	grunt.registerTask('coverage', ['build', 'mocha_istanbul:coverage', 'karma:unit'])
 }
