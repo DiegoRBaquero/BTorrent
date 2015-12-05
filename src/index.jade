@@ -8,7 +8,7 @@ html(ng-app='bTorrent', lang='en')
         meta(name='keywords', content='βTorrent, btorrent, client, webtorrent, browser, torrent, stream, bittorrent')
         meta(name='author', content='Diego Rodríguez Baquero - DiegoRBaquero')
         meta(name='viewport', content='width=device-width, initial-scale=1')
-        script(src='https://cdn.jsdelivr.net/g/webtorrent@0.62,momentjs@2.10,angularjs@1.4')
+        script(src='https://cdn.jsdelivr.net/g/webtorrent@0.62,momentjs@2.10,angularjs@1.4,ng-file-upload')
         link(rel='stylesheet', href='https://cdn.jsdelivr.net/g/normalize@3.0,skeleton@2.0')
         link(rel='stylesheet', href='https://cdn.jsdelivr.net/fontawesome/4.5/css/font-awesome.min.css')
         link(rel='stylesheet', href='style.css')
@@ -21,16 +21,18 @@ html(ng-app='bTorrent', lang='en')
             .row
                 .twelve.columns
                     .row
-                        .five.columns
-                            input#torrentInput.u-full-width(type='text', placeholder='magnet link or hash', ng-model='torrentInput')
-                        .two.columns
-                            button.button-primary(ng-click='fromInput()')
-                                i.fa.fa-download
-                                |  Download
-                        .five.columns.u-pull-right
-                            input#fileUpload(type='file', style='display: none;', onchange='angular.element(this).scope().uploadFile2(this)')
+                        .three.columns
+                            input#magnetLinkInput.u-full-width(type='text', placeholder='magnet link or hash', ng-model='magnetLinkInput')
+                        .three.columns
+                            button.button-secondary(ng-click='addByMagnet()', ng-disabled="!magnetLinkInput")
+                                | Add Magnet Link
+                        .four.columns
+                            button.button-primary(ngf-select='uploadTorrent($file)')
+                                i.fa.fa-upload
+                                |  Add Torrent File
+                        .two.columns.u-pull-right
                             label.u-pull-right
-                                button.button-primary(ng-click='uploadFile()')
+                                .button(ngf-select='uploadSeed($file)')
                                     i.fa.fa-upload
                                     |  Seed a file
                     table.u-full-width

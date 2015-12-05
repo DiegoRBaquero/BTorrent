@@ -45,6 +45,9 @@ Disable by running this:
 localStorage.removeItem('debug')
 ```
 
+###Testing
+To test BTorrent, run `npm test`
+
 ### Help βTorrent
 - **[Create a new issue](https://github.com/DiegoRBaquero/bTorrent/issues/new)** to report bugs or suggest new features
 - **[Send a PR](https://github.com/DiegoRBaquero/BTorrent/pull/new/master)** with your changes

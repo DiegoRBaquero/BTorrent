@@ -1,0 +1,40 @@
+{
+  "name": "btorrent",
+  "version": "0.5.3",
+  "description": "Browser based torrenting client",
+  "main": "index.js",
+  "scripts": {
+    "test": "karma start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DiegoRBaquero/BTorrent.git"
+  },
+  "keywords": [
+    "webtorrent",
+    "torrent",
+    "torrent",
+    "client"
+  ],
+  "author": "Diego R Baquero",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DiegoRBaquero/BTorrent/issues"
+  },
+  "homepage": "https://github.com/DiegoRBaquero/BTorrent#readme",
+  "dependencies": {
+    "harp": "^0.20.1"
+  },
+  "devDependencies": {
+    "angular": "^1.4.8",
+    "angular-mocks": "^1.4.8",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.15",
+    "karma-jasmine": "^0.3.6",
+    "karma-phantomjs2-launcher": "^0.3.2",
+    "moment": "^2.10.6",
+    "ng-file-upload": "^10.1.8",
+    "phantomjs2": "git+https://github.com/davidchin/phantomjs2.git#reinstate_bin",
+    "webtorrent": "^0.63.2"
+  }
+}

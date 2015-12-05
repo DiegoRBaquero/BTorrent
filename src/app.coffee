@@ -13,7 +13,8 @@ opts = {announce: trackers}
 client = new WebTorrent
 debug = window.localStorage ? window.localStorage.getItem('debug') == '*':false
 
-app = angular.module 'bTorrent', [], ['$compileProvider','$locationProvider', ($compileProvider, $locationProvider) ->
+app = angular.module 'bTorrent', [], ['$compileProvider','$locationProvider',
+($compileProvider, $locationProvider) ->
   $compileProvider.aHrefSanitizationWhitelist /^\s*(https?|magnet|blob|javascript):/
   $locationProvider.html5Mode(
     enabled: true
@@ -57,27 +58,28 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', ($scope, $h
     downloading
 
   $scope.uploadSeed = (file) ->
-		$scope.client.processing = true
-		dbg 'Seeding ' + file.name
-		$scope.client.seed file, opts, $scope.onSeed
-		return
-	$scope.uploadTorrent = (file) ->
-		$scope.client.processing = true
-		dbg('Adding ') + file.name
-		$scope.client.add file, opts, $scope.onTorrent
-		$scope.magnetLinkInput = ''
-		return
+    $scope.client.processing = true
+    dbg('Seeding ' + file.name)
+    $scope.client.seed file, opts, $scope.onSeed
+    return
 
-	$scope.addByMagnet = () ->
-		if $scope.magnetLinkInput && $scope.magnetLinkInput.length
-			$scope.client.processing = true
-			$scope.magnetLinkInput += ''
+  $scope.uploadTorrent = (file) ->
+    $scope.client.processing = true
+    dbg('Adding ') + file.name
+    $scope.client.add file, opts, $scope.onTorrent
+    $scope.magnetLinkInput = ''
+    return
 
-			dbg('Adding magnetLinkInput: ' + $scope.magnetLinkInput)
-			$scope.client.add($scope.magnetLinkInput, opts, $scope.onTorrent)
+  $scope.addByMagnet = () ->
+    if $scope.magnetLinkInput && $scope.magnetLinkInput.length
+      $scope.client.processing = true
+      $scope.magnetLinkInput += ''
 
-			$scope.magnetLinkInput = ''
-			return
+      dbg('Adding magnetLinkInput: ' + $scope.magnetLinkInput)
+      $scope.client.add($scope.magnetLinkInput, opts, $scope.onTorrent)
+
+      $scope.magnetLinkInput = ''
+      return
 
   $scope.toggleTorrent = (torrent) ->
     if torrent.showFiles
