@@ -8,7 +8,7 @@ module.exports = function (grunt) {
 	var path = require('path')
 	var bowerFiles = require('main-bower-files')
 
-	var bowerDep = bowerFiles('**/**.js').concat(bowerFiles('**/**.css'))
+	var bowerDep = bowerFiles('**/*[!index].js').concat(bowerFiles('**/**.css'))
 	bowerDep = bowerDep.map(function(file_path){
 		var local_path = file_path.split(path.resolve(__dirname))[1]
 
@@ -20,7 +20,7 @@ module.exports = function (grunt) {
 		return true
 	})
 
-	bowerDep = bowerDep.concat(['./bower_components/**/*shim.js', './bower_components/**/**.ttf', './bower_components/**/**.css'])
+	bowerDep = bowerDep.concat(['./bower_components/webtorrent/**min.js', './bower_components/ng-file-upload/ng-file-upload.js', './bower_components/**/*shim.js', './bower_components/**/**.ttf', './bower_components/**/**.css'])
 
 	// Project Configuration
 	grunt.initConfig({
@@ -118,7 +118,7 @@ module.exports = function (grunt) {
 		})
 	})
 
-	grunt.registerTask('build', ['newer:copy:bower', 'harp:compile']);
+	grunt.registerTask('build', ['copy:bower', 'harp:compile']);
 
 	grunt.registerTask('default', ['build', 'harp:server', 'concurrent:default'])
 
