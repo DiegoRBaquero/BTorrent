@@ -29,6 +29,7 @@
     "grunt-mocha-istanbul": "^3.0.1",
     "grunt-newer": "^1.1.1",
     "istanbul": "^0.4.1",
+    "jasmine": "^2.4.1",
     "karma": "^0.13.15",
     "karma-chrome-launcher": "^0.2.2",
     "karma-coverage": "^0.5.3",
