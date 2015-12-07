@@ -8,7 +8,7 @@ trackers = [
   [ 'wss://tracker.btorrent.xyz' ]
 ]
 
-opts = {announce: trackers}
+opts = {announce: trackers, store: lsChunkStorage}
 
 client = new WebTorrent
 
@@ -107,6 +107,7 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'uiGridCons
     return
 
   $scope.onTorrent = (torrent, isSeed) ->
+    dbg('Torrent metadata processed', torrent)
     $scope.client.validTorrents.push torrent
     torrent.safeTorrentFileURL = torrent.torrentFileURL
     torrent.fileName = torrent.name + '.torrent'
@@ -156,7 +157,7 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'uiGridCons
     $scope.client.processing = true
     setTimeout ->
       dbg 'Adding ' + $location.hash()      
-      $scope.client.add $location.hash(), $scope.onTorrent
+      $scope.client.add $location.hash(), opts, $scope.onTorrent
     , 500    
     return
 ]
