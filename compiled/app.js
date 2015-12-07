@@ -122,17 +122,10 @@
         }
       };
       $scope.openTorrentFile = function(file) {
-        var url;
         if (file != null) {
           dbg('Adding ' + file.name);
           $scope.client.processing = true;
-          url = URL.createObjectURL(file);
-          $http.get(url).then(function(response) {
-            return dbg('Success' + response.data);
-          }, function(response) {
-            return dbg('ERROR');
-          });
-          return $scope.client.add(url, opts, $scope.onTorrent);
+          return $scope.client.add(file, opts, $scope.onTorrent);
         }
       };
       $scope.addMagnet = function() {

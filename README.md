@@ -6,7 +6,7 @@
 ### Features
 - [x] Informative GUI with easy sharing options
 - [x] Downloading from an info hash or magnet URI
-- [ ] Downloading from a .torrent file (Coming Soon)
+- [x] Downloading from a .torrent file (Coming Soon)
 - [x] Seeding files (Single file only for the moment)
 - [ ] Seeding CORS-enabled remote files (Coming Soon) 
 - [x] Download/Upload speed per torrent

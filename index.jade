@@ -8,7 +8,7 @@ html(ng-app='bTorrent', lang='en')
         meta(name='keywords', content='βTorrent, btorrent, client, webtorrent, browser, torrent, stream, bittorrent')
         meta(name='author', content='Diego Rodríguez Baquero - DiegoRBaquero')
         meta(name='viewport', content='width=device-width, initial-scale=1')
-        script(src='https://cdn.jsdelivr.net/g/webtorrent@0.63.2,momentjs@2.10,angularjs@1.4,angular.ui-grid@3.0')
+        script(src='https://cdn.jsdelivr.net/g/webtorrent@0.63.3,momentjs@2.10,angularjs@1.4,angular.ui-grid@3.0')
         script(src='https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/10.1.8/ng-file-upload.min.js')
         link(rel='stylesheet', href='https://cdn.jsdelivr.net/g/normalize@3.0,skeleton@2.0')
         link(rel='stylesheet', href='https://cdn.jsdelivr.net/fontawesome/4.5/css/font-awesome.min.css')
@@ -18,7 +18,7 @@ html(ng-app='bTorrent', lang='en')
         header
             h1
                 | βTorrent
-                span.version  v0.6.2
+                span.version  v0.6.3
         
         .container
             .row
@@ -29,7 +29,7 @@ html(ng-app='bTorrent', lang='en')
                         i.fa.fa-download
                         |  Download
                 .three.columns
-                    //button.button-primary(type='file', ngf-select='openTorrentFile($file)')
+                    button.button-primary(type='file', ngf-select='openTorrentFile($file)')
                         i.fa.fa-folder-open
                         |  Open torrent file
                 .three.columns.u-pull-right

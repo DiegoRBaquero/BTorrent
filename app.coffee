@@ -83,13 +83,7 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'uiGridCons
     if file?
       dbg 'Adding ' + file.name 
       $scope.client.processing = true
-      url = URL.createObjectURL file 
-      $http.get(url).then((response) ->
-        dbg 'Success' + response.data
-      , (response) ->
-        dbg 'ERROR'
-      )
-      $scope.client.add url, opts, $scope.onTorrent
+      $scope.client.add file, opts, $scope.onTorrent
 
   $scope.addMagnet = ->
     if $scope.torrentInput != ''

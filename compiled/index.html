@@ -8,7 +8,7 @@
     <meta name="keywords" content="βTorrent, btorrent, client, webtorrent, browser, torrent, stream, bittorrent">
     <meta name="author" content="Diego Rodríguez Baquero - DiegoRBaquero">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdn.jsdelivr.net/g/webtorrent@0.63.2,momentjs@2.10,angularjs@1.4,angular.ui-grid@3.0"></script>
+    <script src="https://cdn.jsdelivr.net/g/webtorrent@0.63.3,momentjs@2.10,angularjs@1.4,angular.ui-grid@3.0"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/10.1.8/ng-file-upload.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/g/normalize@3.0,skeleton@2.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontawesome/4.5/css/font-awesome.min.css">
@@ -17,7 +17,7 @@
   </head>
   <body ng-controller="bTorrentCtrl" ng-cloak="">
     <header>
-      <h1>βTorrent<span class="version"> v0.6.2</span></h1>
+      <h1>βTorrent<span class="version"> v0.6.3</span></h1>
     </header>
     <div class="container">
       <div class="row">
@@ -28,10 +28,7 @@
           <button ng-click="addMagnet()" class="button-primary"><i class="fa fa-download"></i> Download</button>
         </div>
         <div class="three columns">
-          <!--button.button-primary(type='file', ngf-select='openTorrentFile($file)')
-          i.fa.fa-folder-open
-          |  Open torrent file
-          -->
+          <button type="file" ngf-select="openTorrentFile($file)" class="button-primary"><i class="fa fa-folder-open"></i> Open torrent file</button>
         </div>
         <div class="three columns u-pull-right">
           <button type="file" ngf-select="seedFile($file)" class="u-pull-right button-primary"><i class="fa fa-upload"></i> Seed a file</button>
