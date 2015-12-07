@@ -8,7 +8,8 @@ html(ng-app='bTorrent', lang='en')
         meta(name='keywords', content='βTorrent, btorrent, client, webtorrent, browser, torrent, stream, bittorrent')
         meta(name='author', content='Diego Rodríguez Baquero - DiegoRBaquero')
         meta(name='viewport', content='width=device-width, initial-scale=1')
-        script(src='https://cdn.jsdelivr.net/g/webtorrent@0.63.1,momentjs@2.10,angularjs@1.4,angular.ui-grid@3.0.7')
+        script(src='https://cdn.jsdelivr.net/g/webtorrent@0.63.2,momentjs@2.10,angularjs@1.4,angular.ui-grid@3.0')
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/10.1.8/ng-file-upload.min.js')
         link(rel='stylesheet', href='https://cdn.jsdelivr.net/g/normalize@3.0,skeleton@2.0')
         link(rel='stylesheet', href='https://cdn.jsdelivr.net/fontawesome/4.5/css/font-awesome.min.css')
         link(rel='stylesheet', href='https://cdn.jsdelivr.net/angular.ui-grid/3.0.7/ui-grid.min.css')
@@ -17,39 +18,41 @@ html(ng-app='bTorrent', lang='en')
         header
             h1
                 | βTorrent
-                span.version  v0.6
+                span.version  v0.6.1
         
         .container
             .row
-                .five.columns
-                    input#torrentInput.u-full-width(type='text', placeholder='magnet link or hash', ng-model='torrentInput')
-                .two.columns
-                    button.button-primary(ng-click='fromInput()')
+                .four.columns
+                    input.u-full-width(type='text', placeholder='magnet link or hash', ng-model='torrentInput')
+                .two.columns.download-button
+                    button.button-primary(ng-click='addMagnet()')
                         i.fa.fa-download
                         |  Download
-                .five.columns.u-pull-right
-                    input#fileUpload(type='file', style='display: none;', onchange='angular.element(this).scope().uploadFile2(this)')
-                    label.u-pull-right
-                        button.button-primary(ng-click='uploadFile()')
-                            i.fa.fa-upload
-                            |  Seed a file
+                .three.columns
+                    //button.button-primary(type='file', ngf-select='openTorrentFile($file)')
+                        i.fa.fa-folder-open
+                        |  Open torrent file
+                .three.columns.u-pull-right
+                    button.u-pull-right.button-primary(type='file', ngf-select='seedFile($file)')
+                        i.fa.fa-upload
+                        |  Seed a file
             .row.grid(ui-grid='gridOptions', ui-grid-resize-columns, ui-grid-selection)
             .row(ng-if="selectedTorrent")
                 .six.columns
-                    h4 {{selectedTorrent.name}}
-                    h5 Share
+                    h5 {{selectedTorrent.name}}
+                    h6 Share
                     ul
                         li
                             a(ng-href='#{{selectedTorrent.infoHash}}', target='_blank') βTorrent
                         li
                             a(ng-href='{{selectedTorrent.magnetURI}}', target='_blank') Magnet URI
                         li
-                            a(ng-href='{{selectedTorrent.safeTorrentFileURL}}', target='_blank', download='{{torrent.fileName}}') .torrent
+                            a(ng-href='{{selectedTorrent.safeTorrentFileURL}}', target='_self', download='{{selectedTorrent.fileName}}') .torrent
                         li
                             strong Hash: 
                             | {{selectedTorrent.infoHash}} 
                 .six.columns
-                    h4 Files
+                    h5 Files
                     table.u-full-width
                         thead
                             tr
@@ -59,20 +62,14 @@ html(ng-app='bTorrent', lang='en')
                             tr.files(ng-repeat='file in selectedTorrent.files')
                                 td(ng-hide='file.done') {{file.name}}
                                 td(ng-show='file.done')
-                                    a(ng-href='{{file.url}}', download='{{file.name}}', target='_blank', ng-show='file.done') {{file.name}}
+                                    a(ng-href='{{file.url}}', download='{{file.name}}', target='_self', ng-show='file.done') {{file.name}}
                                 td  {{file.length | pbytes}}
             hr
         footer
-            a.button(href="https://github.com/DiegoRBaquero/BTorrent", target="_blank") View on GitHub 
-                i.fa.fa-github
-            |  
             a.button(href="https://github.com/DiegoRBaquero/BTorrent/issues", target="_blank") Suggest a new feature / Report a bug
                 i.fa.comment
-            |  
-            a.button(href="https://github.com/DiegoRBaquero/BTorrent/fork", target="_blank") Fork me 
-                i.fa.fa-code-fork
             br
-            | Made in Bogotá, Colombia by 
+            | An Open-Source project by 
             a(href='http://diegorbaquero.com') DiegoRBaquero
             br
             | Powered by 

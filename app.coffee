@@ -22,7 +22,7 @@ dbg = (string, torrent) ->
       return
   return
 
-app = angular.module 'bTorrent', ['ui.grid', 'ui.grid.resizeColumns', 'ui.grid.selection'], ['$compileProvider','$locationProvider', ($compileProvider, $locationProvider) ->
+app = angular.module 'bTorrent', ['ui.grid', 'ui.grid.resizeColumns', 'ui.grid.selection', 'ngFileUpload'], ['$compileProvider','$locationProvider', ($compileProvider, $locationProvider) ->
   $compileProvider.aHrefSanitizationWhitelist /^\s*(https?|magnet|blob|javascript):/
   $locationProvider.html5Mode(
     enabled: true
@@ -32,6 +32,7 @@ app = angular.module 'bTorrent', ['ui.grid', 'ui.grid.resizeColumns', 'ui.grid.s
 app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'uiGridConstants', ($scope, $http, $log, $location, uiGridConstants) ->
   $scope.client = client
   $scope.seedIt = true
+  $scope.client.validTorrents = []
   
   $scope.columns = [
     {field: 'name', cellTooltip: true, minWidth: '200'}
@@ -48,7 +49,7 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'uiGridCons
   
   $scope.gridOptions =
     columnDefs: $scope.columns
-    data: $scope.client.torrents
+    data: $scope.client.validTorrents
     enableColumnResizing: true
     enableColumnMenus: false
     enableRowSelection: true
@@ -71,22 +72,29 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'uiGridCons
       else 
         $scope.selectedTorrent = row.entity
 
-  $scope.uploadFile = ->
-    document.getElementById('fileUpload').click()
+  $scope.seedFile = (file) ->
+    if file?
+      dbg 'Seeding ' + file.name
+      $scope.client.processing = true
+      $scope.client.seed file, opts, $scope.onSeed
     return
+    
+  $scope.openTorrentFile = (file) ->
+    if file?
+      dbg 'Adding ' + file.name 
+      $scope.client.processing = true
+      url = URL.createObjectURL file 
+      $http.get(url).then((response) ->
+        dbg 'Success' + response.data
+      , (response) ->
+        dbg 'ERROR'
+      )
+      $scope.client.add url, opts, $scope.onTorrent
 
-  $scope.uploadFile2 = (elem) ->
-    dbg 'Seeding ' + elem.files[0].name
-    $scope.client.processing = true
-    $scope.$apply()
-    $scope.client.seed elem.files, opts, $scope.onSeed
-    return
-
-  $scope.fromInput = ->
+  $scope.addMagnet = ->
     if $scope.torrentInput != ''
       dbg 'Adding ' + $scope.torrentInput
       $scope.client.processing = true
-      $scope.$apply()
       $scope.client.add $scope.torrentInput, opts, $scope.onTorrent
       $scope.torrentInput = ''
       return
@@ -99,12 +107,13 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'uiGridCons
     return
 
   $scope.onTorrent = (torrent, isSeed) ->
+    $scope.client.validTorrents.push torrent
     torrent.safeTorrentFileURL = torrent.torrentFileURL
     torrent.fileName = torrent.name + '.torrent'
     
     if !isSeed
       $scope.client.processing = false    
-    if !($scope.selectedTorrent?)
+    if !($scope.selectedTorrent?) || isSeed
       $scope.selectedTorrent = torrent
 
     torrent.files.forEach (file) ->
@@ -112,8 +121,8 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'uiGridCons
         if err
           throw err
         if isSeed
+          dbg 'Started seeding', torrent
           $scope.client.processing = false
-          $scope.$apply()
         file.url = url
         if !isSeed
           dbg 'Finished downloading file ' + file.name, torrent
@@ -138,6 +147,7 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'uiGridCons
       dbg 'Wire ' + addr, torrent
       return
     return
+
   $scope.onSeed = (torrent) ->
     $scope.onTorrent torrent, true
     return
