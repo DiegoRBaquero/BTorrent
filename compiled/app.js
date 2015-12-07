@@ -5,7 +5,8 @@
   trackers = [['udp://tracker.openbittorrent.com:80'], ['udp://tracker.internetwarriors.net:1337'], ['udp://tracker.leechers-paradise.org:6969'], ['udp://tracker.coppersurfer.tk:6969'], ['udp://exodus.desync.com:6969'], ['wss://tracker.webtorrent.io'], ['wss://tracker.btorrent.xyz']];
 
   opts = {
-    announce: trackers
+    announce: trackers,
+    store: lsChunkStorage
   };
 
   client = new WebTorrent;
@@ -151,6 +152,7 @@
         dbg('Destroyed torrent');
       };
       $scope.onTorrent = function(torrent, isSeed) {
+        dbg('Torrent metadata processed', torrent);
         $scope.client.validTorrents.push(torrent);
         torrent.safeTorrentFileURL = torrent.torrentFileURL;
         torrent.fileName = torrent.name + '.torrent';
@@ -204,7 +206,7 @@
         $scope.client.processing = true;
         setTimeout(function() {
           dbg('Adding ' + $location.hash());
-          return $scope.client.add($location.hash(), $scope.onTorrent);
+          return $scope.client.add($location.hash(), opts, $scope.onTorrent);
         }, 500);
       }
     }
