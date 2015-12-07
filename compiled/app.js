@@ -11,10 +11,7 @@
   client = new WebTorrent;
 
   dbg = function(string, torrent) {
-    var ref;
-    if ((ref = window.localStorage) != null ? ref : window.localStorage.getItem('debug') === {
-      '*': false
-    }) {
+    if (window.localStorage.getItem('debug') != null) {
       if (torrent) {
         console.debug('%c' + torrent.name + ' (' + torrent.infoHash + '): %c' + string, 'color: #33C3F0', 'color: #333');
         return;

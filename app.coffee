@@ -13,7 +13,7 @@ opts = {announce: trackers}
 client = new WebTorrent
 
 dbg = (string, torrent) ->
-  if (window.localStorage ? window.localStorage.getItem('debug') == '*':false)
+  if window.localStorage.getItem('debug')?
     if torrent
       console.debug '%c' + torrent.name + ' (' + torrent.infoHash + '): %c' + string, 'color: #33C3F0', 'color: #333'
       return
