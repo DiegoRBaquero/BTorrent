@@ -2,7 +2,7 @@
 (function() {
   var app, client, dbg, er, opts, rtcConfig, trackers;
 
-  trackers = [['wss://tracker.btorrent.xyz']];
+  trackers = [['wss://tracker.btorrent.xyz'], ['wss://tracker.webtorrent.io']];
 
   opts = {
     announce: trackers
