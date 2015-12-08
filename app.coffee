@@ -1,36 +1,36 @@
 trackers = [
-  [ 'wss://tracker.webtorrent.io' ],
-  [ 'wss://tracker.btorrent.xyz' ]
+  [ 'wss://tracker.btorrent.xyz' ],
+  [ 'wss://tracker.webtorrent.io' ]
 ]
 
 opts = {
   announce: trackers
-  announceList: trackers
-  rtcConfig: {
-    "iceServers":[
-      {"url":"stun:23.21.150.121","urls":"stun:23.21.150.121"},
-      {"url":"stun:stun.l.google.com:19302","urls":"stun:stun.l.google.com:19302"},
-      {"url":"stun:stun1.l.google.com:19302","urls":"stun:stun1.l.google.com:19302"},
-      {"url":"stun:stun2.l.google.com:19302","urls":"stun:stun2.l.google.com:19302"},
-      {"url":"stun:stun3.l.google.com:19302","urls":"stun:stun3.l.google.com:19302"},
-      {"url":"stun:stun4.l.google.com:19302","urls":"stun:stun4.l.google.com:19302"},
-      {
-        "url":"turn:global.turn.twilio.com:3478?transport=udp",
-        "urls":"turn:global.turn.twilio.com:3478?transport=udp",
-        "username":"857315a4616be37252127d4ff924c3a3536dd3fa729b56206dfa0e6808a80478",
-        "credential":"EEEr7bxx8umMHC4sOoWDC/4MxU/4JCfL+W7KeSJEsBQ="
-      }
-      {
-        "url": "turn:numb.viagenie.ca",
-        "urls": "turn:numb.viagenie.ca",
-        "credential": "webrtcdemo",
-        "username": "louis%40mozilla.com"
-      }
-    ]
-  }
 }
 
-client = new WebTorrent opts
+rtcConfig = {
+  "iceServers":[
+    {"url":"stun:23.21.150.121","urls":"stun:23.21.150.121"},
+    {"url":"stun:stun.l.google.com:19302","urls":"stun:stun.l.google.com:19302"},
+    {"url":"stun:stun1.l.google.com:19302","urls":"stun:stun1.l.google.com:19302"},
+    {"url":"stun:stun2.l.google.com:19302","urls":"stun:stun2.l.google.com:19302"},
+    {"url":"stun:stun3.l.google.com:19302","urls":"stun:stun3.l.google.com:19302"},
+    {"url":"stun:stun4.l.google.com:19302","urls":"stun:stun4.l.google.com:19302"},
+    {
+      "url":"turn:global.turn.twilio.com:3478?transport=udp",
+      "urls":"turn:global.turn.twilio.com:3478?transport=udp",
+      "username":"857315a4616be37252127d4ff924c3a3536dd3fa729b56206dfa0e6808a80478",
+      "credential":"EEEr7bxx8umMHC4sOoWDC/4MxU/4JCfL+W7KeSJEsBQ="
+    },
+    {
+      "url": "turn:numb.viagenie.ca",
+      "urls": "turn:numb.viagenie.ca",
+      "credential": "webrtcdemo",
+      "username": "louis%40mozilla.com"
+    }
+  ]
+}
+
+client = new WebTorrent {rtcConfig: rtcConfig}
 
 dbg = (string, torrent, color) ->
   color = if color? then color else '#333333'
