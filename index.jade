@@ -8,9 +8,9 @@ html(ng-app='bTorrent', lang='en')
     meta(name='keywords', content='βTorrent, btorrent, client, webtorrent, browser, torrent, stream, bittorrent')
     meta(name='author', content='Diego Rodríguez Baquero - DiegoRBaquero')
     meta(name='viewport', content='width=device-width, initial-scale=1')
-    script(src='https://cdn.jsdelivr.net/g/webtorrent@0.63.3,momentjs@2.10,angularjs@1.4,angular.ui-grid@3.0')
+    script(src='https://cdn.jsdelivr.net/g/webtorrent@0.63.3,momentjs@2.10,angularjs@1.4,angular.ui-grid@3.0,angular.ng-notify@0.7')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/10.1.8/ng-file-upload.min.js')
-    link(rel='stylesheet', href='https://cdn.jsdelivr.net/g/normalize@3.0,skeleton@2.0')
+    link(rel='stylesheet', href='https://cdn.jsdelivr.net/g/normalize@3.0,skeleton@2.0,angular.ng-notify@0.7(ng-notify.min.css)')
     link(rel='stylesheet', href='https://cdn.jsdelivr.net/fontawesome/4.5/css/font-awesome.min.css')
     link(rel='stylesheet', href='https://cdn.jsdelivr.net/angular.ui-grid/3.0.7/ui-grid.min.css')
     link(rel='stylesheet', href='style.css')
@@ -18,14 +18,14 @@ html(ng-app='bTorrent', lang='en')
     header
       h1
         | βTorrent
-        span.version  v0.6.3
+        span.version  v0.7.0
 
     .container
       .row
         .four.columns
           input.u-full-width(type='text', placeholder='magnet link or hash', ng-model='torrentInput')
         .two.columns.download-button
-          button.button-primary(ng-click='addMagnet()')
+          button(ng-click='addMagnet()', ng-disabled='!torrentInput.length', ng-class="{'button-primary': torrentInput.length}")
             i.fa.fa-download
             |  Download
         .three.columns

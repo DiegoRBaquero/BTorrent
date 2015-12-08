@@ -8,16 +8,16 @@
     <meta name="keywords" content="βTorrent, btorrent, client, webtorrent, browser, torrent, stream, bittorrent">
     <meta name="author" content="Diego Rodríguez Baquero - DiegoRBaquero">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdn.jsdelivr.net/g/webtorrent@0.63.3,momentjs@2.10,angularjs@1.4,angular.ui-grid@3.0"></script>
+    <script src="https://cdn.jsdelivr.net/g/webtorrent@0.63.3,momentjs@2.10,angularjs@1.4,angular.ui-grid@3.0,angular.ng-notify@0.7"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/10.1.8/ng-file-upload.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/g/normalize@3.0,skeleton@2.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/g/normalize@3.0,skeleton@2.0,angular.ng-notify@0.7(ng-notify.min.css)">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontawesome/4.5/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/angular.ui-grid/3.0.7/ui-grid.min.css">
     <link rel="stylesheet" href="style.css">
   </head>
   <body ng-controller="bTorrentCtrl" ng-cloak="">
     <header>
-      <h1>βTorrent<span class="version"> v0.6.3</span></h1>
+      <h1>βTorrent<span class="version"> v0.7.0</span></h1>
     </header>
     <div class="container">
       <div class="row">
@@ -25,7 +25,7 @@
           <input type="text" placeholder="magnet link or hash" ng-model="torrentInput" class="u-full-width">
         </div>
         <div class="two columns download-button">
-          <button ng-click="addMagnet()" class="button-primary"><i class="fa fa-download"></i> Download</button>
+          <button ng-click="addMagnet()" ng-disabled="!torrentInput.length" ng-class="{'button-primary': torrentInput.length}"><i class="fa fa-download"></i> Download</button>
         </div>
         <div class="three columns">
           <button type="file" ngf-select="openTorrentFile($file)" class="button-primary"><i class="fa fa-folder-open"></i> Open torrent file</button>

@@ -1,35 +1,59 @@
 trackers = [
-  [ 'udp://tracker.openbittorrent.com:80' ],
-  [ 'udp://tracker.internetwarriors.net:1337' ],
-  [ 'udp://tracker.leechers-paradise.org:6969' ],
-  [ 'udp://tracker.coppersurfer.tk:6969' ],
-  [ 'udp://exodus.desync.com:6969' ],
   [ 'wss://tracker.webtorrent.io' ],
   [ 'wss://tracker.btorrent.xyz' ]
 ]
 
-opts = {announce: trackers}
+opts = {
+  announce: trackers
+  announceList: trackers
+  rtcConfig: {
+    "iceServers":[
+      {"url":"stun:23.21.150.121","urls":"stun:23.21.150.121"},
+      {"url":"stun:stun.l.google.com:19302","urls":"stun:stun.l.google.com:19302"},
+      {"url":"stun:stun1.l.google.com:19302","urls":"stun:stun1.l.google.com:19302"},
+      {"url":"stun:stun2.l.google.com:19302","urls":"stun:stun2.l.google.com:19302"},
+      {"url":"stun:stun3.l.google.com:19302","urls":"stun:stun3.l.google.com:19302"},
+      {"url":"stun:stun4.l.google.com:19302","urls":"stun:stun4.l.google.com:19302"},
+      {
+        "url":"turn:global.turn.twilio.com:3478?transport=udp",
+        "urls":"turn:global.turn.twilio.com:3478?transport=udp",
+        "username":"857315a4616be37252127d4ff924c3a3536dd3fa729b56206dfa0e6808a80478",
+        "credential":"EEEr7bxx8umMHC4sOoWDC/4MxU/4JCfL+W7KeSJEsBQ="
+      }
+      {
+        "url": "turn:numb.viagenie.ca",
+        "urls": "turn:numb.viagenie.ca",
+        "credential": "webrtcdemo",
+        "username": "louis%40mozilla.com"
+      }
+    ]
+  }
+}
 
-client = new WebTorrent
+client = new WebTorrent opts
 
-dbg = (string, torrent) ->
+dbg = (string, torrent, color) ->
+  color = if color? then color else '#333333'
   if window.localStorage.getItem('debug')?
-    if torrent
-      console.debug '%c' + torrent.name + ' (' + torrent.infoHash + '): %c' + string, 'color: #33C3F0', 'color: #333'
+    if torrent? && torrent.name
+      console.debug '%cβTorrent:torrent:' + torrent.name + ' (' + torrent.infoHash + ') %c' + string, 'color: #33C3F0', 'color: ' + color
       return
     else
-      console.debug '%cClient: %c' + string, 'color: #33C3F0', 'color: #333'
+      console.debug '%cβTorrent:client %c' + string, 'color: #33C3F0', 'color: ' + color
       return
   return
 
-app = angular.module 'bTorrent', ['ui.grid', 'ui.grid.resizeColumns', 'ui.grid.selection', 'ngFileUpload'], ['$compileProvider','$locationProvider', ($compileProvider, $locationProvider) ->
+er = (err, torrent) ->
+  dbg err, torrent, '#FF0000'
+
+app = angular.module 'bTorrent', ['ui.grid', 'ui.grid.resizeColumns', 'ui.grid.selection', 'ngFileUpload', 'ngNotify'], ['$compileProvider','$locationProvider', ($compileProvider, $locationProvider) ->
   $compileProvider.aHrefSanitizationWhitelist /^\s*(https?|magnet|blob|javascript):/
   $locationProvider.html5Mode(
     enabled: true
     requireBase: false).hashPrefix '#'
 ]
 
-app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'uiGridConstants', ($scope, $http, $log, $location, uiGridConstants) ->
+app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify', ($scope, $http, $log, $location, ngNotify) ->
   $scope.client = client
   $scope.seedIt = true
   $scope.client.validTorrents = []
@@ -74,20 +98,26 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'uiGridCons
 
   $scope.seedFile = (file) ->
     if file?
-      dbg 'Seeding ' + file.name
+      dbg 'Seeding file ' + file.name
       $scope.client.processing = true
       $scope.client.seed file, opts, $scope.onSeed
     return
     
   $scope.openTorrentFile = (file) ->
     if file?
-      dbg 'Adding ' + file.name 
+      dbg 'Adding torrent file ' + file.name 
       $scope.client.processing = true
       $scope.client.add file, opts, $scope.onTorrent
 
+  $scope.client.on('error', (err, torrent) ->
+    $scope.client.processing = false
+    ngNotify.set(err, 'error');
+    er err, torrent
+  )
+
   $scope.addMagnet = ->
     if $scope.torrentInput != ''
-      dbg 'Adding ' + $scope.torrentInput
+      dbg 'Adding magnet/hash ' + $scope.torrentInput
       $scope.client.processing = true
       $scope.client.add $scope.torrentInput, opts, $scope.onTorrent
       $scope.torrentInput = ''
