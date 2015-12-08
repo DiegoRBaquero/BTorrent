@@ -15,6 +15,7 @@
 - [ ] Pause torrent (Coming Soon)
 - [ ] Selecting/Deselecting files (Coming Soon)
 - [x] Client Debugging
+- [ ] Use custom trackers/rtcConfig
 
 ### Built with
 - [WebTorrent]
