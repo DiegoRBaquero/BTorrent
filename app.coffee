@@ -131,21 +131,24 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify',
     return
 
   $scope.onTorrent = (torrent, isSeed) ->
-    $scope.client.validTorrents.push torrent
     torrent.safeTorrentFileURL = torrent.torrentFileURL
     torrent.fileName = torrent.name + '.torrent'
     
-    if !isSeed
-      $scope.client.processing = false    
-    if !($scope.selectedTorrent?) || isSeed
-      $scope.selectedTorrent = torrent
+    if !isSeed      
+      $scope.client.validTorrents.push torrent
+      if !($scope.selectedTorrent?)
+        $scope.selectedTorrent = torrent
+      $scope.client.processing = false
 
     torrent.files.forEach (file) ->
       file.getBlobURL (err, url) ->
         if err
           throw err
         if isSeed
-          dbg 'Started seeding', torrent
+          dbg 'Started seeding', torrent          
+          $scope.client.validTorrents.push torrent
+          if !($scope.selectedTorrent?)
+            $scope.selectedTorrent = torrent
           $scope.client.processing = false
         file.url = url
         if !isSeed

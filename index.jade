@@ -8,8 +8,9 @@ html(ng-app='bTorrent', lang='en')
     meta(name='keywords', content='βTorrent, btorrent, client, webtorrent, browser, torrent, stream, bittorrent')
     meta(name='author', content='Diego Rodríguez Baquero - DiegoRBaquero')
     meta(name='viewport', content='width=device-width, initial-scale=1')
-    script(src='https://cdn.jsdelivr.net/g/webtorrent@0.63.3,momentjs@2.10,angularjs@1.4,angular.ui-grid@3.0,angular.ng-notify@0.7')
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/10.1.8/ng-file-upload.min.js')
+    //webtorrent@0.63.3,
+    script(src='webtorrent.min.js') //WebTorrent 0.63.4
+    script(src='https://cdn.jsdelivr.net/g/momentjs@2.10,angularjs@1.4,angular.ui-grid@3.0,angular.ng-notify@0.7,angular.file-upload@10.1')
     link(rel='stylesheet', href='https://cdn.jsdelivr.net/g/normalize@3.0,skeleton@2.0,angular.ng-notify@0.7(ng-notify.min.css)')
     link(rel='stylesheet', href='https://cdn.jsdelivr.net/fontawesome/4.5/css/font-awesome.min.css')
     link(rel='stylesheet', href='https://cdn.jsdelivr.net/angular.ui-grid/3.0.7/ui-grid.min.css')
@@ -18,7 +19,7 @@ html(ng-app='bTorrent', lang='en')
     header
       h1
         | βTorrent
-        span.version  v0.7.1
+        span.version  v0.8.0
 
     .container
       .row
@@ -64,10 +65,16 @@ html(ng-app='bTorrent', lang='en')
                 td(ng-show='file.done')
                   a(ng-href='{{file.url}}', download='{{file.name}}', target='_self', ng-show='file.done') {{file.name}}
                 td  {{file.length | pbytes}}
-      hr
+      .center
+          strong Client Stats: 
+            | ↓ {{client.downloadSpeed() | pbytes}}/s · 
+            | ↑ {{client.uploadSpeed() | pbytes}}/s · 
+            | Ratio: {{client.ratio | number:2}}
     footer
-      a.button(href="https://github.com/DiegoRBaquero/BTorrent/issues", target="_blank") Suggest a new feature / Report a bug
-        i.fa.comment
+      a.button(href="https://github.com/DiegoRBaquero/BTorrent/issues", target="_blank")
+        i.fa.fa-github.fa-5 
+        |  Suggest a feature / Report a bug 
+        i.fa.fa-comment
       br
       | An Open-Source project by 
       a(href='http://diegorbaquero.com') DiegoRBaquero
@@ -76,5 +83,5 @@ html(ng-app='bTorrent', lang='en')
       a(href='https://webtorrent.io') WebTorrent
       p
     .spinner(ng-show="client.processing")
-      i.fa.fa-spinner.fa-6.fa-spin.spinner-icon
+      i.fa.fa-spinner.fa-spin.spinner-icon
     script(src='app.js')
