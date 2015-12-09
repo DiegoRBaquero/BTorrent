@@ -11,12 +11,11 @@ th, td {
   overflow: auto;
   white-space: nowrap; }
 
-hr {
-  margin-top: 20px;
-  margin-bottom: 10px; }
-
 h2, h3, h4, h5, h6, ul, li {
   margin-bottom: 0; }
+
+footer {
+  margin-top: 10px; }
 
 .container {
   width: 95%;

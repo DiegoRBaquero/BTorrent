@@ -190,14 +190,14 @@
         dbg('Destroyed torrent');
       };
       $scope.onTorrent = function(torrent, isSeed) {
-        $scope.client.validTorrents.push(torrent);
         torrent.safeTorrentFileURL = torrent.torrentFileURL;
         torrent.fileName = torrent.name + '.torrent';
         if (!isSeed) {
+          $scope.client.validTorrents.push(torrent);
+          if (!($scope.selectedTorrent != null)) {
+            $scope.selectedTorrent = torrent;
+          }
           $scope.client.processing = false;
-        }
-        if (!($scope.selectedTorrent != null) || isSeed) {
-          $scope.selectedTorrent = torrent;
         }
         torrent.files.forEach(function(file) {
           file.getBlobURL(function(err, url) {
@@ -206,6 +206,10 @@
             }
             if (isSeed) {
               dbg('Started seeding', torrent);
+              $scope.client.validTorrents.push(torrent);
+              if (!($scope.selectedTorrent != null)) {
+                $scope.selectedTorrent = torrent;
+              }
               $scope.client.processing = false;
             }
             file.url = url;
