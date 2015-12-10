@@ -1,39 +1,61 @@
 trackers = [
-  [ 'udp://tracker.openbittorrent.com:80' ],
-  [ 'udp://tracker.internetwarriors.net:1337' ],
-  [ 'udp://tracker.leechers-paradise.org:6969' ],
-  [ 'udp://tracker.coppersurfer.tk:6969' ],
-  [ 'udp://exodus.desync.com:6969' ],
-  [ 'wss://tracker.webtorrent.io' ],
-  [ 'wss://tracker.btorrent.xyz' ]
+  [ 'wss://tracker.btorrent.xyz' ],
+  [ 'wss://tracker.webtorrent.io' ]
 ]
 
-opts = {announce: trackers, store: lsChunkStorage}
+opts = {announce: trackers, store: lsChunkStore}
 
-client = new WebTorrent
+rtcConfig = {
+  "iceServers":[
+    {"url":"stun:23.21.150.121","urls":"stun:23.21.150.121"},
+    {"url":"stun:stun.l.google.com:19302","urls":"stun:stun.l.google.com:19302"},
+    {"url":"stun:stun1.l.google.com:19302","urls":"stun:stun1.l.google.com:19302"},
+    {"url":"stun:stun2.l.google.com:19302","urls":"stun:stun2.l.google.com:19302"},
+    {"url":"stun:stun3.l.google.com:19302","urls":"stun:stun3.l.google.com:19302"},
+    {"url":"stun:stun4.l.google.com:19302","urls":"stun:stun4.l.google.com:19302"},
+    {
+      "url":"turn:global.turn.twilio.com:3478?transport=udp",
+      "urls":"turn:global.turn.twilio.com:3478?transport=udp",
+      "username":"857315a4616be37252127d4ff924c3a3536dd3fa729b56206dfa0e6808a80478",
+      "credential":"EEEr7bxx8umMHC4sOoWDC/4MxU/4JCfL+W7KeSJEsBQ="
+    },
+    {
+      "url": "turn:numb.viagenie.ca",
+      "urls": "turn:numb.viagenie.ca",
+      "credential": "webrtcdemo",
+      "username": "louis%40mozilla.com"
+    }
+  ]
+}
 
-dbg = (string, torrent) ->
+client = new WebTorrent {rtcConfig: rtcConfig}
+
+dbg = (string, torrent, color) ->
+  color = if color? then color else '#333333'
   if window.localStorage.getItem('debug')?
-    if torrent
-      console.debug '%c' + torrent.name + ' (' + torrent.infoHash + '): %c' + string, 'color: #33C3F0', 'color: #333'
+    if torrent? && torrent.name
+      console.debug '%cβTorrent:torrent:' + torrent.name + ' (' + torrent.infoHash + ') %c' + string, 'color: #33C3F0', 'color: ' + color
       return
     else
-      console.debug '%cClient: %c' + string, 'color: #33C3F0', 'color: #333'
+      console.debug '%cβTorrent:client %c' + string, 'color: #33C3F0', 'color: ' + color
       return
   return
 
-app = angular.module 'bTorrent', ['ui.grid', 'ui.grid.resizeColumns', 'ui.grid.selection', 'ngFileUpload'], ['$compileProvider','$locationProvider', ($compileProvider, $locationProvider) ->
+er = (err, torrent) ->
+  dbg err, torrent, '#FF0000'
+
+app = angular.module 'bTorrent', ['ui.grid', 'ui.grid.resizeColumns', 'ui.grid.selection', 'ngFileUpload', 'ngNotify'], ['$compileProvider','$locationProvider', ($compileProvider, $locationProvider) ->
   $compileProvider.aHrefSanitizationWhitelist /^\s*(https?|magnet|blob|javascript):/
   $locationProvider.html5Mode(
     enabled: true
     requireBase: false).hashPrefix '#'
 ]
 
-app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'uiGridConstants', ($scope, $http, $log, $location, uiGridConstants) ->
+app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify', ($scope, $http, $log, $location, ngNotify) ->
   $scope.client = client
   $scope.seedIt = true
   $scope.client.validTorrents = []
-  
+
   $scope.columns = [
     {field: 'name', cellTooltip: true, minWidth: '200'}
     {field: 'length', name: 'Size', cellFilter: 'pbytes', width: '80'}
@@ -46,7 +68,7 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'uiGridCons
     {field: 'numPeers', displayName: 'Peers', width: '80'}
     {field: 'ratio', cellFilter: 'number:2', width: '80'}
   ]
-  
+
   $scope.gridOptions =
     columnDefs: $scope.columns
     data: $scope.client.validTorrents
@@ -69,31 +91,31 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'uiGridCons
     gridApi.selection.on.rowSelectionChanged $scope, (row) ->
       if !row.isSelected && $scope.selectedTorrent? && $scope.selectedTorrent.infoHash = row.entity.infoHash
         $scope.selectedTorrent = null
-      else 
+      else
         $scope.selectedTorrent = row.entity
 
   $scope.seedFile = (file) ->
     if file?
-      dbg 'Seeding ' + file.name
+      dbg 'Seeding file ' + file.name
       $scope.client.processing = true
       $scope.client.seed file, opts, $scope.onSeed
     return
-    
+
   $scope.openTorrentFile = (file) ->
     if file?
-      dbg 'Adding ' + file.name 
+      dbg 'Adding torrent file ' + file.name
       $scope.client.processing = true
-      url = URL.createObjectURL file 
-      $http.get(url).then((response) ->
-        dbg 'Success' + response.data
-      , (response) ->
-        dbg 'ERROR'
-      )
-      $scope.client.add url, opts, $scope.onTorrent
+      $scope.client.add file, opts, $scope.onTorrent
+
+  $scope.client.on('error', (err, torrent) ->
+    $scope.client.processing = false
+    ngNotify.set(err, 'error');
+    er err, torrent
+  )
 
   $scope.addMagnet = ->
     if $scope.torrentInput != ''
-      dbg 'Adding ' + $scope.torrentInput
+      dbg 'Adding magnet/hash ' + $scope.torrentInput
       $scope.client.processing = true
       $scope.client.add $scope.torrentInput, opts, $scope.onTorrent
       $scope.torrentInput = ''
@@ -108,14 +130,14 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'uiGridCons
 
   $scope.onTorrent = (torrent, isSeed) ->
     dbg('Torrent metadata processed', torrent)
-    $scope.client.validTorrents.push torrent
     torrent.safeTorrentFileURL = torrent.torrentFileURL
     torrent.fileName = torrent.name + '.torrent'
-    
+
     if !isSeed
-      $scope.client.processing = false    
-    if !($scope.selectedTorrent?) || isSeed
-      $scope.selectedTorrent = torrent
+      $scope.client.validTorrents.push torrent
+      if !($scope.selectedTorrent?)
+        $scope.selectedTorrent = torrent
+      $scope.client.processing = false
 
     torrent.files.forEach (file) ->
       file.getBlobURL (err, url) ->
@@ -123,6 +145,9 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'uiGridCons
           throw err
         if isSeed
           dbg 'Started seeding', torrent
+          $scope.client.validTorrents.push torrent
+          if !($scope.selectedTorrent?)
+            $scope.selectedTorrent = torrent
           $scope.client.processing = false
         file.url = url
         if !isSeed
@@ -156,9 +181,9 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'uiGridCons
   if $location.hash() != ''
     $scope.client.processing = true
     setTimeout ->
-      dbg 'Adding ' + $location.hash()      
+      dbg 'Adding ' + $location.hash()
       $scope.client.add $location.hash(), opts, $scope.onTorrent
-    , 500    
+    , 500
     return
 ]
 

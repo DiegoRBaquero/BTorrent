@@ -6,7 +6,7 @@
 ### Features
 - [x] Informative GUI with easy sharing options
 - [x] Downloading from an info hash or magnet URI
-- [ ] Downloading from a .torrent file (Coming Soon)
+- [x] Downloading from a .torrent file (Coming Soon)
 - [x] Seeding files (Single file only for the moment)
 - [ ] Seeding CORS-enabled remote files (Coming Soon) 
 - [x] Download/Upload speed per torrent
@@ -15,6 +15,7 @@
 - [ ] Pause torrent (Coming Soon)
 - [ ] Selecting/Deselecting files (Coming Soon)
 - [x] Client Debugging
+- [ ] Use custom trackers/rtcConfig
 
 ### Built with
 - [WebTorrent]
@@ -25,10 +26,11 @@
 - [ui-grid]
 - [pretty-bytes]
 - [ng-file-upload]
+- [ng-notify]
 
 Website powered by [jsDelivr] and [CloudFlare]. I use [nginx] in my server.
 
-Don't like CloudFlare? No problem! Check [Direct-βTorrent]
+Don't like CloudFlare? No problem! Check [Direct-βTorrent]. Don't like my server either? Check [RawGit]
 
 ### Easily built, tested and served
 **I use [Harp] to rapidly test and compile the project**
@@ -67,6 +69,7 @@ MIT. Copyright (c) [Diego Rodríguez Baquero](http://diegorbaquero.com)
 
 [βTorrent]: https://btorrent.xyz
 [Direct-βTorrent]: https://direct.btorrent.xyz
+[RawGit]: https://rawgit.com/DiegoRBaquero/BTorrent/master/compiled/index.html
 [WebTorrent]: https://webtorrent.io
 [AngularJS]: https://angularjs.org/
 [Skeleton]: http://getskeleton.com/
@@ -75,6 +78,7 @@ MIT. Copyright (c) [Diego Rodríguez Baquero](http://diegorbaquero.com)
 [ui-grid]: http://ui-grid.info/
 [pretty-bytes]: https://github.com/sindresorhus/pretty-bytes
 [ng-file-upload]: https://github.com/danialfarid/ng-file-upload
+[ng-notify]: https://github.com/matowens/ng-notify
 [Jade]: http://jade-lang.com/
 [CoffeeScript]: http://coffeescript.org/
 [Sass]: http://sass-lang.com/
