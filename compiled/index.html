@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html ng-app="bTorrent" lang="en">
+  <head>
+    <base href="">
+    <meta charset="UTF-8">
+    <title>βTorrent: Browser WebTorrent Client</title>
+    <meta name="description" content="βTorrent: fully-featured Browser WebTorrent Client">
+    <meta name="keywords" content="βTorrent, btorrent, client, webtorrent, browser, torrent, stream, bittorrent">
+    <meta name="author" content="Diego Rodríguez Baquero - DiegoRBaquero">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--webtorrent@0.63.3,-->
+    <script src="webtorrent.min.js">//WebTorrent 0.63.4</script>
+    <script src="https://cdn.jsdelivr.net/g/momentjs@2.10,angularjs@1.4,angular.ui-grid@3.0,angular.ng-notify@0.7,angular.file-upload@10.1"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/g/normalize@3.0,skeleton@2.0,angular.ng-notify@0.7(ng-notify.min.css)">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontawesome/4.5/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/angular.ui-grid/3.0.7/ui-grid.min.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body ng-controller="bTorrentCtrl" ng-cloak="">
+    <header>
+      <h1>βTorrent<span class="version"> v0.8.0-localStorage</span></h1>
+    </header>
+    <div class="container">
+      <div class="row">
+        <div class="four columns">
+          <input type="text" placeholder="magnet link or hash" ng-model="torrentInput" class="u-full-width">
+        </div>
+        <div class="two columns download-button">
+          <button ng-click="addMagnet()" ng-disabled="!torrentInput.length" ng-class="{'button-primary': torrentInput.length}"><i class="fa fa-download"></i> Download</button>
+        </div>
+        <div class="three columns">
+          <button type="file" ngf-select="openTorrentFile($file)" class="button-primary"><i class="fa fa-folder-open"></i> Open torrent file</button>
+        </div>
+        <div class="three columns u-pull-right">
+          <button type="file" ngf-select="seedFile($file)" class="u-pull-right button-primary"><i class="fa fa-upload"></i> Seed a file</button>
+        </div>
+      </div>
+      <div ui-grid="gridOptions" ui-grid-resize-columns ui-grid-selection class="row grid"></div>
+      <div ng-if="selectedTorrent" class="row">
+        <div class="six columns">
+          <h5>{{selectedTorrent.name}}</h5>
+          <h6>Share</h6>
+          <ul>
+            <li><a ng-href="#{{selectedTorrent.infoHash}}" target="_blank">βTorrent</a></li>
+            <li><a ng-href="{{selectedTorrent.magnetURI}}" target="_blank">Magnet URI</a></li>
+            <li><a ng-href="{{selectedTorrent.safeTorrentFileURL}}" target="_self" download="{{selectedTorrent.fileName}}">.torrent</a></li>
+            <li><strong>Hash: </strong>{{selectedTorrent.infoHash}} </li>
+          </ul>
+        </div>
+        <div class="six columns">
+          <h5>Files</h5>
+          <table class="u-full-width">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Size</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="file in selectedTorrent.files" class="files">
+                <td ng-hide="file.done">{{file.name}}</td>
+                <td ng-show="file.done"><a ng-href="{{file.url}}" download="{{file.name}}" target="_self" ng-show="file.done">{{file.name}}</a></td>
+                <td> {{file.length | pbytes}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="center"><strong>
+          Client Stats: 
+          ↓ {{client.downloadSpeed() | pbytes}}/s · 
+          ↑ {{client.uploadSpeed() | pbytes}}/s · 
+          Ratio: {{client.ratio | number:2}}</strong></div>
+    </div>
+    <footer><a href="https://github.com/DiegoRBaquero/BTorrent/issues" target="_blank" class="button"><i class="fa fa-github fa-5"> </i> Suggest a feature / Report a bug <i class="fa fa-comment"></i></a><br>An Open-Source project by <a href="http://diegorbaquero.com">DiegoRBaquero</a><br>Powered by <a href="https://webtorrent.io">WebTorrent</a>
+      <p></p>
+    </footer>
+    <div ng-show="client.processing" class="spinner"><i class="fa fa-spinner fa-spin spinner-icon"></i></div>
+    <script src="ls-chunk-store.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
