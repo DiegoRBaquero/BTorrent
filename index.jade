@@ -8,8 +8,8 @@ html(ng-app='bTorrent', lang='en')
     meta(name='keywords', content='βTorrent, btorrent, client, webtorrent, browser, torrent, stream, bittorrent')
     meta(name='author', content='Diego Rodríguez Baquero - DiegoRBaquero')
     meta(name='viewport', content='width=device-width, initial-scale=1')
-    //webtorrent@0.63.3,
-    script(src='webtorrent.min.js') //WebTorrent 0.63.4
+    // webtorrent@0.63.3,
+    script(src='webtorrent.min.js') // WebTorrent 0.63.4
     script(src='https://cdn.jsdelivr.net/g/momentjs@2.10,angularjs@1.4,angular.ui-grid@3.0,angular.ng-notify@0.7,angular.file-upload@10.1')
     link(rel='stylesheet', href='https://cdn.jsdelivr.net/g/normalize@3.0,skeleton@2.0,angular.ng-notify@0.7(ng-notify.min.css)')
     link(rel='stylesheet', href='https://cdn.jsdelivr.net/fontawesome/4.5/css/font-awesome.min.css')
@@ -19,7 +19,7 @@ html(ng-app='bTorrent', lang='en')
     header
       h1
         | βTorrent
-        span.version  v0.8.0-localStorage
+        span.version  v0.8.0-localForage
 
     .container
       .row
@@ -84,5 +84,5 @@ html(ng-app='bTorrent', lang='en')
       p
     .spinner(ng-show="client.processing")
       i.fa.fa-spinner.fa-spin.spinner-icon
-    script(src='ls-chunk-store.js')
+    script(src='lf-chunk-store.js')
     script(src='app.js')
