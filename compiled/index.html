@@ -8,8 +8,8 @@
     <meta name="keywords" content="βTorrent, btorrent, client, webtorrent, browser, torrent, stream, bittorrent">
     <meta name="author" content="Diego Rodríguez Baquero - DiegoRBaquero">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--webtorrent@0.63.3,-->
-    <script src="webtorrent.min.js">//WebTorrent 0.63.4</script>
+    <!-- webtorrent@0.63.3,-->
+    <script src="webtorrent.min.js">// WebTorrent 0.63.4</script>
     <script src="https://cdn.jsdelivr.net/g/momentjs@2.10,angularjs@1.4,angular.ui-grid@3.0,angular.ng-notify@0.7,angular.file-upload@10.1"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/g/normalize@3.0,skeleton@2.0,angular.ng-notify@0.7(ng-notify.min.css)">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontawesome/4.5/css/font-awesome.min.css">
@@ -18,7 +18,7 @@
   </head>
   <body ng-controller="bTorrentCtrl" ng-cloak="">
     <header>
-      <h1>βTorrent<span class="version"> v0.8.0-localStorage</span></h1>
+      <h1>βTorrent<span class="version"> v0.8.0-localForage</span></h1>
     </header>
     <div class="container">
       <div class="row">
@@ -76,7 +76,7 @@
       <p></p>
     </footer>
     <div ng-show="client.processing" class="spinner"><i class="fa fa-spinner fa-spin spinner-icon"></i></div>
-    <script src="ls-chunk-store.js"></script>
+    <script src="lf-chunk-store.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
