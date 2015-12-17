@@ -10,7 +10,7 @@
 - [x] Seeding files (Single file only for the moment)
 - [ ] Seeding CORS-enabled remote files (Coming Soon) 
 - [x] Download/Upload speed per torrent
-- [ ] Download/Upload speed of client (All torrents)
+- [x] Download/Upload speed of client (All torrents)
 - [ ] Removing torrents from the client (Coming Soon)
 - [ ] Pause torrent (Coming Soon)
 - [ ] Selecting/Deselecting files (Coming Soon)

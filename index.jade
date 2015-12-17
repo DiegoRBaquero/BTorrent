@@ -8,9 +8,7 @@ html(ng-app='bTorrent', lang='en')
     meta(name='keywords', content='βTorrent, btorrent, client, webtorrent, browser, torrent, stream, bittorrent')
     meta(name='author', content='Diego Rodríguez Baquero - DiegoRBaquero')
     meta(name='viewport', content='width=device-width, initial-scale=1')
-    //webtorrent@0.63.3,
-    script(src='webtorrent.min.js') //WebTorrent 0.63.4
-    script(src='https://cdn.jsdelivr.net/g/momentjs@2.10,angularjs@1.4,angular.ui-grid@3.0,angular.ng-notify@0.7,angular.file-upload@10.1')
+    script(src='https://cdn.jsdelivr.net/g/webtorrent@0.63,momentjs@2.10,angularjs@1.4,angular.ui-grid@3.0,angular.ng-notify@0.7,angular.file-upload@10.1')
     link(rel='stylesheet', href='https://cdn.jsdelivr.net/g/normalize@3.0,skeleton@2.0,angular.ng-notify@0.7(ng-notify.min.css)')
     link(rel='stylesheet', href='https://cdn.jsdelivr.net/fontawesome/4.5/css/font-awesome.min.css')
     link(rel='stylesheet', href='https://cdn.jsdelivr.net/angular.ui-grid/3.0.7/ui-grid.min.css')
@@ -19,8 +17,7 @@ html(ng-app='bTorrent', lang='en')
     header
       h1
         | βTorrent
-        span.version  v0.8.0
-
+        span.version  v0.8.1
     .container
       .row
         .four.columns
@@ -39,7 +36,7 @@ html(ng-app='bTorrent', lang='en')
             |  Seed a file
       .row.grid(ui-grid='gridOptions', ui-grid-resize-columns, ui-grid-selection)
       .row(ng-if="selectedTorrent")
-        .six.columns
+        .six.columns(style='overflow: auto')
           h5 {{selectedTorrent.name}}
           h6 Share
           ul
