@@ -3,13 +3,6 @@ trackers = [
   [ 'wss://tracker.webtorrent.io' ]
 ]
 
-store = lfChunkStore(2)
-
-try
-  #store.put(0, 'hi')
-catch e
-  console.error(e)
-
 opts = {announce: trackers, store: lfChunkStore}
 
 rtcConfig = {
