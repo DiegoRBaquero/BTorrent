@@ -4668,7 +4668,7 @@ function Storage (chunkLength, opts) {
 }
 
 Storage.prototype.put = function (index, buf, cb) {
-  console.info('put ' + index + ' from ' + arguments.callee.caller.toString())
+  console.info('put ' + index)
   if (this.closed) return nextTick(cb, new Error('Storage is closed'))
   var isLastChunk = (index === this.lastChunkIndex)
   if (isLastChunk && buf.length !== this.lastChunkLength) {
@@ -4679,46 +4679,14 @@ Storage.prototype.put = function (index, buf, cb) {
   }
 
   var toInsert = JSON.stringify(JSON.parse(JSON.stringify({object: buf, length: buf.length, time: Date.now()})))
-  var succeed = false
-  while (!succeed && !this.overlap) {
-    try {
-      this.localForage.setItem(this.prefix + '_' + index, toInsert)
-      succeed = true
-    } catch (e) {
-      console.error(e)
-      var clearedSpace = 0
-      while (clearedSpace < buf.length) {
-        var oldestKey = this.localForage.key(0)
-        var oldestEntry = this.localForage.getItem(oldestKey)
-        var oldestTime = JSON.parse(oldestEntry).time
-        var oldestLength = oldestEntry.length
-        for (var key in this.localForage) {
-          if (key === 'debug') continue
-          if (key.startsWith(this.prefix)) {
-            continue
-          }
-          var tempEntry = this.localForage.getItem(key)
-          if (tempEntry == null) continue
-          var tempObject = JSON.parse(tempEntry)
-          if (tempObject.time < oldestTime) {
-            oldestKey = key
-            oldestTime = tempObject.time
-            oldestLength = tempEntry.length
-          }
-        }
-        if (oldestKey.startsWith(this.prefix)) {
-          this.overlap = true
-          break
-        }
-        this.localForage.removeItem(oldestKey)
-        clearedSpace += oldestLength
-      }
+
+  this.localForage.setItem(this.prefix + '_' + index, toInsert, function(err, value) {
+    console.info('huh')
+    if(err) {
+      console.error(err)
+      this.chunks[index] = buf
     }
-  }
-  if (this.overlap) {
-    console.info('storing in mem')
-    this.chunks[index] = buf
-  }
+  })
 
   nextTick(cb, null)
 }
@@ -4730,20 +4698,22 @@ Storage.prototype.get = function (index, opts, cb) {
   var buf = this.chunks[index]
   if (!buf) {
     console.info('not in mem ' + index)
-    this.localForage.getItem(this.prefix + '_' + index, function(err, lsItem) {
-        if (err != null) {
-          console.error(err)
-          return nextTick(cb, new Error('Chunk not found'))
-        }  
-        if (lsItem != null) {
-          console.info('creating buf ' + index)
-          buf = new Buffer(JSON.parse(lsItem).object.data)
-        }
-        if (!buf) return nextTick(cb, new Error('Chunk not found'))
-        if (!opts) return nextTick(cb, null, buf)
-        var offset = opts.offset || 0
-        var len = opts.length || (buf.length - offset)
-        nextTick(cb, null, buf.slice(offset, len + offset))
+    this.localForage.getItem(this.prefix + '_' + index, function (err, lsItem) {
+      if (err != null) {
+        console.error(err)
+        return nextTick(cb, new Error('Chunk not found'))
+      }
+      if (lsItem != null) {
+        console.info('creating buf ' + index)
+        buf = new Buffer(JSON.parse(lsItem).object.data)
+      } else {
+        console.info('item is null')
+      }
+      if (!buf) return nextTick(cb, new Error('Chunk not found'))
+      if (!opts) return nextTick(cb, null, buf)
+      var offset = opts.offset || 0
+      var len = opts.length || (buf.length - offset)
+      nextTick(cb, null, buf.slice(offset, len + offset))
     })
   } else {
     console.info('In memory ' + index)
@@ -4751,7 +4721,7 @@ Storage.prototype.get = function (index, opts, cb) {
     var offset = opts.offset || 0
     var len = opts.length || (buf.length - offset)
     nextTick(cb, null, buf.slice(offset, len + offset))
-  }  
+  }
 }
 
 Storage.prototype.close = function (cb) {

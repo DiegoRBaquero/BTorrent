@@ -149,16 +149,17 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify',
     torrent.files.forEach (file) ->
       file.getBlobURL (err, url) ->
         if err
+          console.error(err)
           throw err
-        if isSeed
+        file.url = url
+        if !isSeed
+          dbg 'Finished downloading file ' + file.name, torrent
+        else
           dbg 'Started seeding', torrent
           $scope.client.validTorrents.push torrent
           if !($scope.selectedTorrent?)
             $scope.selectedTorrent = torrent
           $scope.client.processing = false
-        file.url = url
-        if !isSeed
-          dbg 'Finished downloading file ' + file.name, torrent
         return
       if !isSeed
         dbg 'Received file ' + file.name + ' metadata', torrent
@@ -174,6 +175,12 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify',
       if !isSeed
         dbg 'Done', torrent
         return
+      else
+        dbg 'Started seeding', torrent
+        $scope.client.validTorrents.push torrent
+        if !($scope.selectedTorrent?)
+          $scope.selectedTorrent = torrent
+        $scope.client.processing = false
       torrent.update()
       return
     torrent.on 'wire', (wire, addr) ->
