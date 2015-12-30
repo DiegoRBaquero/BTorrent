@@ -7,13 +7,13 @@
 - [x] Informative GUI with easy sharing options
 - [x] Downloading from an info hash or magnet URI
 - [x] Downloading from a .torrent file (Coming Soon)
-- [x] Seeding files (Single file only for the moment)
+- [x] Seeding files (Single/multiple files)
 - [ ] Seeding CORS-enabled remote files (Coming Soon) 
 - [x] Download/Upload speed per torrent
 - [x] Download/Upload speed of client (All torrents)
-- [ ] Removing torrents from the client (Coming Soon)
-- [ ] Pause torrent (Coming Soon)
-- [ ] Selecting/Deselecting files (Coming Soon)
+- [x] Removing torrents from the client
+- [x] Pause/Resume torrent
+- [x] Selecting/Deselecting files (Coming Soon)
 - [x] Client Debugging
 - [ ] Use custom trackers/rtcConfig
 

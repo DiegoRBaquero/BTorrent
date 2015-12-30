@@ -32,11 +32,11 @@ rtcConfig = {
 
 client = new WebTorrent {rtcConfig: rtcConfig}
 
-dbg = (string, torrent, color) ->
+dbg = (string, item, color) ->
   color = if color? then color else '#333333'
   if window.localStorage.getItem('debug')?
-    if torrent? && torrent.name
-      console.debug '%cβTorrent:torrent:' + torrent.name + ' (' + torrent.infoHash + ') %c' + string, 'color: #33C3F0', 'color: ' + color
+    if item? && item.name
+      console.debug '%cβTorrent:' + (if item.infoHash? then 'torrent ' else 'torrent ' + item._torrent.name + ':file ') + item.name + (if item.infoHash? then ' (' + item.infoHash + ')' else '') + ' %c' + string, 'color: #33C3F0', 'color: ' + color
       return
     else
       console.debug '%cβTorrent:client %c' + string, 'color: #33C3F0', 'color: ' + color
@@ -73,7 +73,7 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify',
   
   $scope.gridOptions =
     columnDefs: $scope.columns
-    data: $scope.client.validTorrents
+    data: $scope.client.torrents
     enableColumnResizing: true
     enableColumnMenus: false
     enableRowSelection: true
@@ -96,11 +96,17 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify',
       else 
         $scope.selectedTorrent = row.entity
 
-  $scope.seedFile = (file) ->
-    if file?
-      dbg 'Seeding file ' + file.name
+  $scope.seedFiles = (files) ->
+    if files?
+      if files.length == 1
+        dbg 'Seeding file ' + files[0].name
+      else
+        dbg 'Seeding ' + files.length + ' files'
+        name = prompt('Please name your torrent', 'My Awesome Torrent') || 'My Awesome Torrent'
+        opts.name = name
       $scope.client.processing = true
-      $scope.client.seed file, opts, $scope.onSeed
+      $scope.client.seed files, opts, $scope.onSeed
+      delete opts.name
     return
     
   $scope.openTorrentFile = (file) ->
@@ -124,11 +130,20 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify',
       return
 
   $scope.destroyedTorrent = (err) ->
-    $scope.client.processing = false
     if err
       throw err
-    dbg 'Destroyed torrent'
+    dbg 'Destroyed torrent', $scope.selectedTorrent
+    $scope.selectedTorrent = null
+    $scope.client.processing = false
     return
+    
+  $scope.changePriority = (file) ->
+    if file.priority == '-1'
+      dbg 'Deselected', file
+      file.deselect()
+    else
+      dbg 'Selected ', file
+      file.select()
 
   $scope.onTorrent = (torrent, isSeed) ->
     torrent.safeTorrentFileURL = torrent.torrentFileURL
@@ -146,7 +161,8 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify',
           throw err
         if isSeed
           dbg 'Started seeding', torrent          
-          $scope.client.validTorrents.push torrent
+          if $scope.client.validTorrents.indexOf(torrent) == -1
+            $scope.client.validTorrents.push torrent
           if !($scope.selectedTorrent?)
             $scope.selectedTorrent = torrent
           $scope.client.processing = false
