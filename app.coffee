@@ -51,7 +51,9 @@ app = angular.module 'BTorrent', ['ui.grid', 'ui.grid.resizeColumns', 'ui.grid.s
 
 app.controller 'BTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify', ($scope, $http, $log, $location, ngNotify) ->
   rtc = window.mozRTCPeerConnection || window.RTCPeerConnection || window.webkitRTCPeerConnection
-  if !rtc? then ngNotify.set 'Please use latest Chrome, Firefox or Opera', {type: 'error', sticky: true}
+  if !rtc?
+    $scope.disabled = true 
+    ngNotify.set 'Please use latest Chrome, Firefox or Opera', {type: 'error', sticky: true}
   rtc = null
   
   $scope.client = client

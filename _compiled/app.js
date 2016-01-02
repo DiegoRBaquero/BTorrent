@@ -66,6 +66,7 @@
       var rtc, updateAll;
       rtc = window.mozRTCPeerConnection || window.RTCPeerConnection || window.webkitRTCPeerConnection;
       if (rtc == null) {
+        $scope.disabled = true;
         ngNotify.set('Please use latest Chrome, Firefox or Opera', {
           type: 'error',
           sticky: true

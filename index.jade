@@ -4,8 +4,8 @@ html(ng-app='BTorrent', lang='en')
     base(href='')
     meta(charset='UTF-8')
     title βTorrent: Browser WebTorrent Client
-    meta(name='description', content='βTorrent: fully-featured Browser WebTorrent Client')
-    meta(name='keywords', content='βTorrent, btorrent, client, webtorrent, browser, torrent, stream, bittorrent')
+    meta(name='description', content='βTorrent is the first fully-featured Browser WebTorrent Client')
+    meta(name='keywords', content='βTorrent, btorrent, client, webtorrent, browser, torrent, stream, bittorrent, torrenting, sharing, filesharing')
     meta(name='author', content='Diego Rodríguez Baquero - DiegoRBaquero')
     meta(name='viewport', content='width=device-width, initial-scale=1')
     script(src='https://cdn.jsdelivr.net/g/webtorrent@0.67.1,momentjs@2.10,angularjs@1.4,angular.ui-grid@3.0,angular.ng-notify@0.7,angular.file-upload@10.1')
@@ -17,21 +17,21 @@ html(ng-app='BTorrent', lang='en')
     header
       h1
         | βTorrent
-        span.version  v0.10.0
+        span.version  v0.10.1
     .container
       .row
         .four.columns
-          input.u-full-width(type='text', placeholder='magnet link or hash', ng-model='torrentInput')
+          input.u-full-width(type='text', placeholder='magnet link or hash', ng-model='torrentInput', ng-disabled='disabled')
         .two.columns.download-button
-          button(ng-click='addMagnet()', ng-disabled='!torrentInput.length', ng-class="{'button-primary': torrentInput.length}")
+          button(ng-click='addMagnet()', ng-disabled='!torrentInput.length || disabled', ng-class='{"button-primary": torrentInput.length}')
             i.fa.fa-download
             |  Download
         .three.columns
-          button.button-primary(type='file', ngf-select='openTorrentFile($file)')
+          button(type='file', ngf-select='openTorrentFile($file)', ng-disabled='disabled', ng-class='{"button-primary": !disabled}')
             i.fa.fa-folder-open
             |  Open torrent file
         .three.columns.u-pull-right
-          button.u-pull-right.button-primary(ngf-select='seedFiles($files)', multiple='')
+          button.u-pull-right(ngf-select='seedFiles($files)', multiple='', ng-disabled='disabled', ng-class='{"button-primary": !disabled}')
             i.fa.fa-upload
             |  Seed files
       .row.grid(ui-grid='gridOptions', ui-grid-resize-columns, ui-grid-selection)
