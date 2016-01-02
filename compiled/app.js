@@ -46,11 +46,11 @@
     rtcConfig: rtcConfig
   });
 
-  dbg = function(string, torrent, color) {
+  dbg = function(string, item, color) {
     color = color != null ? color : '#333333';
     if (window.localStorage.getItem('debug') != null) {
-      if ((torrent != null) && torrent.name) {
-        console.debug('%cβTorrent:torrent:' + torrent.name + ' (' + torrent.infoHash + ') %c' + string, 'color: #33C3F0', 'color: ' + color);
+      if ((item != null) && item.name) {
+        console.debug('%cβTorrent:' + (item.infoHash != null ? 'torrent ' : 'torrent ' + item._torrent.name + ':file ') + item.name + (item.infoHash != null ? ' (' + item.infoHash + ')' : '') + ' %c' + string, 'color: #33C3F0', 'color: ' + color);
         return;
       } else {
         console.debug('%cβTorrent:client %c' + string, 'color: #33C3F0', 'color: ' + color);
@@ -131,7 +131,7 @@
       ];
       $scope.gridOptions = {
         columnDefs: $scope.columns,
-        data: $scope.client.validTorrents,
+        data: $scope.client.torrents,
         enableColumnResizing: true,
         enableColumnMenus: false,
         enableRowSelection: true,
@@ -155,11 +155,19 @@
           }
         });
       };
-      $scope.seedFile = function(file) {
-        if (file != null) {
-          dbg('Seeding file ' + file.name);
+      $scope.seedFiles = function(files) {
+        var name;
+        if (files != null) {
+          if (files.length === 1) {
+            dbg('Seeding file ' + files[0].name);
+          } else {
+            dbg('Seeding ' + files.length + ' files');
+            name = prompt('Please name your torrent', 'My Awesome Torrent') || 'My Awesome Torrent';
+            opts.name = name;
+          }
           $scope.client.processing = true;
-          $scope.client.seed(file, opts, $scope.onSeed);
+          $scope.client.seed(files, opts, $scope.onSeed);
+          delete opts.name;
         }
       };
       $scope.openTorrentFile = function(file) {
@@ -183,11 +191,21 @@
         }
       };
       $scope.destroyedTorrent = function(err) {
-        $scope.client.processing = false;
         if (err) {
           throw err;
         }
-        dbg('Destroyed torrent');
+        dbg('Destroyed torrent', $scope.selectedTorrent);
+        $scope.selectedTorrent = null;
+        $scope.client.processing = false;
+      };
+      $scope.changePriority = function(file) {
+        if (file.priority === '-1') {
+          dbg('Deselected', file);
+          return file.deselect();
+        } else {
+          dbg('Selected ', file);
+          return file.select();
+        }
       };
       $scope.onTorrent = function(torrent, isSeed) {
         torrent.safeTorrentFileURL = torrent.torrentFileURL;
@@ -206,7 +224,9 @@
             }
             if (isSeed) {
               dbg('Started seeding', torrent);
-              $scope.client.validTorrents.push(torrent);
+              if ($scope.client.validTorrents.indexOf(torrent) === -1) {
+                $scope.client.validTorrents.push(torrent);
+              }
               if (!($scope.selectedTorrent != null)) {
                 $scope.selectedTorrent = torrent;
               }
