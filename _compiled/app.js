@@ -63,9 +63,8 @@
 
   app.controller('BTorrentCtrl', [
     '$scope', '$http', '$log', '$location', 'ngNotify', function($scope, $http, $log, $location, ngNotify) {
-      var rtc, updateAll;
-      rtc = window.mozRTCPeerConnection || window.RTCPeerConnection || window.webkitRTCPeerConnection;
-      if (rtc == null) {
+      var updateAll;
+      if (WebTorrent.WEBRTC_SUPPORT == null) {
         $scope.disabled = true;
         ngNotify.set('Please use latest Chrome, Firefox or Opera', {
           type: 'error',
@@ -73,7 +72,6 @@
           button: false
         });
       }
-      rtc = null;
       $scope.client = client;
       $scope.seedIt = true;
       $scope.columns = [

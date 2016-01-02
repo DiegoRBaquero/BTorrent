@@ -50,11 +50,9 @@ app = angular.module 'BTorrent', ['ui.grid', 'ui.grid.resizeColumns', 'ui.grid.s
 ]
 
 app.controller 'BTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify', ($scope, $http, $log, $location, ngNotify) ->
-  rtc = window.mozRTCPeerConnection || window.RTCPeerConnection || window.webkitRTCPeerConnection
-  if !rtc?
+  if !WebTorrent.WEBRTC_SUPPORT?
     $scope.disabled = true 
     ngNotify.set 'Please use latest Chrome, Firefox or Opera', {type: 'error', sticky: true, button: false}
-  rtc = null
   
   $scope.client = client
   $scope.seedIt = true
