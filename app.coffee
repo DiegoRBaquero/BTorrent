@@ -83,7 +83,7 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify',
     $scope.$apply()
     return
     
-  #setInterval updateAll, 500
+  setInterval updateAll, 500
 
   $scope.gridOptions.onRegisterApi = ( gridApi ) ->
     $scope.gridApi = gridApi
