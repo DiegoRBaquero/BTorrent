@@ -69,7 +69,7 @@ MIT. Copyright (c) [Diego Rodríguez Baquero](http://diegorbaquero.com)
 
 [βTorrent]: https://btorrent.xyz
 [Direct-βTorrent]: https://direct.btorrent.xyz
-[RawGit]: https://rawgit.com/DiegoRBaquero/BTorrent/master/compiled/index.html
+[RawGit]: https://rawgit.com/DiegoRBaquero/BTorrent/master/_compiled/index.html
 [WebTorrent]: https://webtorrent.io
 [AngularJS]: https://angularjs.org/
 [Skeleton]: http://getskeleton.com/

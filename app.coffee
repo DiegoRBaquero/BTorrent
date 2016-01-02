@@ -1,5 +1,5 @@
 trackers = [
-  [ 'wss://tracker.btorrent.xyz' ],
+  [ 'wss://tracker.btorrent.xyz' ]
   [ 'wss://tracker.webtorrent.io' ]
 ]
 
@@ -9,32 +9,28 @@ opts = {
 
 rtcConfig = {
   "iceServers":[
-    {"url":"stun:23.21.150.121","urls":"stun:23.21.150.121"},
-    {"url":"stun:stun.l.google.com:19302","urls":"stun:stun.l.google.com:19302"},
-    {"url":"stun:stun1.l.google.com:19302","urls":"stun:stun1.l.google.com:19302"},
-    {"url":"stun:stun2.l.google.com:19302","urls":"stun:stun2.l.google.com:19302"},
-    {"url":"stun:stun3.l.google.com:19302","urls":"stun:stun3.l.google.com:19302"},
-    {"url":"stun:stun4.l.google.com:19302","urls":"stun:stun4.l.google.com:19302"},
+    {"url":"stun:23.21.150.121","urls":"stun:23.21.150.121"}
+    {"url":"stun:stun.l.google.com:19302","urls":"stun:stun.l.google.com:19302"}
     {
-      "url":"turn:global.turn.twilio.com:3478?transport=udp",
-      "urls":"turn:global.turn.twilio.com:3478?transport=udp",
-      "username":"857315a4616be37252127d4ff924c3a3536dd3fa729b56206dfa0e6808a80478",
+      "url":"turn:global.turn.twilio.com:3478?transport=udp"
+      "urls":"turn:global.turn.twilio.com:3478?transport=udp"
+      "username":"857315a4616be37252127d4ff924c3a3536dd3fa729b56206dfa0e6808a80478"
       "credential":"EEEr7bxx8umMHC4sOoWDC/4MxU/4JCfL+W7KeSJEsBQ="
-    },
+    }
     {
-      "url": "turn:numb.viagenie.ca",
-      "urls": "turn:numb.viagenie.ca",
-      "credential": "webrtcdemo",
+      "url": "turn:numb.viagenie.ca"
+      "urls": "turn:numb.viagenie.ca"
+      "credential": "webrtcdemo"
       "username": "louis%40mozilla.com"
     }
   ]
 }
 
-client = new WebTorrent {rtcConfig: rtcConfig}
+debug = window.localStorage.getItem('debug')?
 
 dbg = (string, item, color) ->
   color = if color? then color else '#333333'
-  if window.localStorage.getItem('debug')?
+  if debug
     if item? && item.name
       console.debug '%cβTorrent:' + (if item.infoHash? then 'torrent ' else 'torrent ' + item._torrent.name + ':file ') + item.name + (if item.infoHash? then ' (' + item.infoHash + ')' else '') + ' %c' + string, 'color: #33C3F0', 'color: ' + color
       return
@@ -46,6 +42,8 @@ dbg = (string, item, color) ->
 er = (err, torrent) ->
   dbg err, torrent, '#FF0000'
 
+client = new WebTorrent {rtcConfig: rtcConfig}
+
 app = angular.module 'bTorrent', ['ui.grid', 'ui.grid.resizeColumns', 'ui.grid.selection', 'ngFileUpload', 'ngNotify'], ['$compileProvider','$locationProvider', ($compileProvider, $locationProvider) ->
   $compileProvider.aHrefSanitizationWhitelist /^\s*(https?|magnet|blob|javascript):/
   $locationProvider.html5Mode(
@@ -56,7 +54,6 @@ app = angular.module 'bTorrent', ['ui.grid', 'ui.grid.resizeColumns', 'ui.grid.s
 app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify', ($scope, $http, $log, $location, ngNotify) ->
   $scope.client = client
   $scope.seedIt = true
-  $scope.client.validTorrents = []
   
   $scope.columns = [
     {field: 'name', cellTooltip: true, minWidth: '200'}
@@ -64,7 +61,7 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify',
     {field: 'received', displayName: 'Downloaded', cellFilter: 'pbytes', width: '135'}
     {field: 'downloadSpeed()', displayName: '↓ Speed', cellFilter: 'pbytes:1', width: '100'}
     {field: 'progress', displayName: 'Progress', cellFilter: 'progress', width: '100'}
-    {field: 'timeRemaining', displayName: 'ETA', cellFilter: 'humanTime', width: '150'}
+    {field: 'timeRemaining', displayName: 'ETA', cellFilter: 'humanTime', width: '140'}
     {field: 'uploaded', displayName: 'Uploaded', cellFilter: 'pbytes', width: '125'}
     {field: 'uploadSpeed()', displayName: '↑ Speed', cellFilter: 'pbytes:1', width: '100'}
     {field: 'numPeers', displayName: 'Peers', width: '80'}
@@ -85,8 +82,8 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify',
       return
     $scope.$apply()
     return
-
-  setInterval updateAll, 500
+    
+  #setInterval updateAll, 500
 
   $scope.gridOptions.onRegisterApi = ( gridApi ) ->
     $scope.gridApi = gridApi
@@ -150,7 +147,6 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify',
     torrent.fileName = torrent.name + '.torrent'
     
     if !isSeed      
-      $scope.client.validTorrents.push torrent
       if !($scope.selectedTorrent?)
         $scope.selectedTorrent = torrent
       $scope.client.processing = false
@@ -161,17 +157,15 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify',
           throw err
         if isSeed
           dbg 'Started seeding', torrent          
-          if $scope.client.validTorrents.indexOf(torrent) == -1
-            $scope.client.validTorrents.push torrent
           if !($scope.selectedTorrent?)
             $scope.selectedTorrent = torrent
           $scope.client.processing = false
         file.url = url
         if !isSeed
-          dbg 'Finished downloading file ' + file.name, torrent
+          dbg 'Done ', file
         return
       if !isSeed
-        dbg 'Received file ' + file.name + ' metadata', torrent
+        dbg 'Received metadata', file
         return
     torrent.on 'download', (chunkSize) ->
       if !isSeed
@@ -200,8 +194,10 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify',
     setTimeout ->
       dbg 'Adding ' + $location.hash()      
       $scope.client.add $location.hash(), $scope.onTorrent
-    , 500    
+    , 0    
     return
+    
+  dbg 'Ready'
 ]
 
 app.filter 'html', ['$sce', ($sce) ->
@@ -214,8 +210,6 @@ app.filter 'pbytes', ->
   (num, speed) ->
     if isNaN(num)
       return ''
-    exponent = undefined
-    unit = undefined
     units = [
       'B'
       'kB'
@@ -225,7 +219,7 @@ app.filter 'pbytes', ->
     ]
     if num < 1
       return (if speed then '' else '0 B')
-    exponent = Math.min(Math.floor(Math.log(num) / Math.log(1000)), 8)
+    exponent = Math.min(Math.floor(Math.log(num) / 6.907755278982137), 8)
     num = (num / 1000 ** exponent).toFixed(1) * 1
     unit = units[exponent]
     num + ' ' + unit + (if speed then '/s' else '')
@@ -234,7 +228,7 @@ app.filter 'humanTime', ->
   (millis) ->
     if millis < 1000
       return ''
-    remaining = moment.duration(millis / 1000, 'seconds').humanize()
+    remaining = moment.duration(millis).humanize()
     remaining[0].toUpperCase() + remaining.substr(1)
 
 app.filter 'progress', ->
