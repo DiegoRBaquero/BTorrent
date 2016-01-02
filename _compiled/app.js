@@ -69,7 +69,8 @@
         $scope.disabled = true;
         ngNotify.set('Please use latest Chrome, Firefox or Opera', {
           type: 'error',
-          sticky: true
+          sticky: true,
+          button: false
         });
       }
       rtc = null;
