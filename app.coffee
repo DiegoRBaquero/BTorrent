@@ -33,28 +33,30 @@ dbg = (string, item, color) ->
   if debug
     if item? && item.name
       console.debug '%cβTorrent:' + (if item.infoHash? then 'torrent ' else 'torrent ' + item._torrent.name + ':file ') + item.name + (if item.infoHash? then ' (' + item.infoHash + ')' else '') + ' %c' + string, 'color: #33C3F0', 'color: ' + color
-      return
     else
       console.debug '%cβTorrent:client %c' + string, 'color: #33C3F0', 'color: ' + color
-      return
-  return
 
-er = (err, torrent) ->
-  dbg err, torrent, '#FF0000'
+er = (err, item) ->
+  dbg err, item, '#FF0000'
 
 client = new WebTorrent {rtcConfig: rtcConfig}
 
-app = angular.module 'bTorrent', ['ui.grid', 'ui.grid.resizeColumns', 'ui.grid.selection', 'ngFileUpload', 'ngNotify'], ['$compileProvider','$locationProvider', ($compileProvider, $locationProvider) ->
+app = angular.module 'BTorrent', ['ui.grid', 'ui.grid.resizeColumns', 'ui.grid.selection', 'ngFileUpload', 'ngNotify'], ['$compileProvider','$locationProvider', ($compileProvider, $locationProvider) ->
   $compileProvider.aHrefSanitizationWhitelist /^\s*(https?|magnet|blob|javascript):/
   $locationProvider.html5Mode(
     enabled: true
-    requireBase: false).hashPrefix '#'
+    requireBase: false
+  ).hashPrefix '#'
 ]
 
-app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify', ($scope, $http, $log, $location, ngNotify) ->
+app.controller 'BTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify', ($scope, $http, $log, $location, ngNotify) ->
+  rtc = window.mozRTCPeerConnection || window.RTCPeerConnection || window.webkitRTCPeerConnection
+  if !rtc? then ngNotify.set 'Please use latest Chrome, Firefox or Opera', {type: 'error', sticky: true}
+  rtc = null
+  
   $scope.client = client
   $scope.seedIt = true
-  
+
   $scope.columns = [
     {field: 'name', cellTooltip: true, minWidth: '200'}
     {field: 'length', name: 'Size', cellFilter: 'pbytes', width: '80'}
@@ -67,7 +69,7 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify',
     {field: 'numPeers', displayName: 'Peers', width: '80'}
     {field: 'ratio', cellFilter: 'number:2', width: '80'}
   ]
-  
+
   $scope.gridOptions =
     columnDefs: $scope.columns
     data: $scope.client.torrents
@@ -81,11 +83,10 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify',
     if $scope.client.processing
       return
     $scope.$apply()
-    return
-    
+
   setInterval updateAll, 500
 
-  $scope.gridOptions.onRegisterApi = ( gridApi ) ->
+  $scope.gridOptions.onRegisterApi = (gridApi) ->
     $scope.gridApi = gridApi
     gridApi.selection.on.rowSelectionChanged $scope, (row) ->
       if !row.isSelected && $scope.selectedTorrent? && $scope.selectedTorrent.infoHash = row.entity.infoHash
@@ -104,19 +105,17 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify',
       $scope.client.processing = true
       $scope.client.seed files, opts, $scope.onSeed
       delete opts.name
-    return
-    
+
   $scope.openTorrentFile = (file) ->
     if file?
       dbg 'Adding torrent file ' + file.name 
       $scope.client.processing = true
       $scope.client.add file, opts, $scope.onTorrent
 
-  $scope.client.on('error', (err, torrent) ->
+  $scope.client.on 'error', (err, torrent) ->
     $scope.client.processing = false
-    ngNotify.set(err, 'error');
+    ngNotify.set err, 'error'
     er err, torrent
-  )
 
   $scope.addMagnet = ->
     if $scope.torrentInput != ''
@@ -124,7 +123,6 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify',
       $scope.client.processing = true
       $scope.client.add $scope.torrentInput, opts, $scope.onTorrent
       $scope.torrentInput = ''
-      return
 
   $scope.destroyedTorrent = (err) ->
     if err
@@ -132,8 +130,7 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify',
     dbg 'Destroyed torrent', $scope.selectedTorrent
     $scope.selectedTorrent = null
     $scope.client.processing = false
-    return
-    
+
   $scope.changePriority = (file) ->
     if file.priority == '-1'
       dbg 'Deselected', file
@@ -145,12 +142,10 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify',
   $scope.onTorrent = (torrent, isSeed) ->
     torrent.safeTorrentFileURL = torrent.torrentFileURL
     torrent.fileName = torrent.name + '.torrent'
-    
     if !isSeed      
       if !($scope.selectedTorrent?)
         $scope.selectedTorrent = torrent
       $scope.client.processing = false
-
     torrent.files.forEach (file) ->
       file.getBlobURL (err, url) ->
         if err
@@ -163,40 +158,32 @@ app.controller 'bTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify',
         file.url = url
         if !isSeed
           dbg 'Done ', file
-        return
       if !isSeed
         dbg 'Received metadata', file
-        return
     torrent.on 'download', (chunkSize) ->
       if !isSeed
         dbg 'Downloaded chunk', torrent
-        return
     torrent.on 'upload', (chunkSize) ->
       dbg 'Uploaded chunk', torrent
-      return
     torrent.on 'done', ->
       if !isSeed
         dbg 'Done', torrent
-        return
       torrent.update()
-      return
     torrent.on 'wire', (wire, addr) ->
       dbg 'Wire ' + addr, torrent
-      return
-    return
+    torrent.on 'error', (err) ->
+      er err
 
   $scope.onSeed = (torrent) ->
     $scope.onTorrent torrent, true
-    return
 
   if $location.hash() != ''
     $scope.client.processing = true
     setTimeout ->
       dbg 'Adding ' + $location.hash()      
       $scope.client.add $location.hash(), $scope.onTorrent
-    , 0    
-    return
-    
+    , 0
+
   dbg 'Ready'
 ]
 

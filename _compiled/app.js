@@ -36,24 +36,22 @@
     color = color != null ? color : '#333333';
     if (debug) {
       if ((item != null) && item.name) {
-        console.debug('%cβTorrent:' + (item.infoHash != null ? 'torrent ' : 'torrent ' + item._torrent.name + ':file ') + item.name + (item.infoHash != null ? ' (' + item.infoHash + ')' : '') + ' %c' + string, 'color: #33C3F0', 'color: ' + color);
-        return;
+        return console.debug('%cβTorrent:' + (item.infoHash != null ? 'torrent ' : 'torrent ' + item._torrent.name + ':file ') + item.name + (item.infoHash != null ? ' (' + item.infoHash + ')' : '') + ' %c' + string, 'color: #33C3F0', 'color: ' + color);
       } else {
-        console.debug('%cβTorrent:client %c' + string, 'color: #33C3F0', 'color: ' + color);
-        return;
+        return console.debug('%cβTorrent:client %c' + string, 'color: #33C3F0', 'color: ' + color);
       }
     }
   };
 
-  er = function(err, torrent) {
-    return dbg(err, torrent, '#FF0000');
+  er = function(err, item) {
+    return dbg(err, item, '#FF0000');
   };
 
   client = new WebTorrent({
     rtcConfig: rtcConfig
   });
 
-  app = angular.module('bTorrent', ['ui.grid', 'ui.grid.resizeColumns', 'ui.grid.selection', 'ngFileUpload', 'ngNotify'], [
+  app = angular.module('BTorrent', ['ui.grid', 'ui.grid.resizeColumns', 'ui.grid.selection', 'ngFileUpload', 'ngNotify'], [
     '$compileProvider', '$locationProvider', function($compileProvider, $locationProvider) {
       $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|magnet|blob|javascript):/);
       return $locationProvider.html5Mode({
@@ -63,9 +61,17 @@
     }
   ]);
 
-  app.controller('bTorrentCtrl', [
+  app.controller('BTorrentCtrl', [
     '$scope', '$http', '$log', '$location', 'ngNotify', function($scope, $http, $log, $location, ngNotify) {
-      var updateAll;
+      var rtc, updateAll;
+      rtc = window.mozRTCPeerConnection || window.RTCPeerConnection || window.webkitRTCPeerConnection;
+      if (rtc == null) {
+        ngNotify.set('Please use latest Chrome, Firefox or Opera', {
+          type: 'error',
+          sticky: true
+        });
+      }
+      rtc = null;
       $scope.client = client;
       $scope.seedIt = true;
       $scope.columns = [
@@ -131,7 +137,7 @@
         if ($scope.client.processing) {
           return;
         }
-        $scope.$apply();
+        return $scope.$apply();
       };
       setInterval(updateAll, 500);
       $scope.gridOptions.onRegisterApi = function(gridApi) {
@@ -156,7 +162,7 @@
           }
           $scope.client.processing = true;
           $scope.client.seed(files, opts, $scope.onSeed);
-          delete opts.name;
+          return delete opts.name;
         }
       };
       $scope.openTorrentFile = function(file) {
@@ -176,7 +182,7 @@
           dbg('Adding magnet/hash ' + $scope.torrentInput);
           $scope.client.processing = true;
           $scope.client.add($scope.torrentInput, opts, $scope.onTorrent);
-          $scope.torrentInput = '';
+          return $scope.torrentInput = '';
         }
       };
       $scope.destroyedTorrent = function(err) {
@@ -185,7 +191,7 @@
         }
         dbg('Destroyed torrent', $scope.selectedTorrent);
         $scope.selectedTorrent = null;
-        $scope.client.processing = false;
+        return $scope.client.processing = false;
       };
       $scope.changePriority = function(file) {
         if (file.priority === '-1') {
@@ -219,34 +225,36 @@
             }
             file.url = url;
             if (!isSeed) {
-              dbg('Done ', file);
+              return dbg('Done ', file);
             }
           });
           if (!isSeed) {
-            dbg('Received metadata', file);
+            return dbg('Received metadata', file);
           }
         });
         torrent.on('download', function(chunkSize) {
           if (!isSeed) {
-            dbg('Downloaded chunk', torrent);
+            return dbg('Downloaded chunk', torrent);
           }
         });
         torrent.on('upload', function(chunkSize) {
-          dbg('Uploaded chunk', torrent);
+          return dbg('Uploaded chunk', torrent);
         });
         torrent.on('done', function() {
           if (!isSeed) {
             dbg('Done', torrent);
-            return;
           }
-          torrent.update();
+          return torrent.update();
         });
         torrent.on('wire', function(wire, addr) {
-          dbg('Wire ' + addr, torrent);
+          return dbg('Wire ' + addr, torrent);
+        });
+        return torrent.on('error', function(err) {
+          return er(err);
         });
       };
       $scope.onSeed = function(torrent) {
-        $scope.onTorrent(torrent, true);
+        return $scope.onTorrent(torrent, true);
       };
       if ($location.hash() !== '') {
         $scope.client.processing = true;
@@ -254,7 +262,6 @@
           dbg('Adding ' + $location.hash());
           return $scope.client.add($location.hash(), $scope.onTorrent);
         }, 0);
-        return;
       }
       return dbg('Ready');
     }
