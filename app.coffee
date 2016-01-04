@@ -136,8 +136,8 @@ app.controller 'BTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify',
       dbg 'Deselected', file
       file.deselect()
     else
-      dbg 'Selected ', file
-      file.select()
+      dbg 'Selected with priority ' + file.priority, file
+      file.select(file.priority)
 
   $scope.onTorrent = (torrent, isSeed) ->
     torrent.safeTorrentFileURL = torrent.torrentFileURL
@@ -158,17 +158,19 @@ app.controller 'BTorrentCtrl', ['$scope','$http','$log','$location', 'ngNotify',
         file.url = url
         if !isSeed
           dbg 'Done ', file
+          ngNotify.set file.name + ' ready for download', 'success'
       if !isSeed
         dbg 'Received metadata', file
+        ngNotify.set 'Received ' + torrent.name + ' metadata'
     torrent.on 'download', (chunkSize) ->
-      if !isSeed
-        dbg 'Downloaded chunk', torrent
+      #if !isSeed
+      #  dbg 'Downloaded chunk', torrent
     torrent.on 'upload', (chunkSize) ->
-      dbg 'Uploaded chunk', torrent
+      #dbg 'Uploaded chunk', torrent
     torrent.on 'done', ->
       if !isSeed
         dbg 'Done', torrent
-      torrent.update()
+      ngNotify.set torrent.name + ' has finished downloading', 'success' 
     torrent.on 'wire', (wire, addr) ->
       dbg 'Wire ' + addr, torrent
     torrent.on 'error', (err) ->
