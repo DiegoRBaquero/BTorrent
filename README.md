@@ -30,7 +30,7 @@
 
 Website powered by [jsDelivr] and [CloudFlare]. I use [nginx] in my server.
 
-Don't like CloudFlare? No problem! Check [Direct-βTorrent]. Don't like my server either? Check [RawGit]
+Don't like CloudFlare? No problem! Check [Direct-βTorrent].
 
 ### Easily built, tested and served
 **I use [Harp] to rapidly test and compile the project**
@@ -69,7 +69,6 @@ MIT. Copyright (c) [Diego Rodríguez Baquero](http://diegorbaquero.com)
 
 [βTorrent]: https://btorrent.xyz
 [Direct-βTorrent]: https://direct.btorrent.xyz
-[RawGit]: https://rawgit.com/DiegoRBaquero/BTorrent/master/_compiled/index.html
 [WebTorrent]: https://webtorrent.io
 [AngularJS]: https://angularjs.org/
 [Skeleton]: http://getskeleton.com/
