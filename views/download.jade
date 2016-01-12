@@ -1,34 +1,27 @@
 .container
-    .row
-        .four.columns
-            input.u-full-width(type='text', placeholder='magnet, hash or http(s) .torrent', ng-model='torrentInput', ng-disabled='$root.disabled')
-        .two.columns.download-button
-            button(ng-click='addMagnet()', ng-disabled='!torrentInput.length || $root.disabled', ng-class='{"button-primary": torrentInput.length}')
+    div(ng-hide='$root.client.torrents.length != 0', style='vertical-align: middle; text-align: center')
+        .row
+            form.no-margin(ng-submit='addMagnet()')
+                label Enter magnet, hash or http(s) .torrent
+                input(type='text', placeholder='magnet, hash or http(s) .torrent', ng-model='torrentInput', ng-disabled='$root.disabled', style='width: 50%')
+            //button(ng-click='addMagnet()', ng-disabled='!torrentInput.length || $root.disabled', ng-class='{"button-primary": torrentInput.length}')
                 i.fa.fa-download
                 |  Download
-        .three.columns
+        .row
+            label or...
             button(type='file', ngf-select='$root.openTorrentFile($file)', ng-disabled='$root.disabled', ng-class='{"button-primary": !$root.disabled}')
                 i.fa.fa-folder-open
                 |  Open torrent file
-        .three.columns.u-pull-right
-            button.u-pull-right(ngf-select='$root.seedFiles($files)', multiple='', ng-disabled='$root.disabled', ng-class='{"button-primary": !$root.disabled}')
-                i.fa.fa-upload
-                |  Seed files
-    .row.grid(ui-grid='gridOptions', ui-grid-resize-columns, ui-grid-selection)
     .row(ng-if="selectedTorrent")
         .six.columns(style='overflow: auto')
             h5 {{$root.selectedTorrent.name}}  
                 button(ng-if='!$root.selectedTorrent.swarm.paused', ng-click='$root.selectedTorrent.pause()')
                     i.fa.fa-pause
                     |  Pause
-                |  
+                | 
                 button(ng-if='$root.selectedTorrent.swarm.paused', ng-click='$root.selectedTorrent.resume()')
                     i.fa.fa-play
                     |  Resume
-                |  
-                button.button-danger(ng-click='$root.selectedTorrent.destroy($root.destroyedTorrent)')
-                    i.fa.fa-times
-                    |  Remove
             h6 Share
             ul
                 li
@@ -59,8 +52,3 @@
                                 option(value='1') High Priority
                                 option(value='0' selected='') Low Priority
                                 option(value='-1') Don't download
-    .center
-        strong Client Stats: 
-            | ↓ {{$root.client.downloadSpeed | pbytes}}/s · 
-            | ↑ {{$root.client.uploadSpeed | pbytes}}/s · 
-            | Ratio: {{$root.client.ratio | number:2}}

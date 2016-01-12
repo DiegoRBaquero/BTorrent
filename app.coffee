@@ -52,6 +52,9 @@ app = angular.module 'BTorrent', ['ngRoute', 'ui.grid', 'ui.grid.resizeColumns',
   $routeProvider.when '/stream',
     templateUrl: 'views/stream.html'
     controller: 'StreamCtrl'
+  .when '/download',
+    templateUrl: 'views/download.html'
+    controller: 'DownloadCtrl'
   .otherwise 
     templateUrl: 'views/main.html'
     controller: 'MainCtrl'
@@ -121,7 +124,7 @@ app.controller 'BTorrentCtrl', ['$scope','$rootScope','$http','$log','$location'
       file.select(file.priority)
 
   $rootScope.onTorrent = (torrent, isSeed) ->
-    torrent.safeTorrentFileURL = torrent.torrentFileURL
+    torrent.safeTorrentFileURL = torrent.torrentFileBlobURL
     torrent.fileName = torrent.name + '.torrent'
     if !isSeed
       if !($rootScope.selectedTorrent?)
@@ -185,11 +188,11 @@ app.controller 'MainCtrl', ['$scope','$rootScope','$http','$log','$location', 'n
     {field: 'name', cellTooltip: true, minWidth: '200'}
     {field: 'length', name: 'Size', cellFilter: 'pbytes', width: '80'}
     {field: 'received', displayName: 'Downloaded', cellFilter: 'pbytes', width: '135'}
-    {field: 'downloadSpeed()', displayName: '↓ Speed', cellFilter: 'pbytes:1', width: '100'}
+    {field: 'downloadSpeed', displayName: '↓ Speed', cellFilter: 'pbytes:1', width: '100'}
     {field: 'progress', displayName: 'Progress', cellFilter: 'progress', width: '100'}
     {field: 'timeRemaining', displayName: 'ETA', cellFilter: 'humanTime', width: '140'}
     {field: 'uploaded', displayName: 'Uploaded', cellFilter: 'pbytes', width: '125'}
-    {field: 'uploadSpeed()', displayName: '↑ Speed', cellFilter: 'pbytes:1', width: '100'}
+    {field: 'uploadSpeed', displayName: '↑ Speed', cellFilter: 'pbytes:1', width: '100'}
     {field: 'numPeers', displayName: 'Peers', width: '80'}
     {field: 'ratio', cellFilter: 'number:2', width: '80'}
   ]
@@ -210,6 +213,16 @@ app.controller 'MainCtrl', ['$scope','$rootScope','$http','$log','$location', 'n
         $rootScope.selectedTorrent = null
       else 
         $rootScope.selectedTorrent = row.entity
+]
+
+app.controller 'DownloadCtrl', ['$scope','$rootScope','$http','$log','$location', 'ngNotify', ($scope, $rootScope, $http, $log, $location, ngNotify) ->
+  ngNotify.config
+    duration: 10000
+    html: true
+
+  $scope.addMagnet = ->
+    $rootScope.addMagnet($scope.torrentInput)
+    $scope.torrentInput = ''
 ]
 
 app.controller 'StreamCtrl', ['$scope','$rootScope','$http','$log','$location', 'ngNotify', ($scope, $rootScope, $http, $log, $location, ngNotify) ->
