@@ -1,6 +1,6 @@
 trackers = [
-  [ 'wss://tracker.btorrent.xyz' ]
-  [ 'wss://tracker.webtorrent.io' ]
+  'wss://tracker.btorrent.xyz' 
+  'wss://tracker.webtorrent.io' 
 ]
 
 opts = {
@@ -124,6 +124,7 @@ app.controller 'BTorrentCtrl', ['$scope','$rootScope','$http','$log','$location'
       file.select(file.priority)
 
   $rootScope.onTorrent = (torrent, isSeed) ->
+    dbg torrent.magnetURI
     torrent.safeTorrentFileURL = torrent.torrentFileBlobURL
     torrent.fileName = torrent.name + '.torrent'
     if !isSeed
