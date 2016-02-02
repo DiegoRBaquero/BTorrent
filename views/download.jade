@@ -12,30 +12,15 @@
             button(type='file', ngf-select='$root.openTorrentFile($file)', ng-disabled='$root.disabled', ng-class='{"button-primary": !$root.disabled}')
                 i.fa.fa-folder-open
                 |  Open torrent file
-    .row(ng-if="selectedTorrent")
-        .six.columns(style='overflow: auto')
-            h5 {{$root.selectedTorrent.name}}  
-                button(ng-if='!$root.selectedTorrent.swarm.paused', ng-click='$root.selectedTorrent.pause()')
-                    i.fa.fa-pause
-                    |  Pause
-                | 
-                button(ng-if='$root.selectedTorrent.swarm.paused', ng-click='$root.selectedTorrent.resume()')
-                    i.fa.fa-play
-                    |  Resume
-            h6 Share
-            ul
-                li
-                    a(ng-href='#{{$root.selectedTorrent.infoHash}}', target='_blank') βTorrent
-                li
-                    a(ng-href='{{$root.selectedTorrent.magnetURI}}', target='_blank') Magnet URI
-                li
-                    a(ng-href='{{$root.selectedTorrent.safeTorrentFileURL}}', target='_self', download='{{$root.selectedTorrent.fileName}}') .torrent
-                li
-                    strong Hash: 
-                    | {{$root.selectedTorrent.infoHash}} 
-        .six.columns
+    .div(ng-if="selectedTorrent", style="text-align: center")
+        .row(style='overflow: auto')
+            h3 {{$root.selectedTorrent.name}}
+            h4 {{$root.selectedTorrent.length | pbytes}}
+            h4 {{$root.selectedTorrent.progress | progress}}
+            h4 {{$root.selectedTorrent.downloadSpeed | pbytes:1}} {{$root.selectedTorrent.timeRemaining | humanTime}}
+        .row
             h5 Files
-            table.u-full-width
+            table(style="margin: auto")
                 thead
                     tr
                         th Name
@@ -52,3 +37,15 @@
                                 option(value='1') High Priority
                                 option(value='0' selected='') Low Priority
                                 option(value='-1') Don't download
+        .row
+            h5 Share
+            ul(style="text-align: justify")
+                li
+                    a(ng-href='#{{$root.selectedTorrent.infoHash}}', target='_blank') βTorrent
+                li
+                    a(ng-href='{{$root.selectedTorrent.magnetURI}}', target='_blank') Magnet URI
+                li
+                    a(ng-href='{{$root.selectedTorrent.safeTorrentFileURL}}', target='_self', download='{{$root.selectedTorrent.fileName}}') .torrent
+                li
+                    strong Hash: 
+                    | {{$root.selectedTorrent.infoHash}}
