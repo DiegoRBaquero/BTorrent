@@ -1,6 +1,7 @@
 trackers = [
-  'wss://tracker.btorrent.xyz' 
-  'wss://tracker.webtorrent.io' 
+  [ 'wss://tracker.btorrent.xyz' ]
+  [ 'wss://tracker.webtorrent.io' ]
+  [ 'wss://tracker.openwebtorrent.com' ]
 ]
 
 opts = {
