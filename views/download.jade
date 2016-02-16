@@ -13,13 +13,27 @@
                 i.fa.fa-folder-open
                 |  Open torrent file
     .div(ng-if="selectedTorrent", style="text-align: center")
-        .row(style='overflow: auto')
-            h3 {{$root.selectedTorrent.name}}
-            h4 {{$root.selectedTorrent.length | pbytes}}
-            h4 {{$root.selectedTorrent.progress | progress}}
-            h4 {{$root.selectedTorrent.downloadSpeed | pbytes:1}} {{$root.selectedTorrent.timeRemaining | humanTime}}
-        .row
-            h5 Files
+        .four.columns(style='overflow: auto')
+            h4 Information
+            table.u-full-width
+                tbody
+                    tr
+                        td Name
+                        td {{$root.selectedTorrent.name}}
+                    tr
+                        td Size
+                        td {{$root.selectedTorrent.length | pbytes}}
+                    tr
+                        td Completed
+                        td {{$root.selectedTorrent.progress | progress}} ({{$root.selectedTorrent.downloaded | pbytes}})
+                    tr 
+                        td ↓ Speed
+                        td {{$root.selectedTorrent.downloadSpeed | pbytes:1}}
+                    tr
+                        td ETA
+                        td {{$root.selectedTorrent.timeRemaining | humanTime}}
+        .four.columns
+            h4 Files
             table(style="margin: auto")
                 thead
                     tr
@@ -37,8 +51,9 @@
                                 option(value='1') High Priority
                                 option(value='0' selected='') Low Priority
                                 option(value='-1') Don't download
-        .row
-            h5 Share
+            h5 ↑ Click a file to download it
+        .four.columns
+            h4 Share
             ul(style="text-align: justify")
                 li
                     a(ng-href='#{{$root.selectedTorrent.infoHash}}', target='_blank') βTorrent
