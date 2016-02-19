@@ -1,3 +1,5 @@
+navigator.registerProtocolHandler 'magnet', window.location.origin + '#%s', 'βTorrent'
+
 trackers = [
   'wss://tracker.btorrent.xyz'
   'wss://tracker.webtorrent.io'
