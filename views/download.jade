@@ -26,7 +26,10 @@
                     tr
                         td Completed
                         td {{$root.selectedTorrent.progress | progress}} ({{$root.selectedTorrent.downloaded | pbytes}})
-                    tr 
+                    tr
+                        td Peers
+                        td {{$root.selectedTorrent.numPeers}}
+                    tr
                         td ↓ Speed
                         td {{$root.selectedTorrent.downloadSpeed | pbytes:1}}
                     tr
