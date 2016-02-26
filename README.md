@@ -1,6 +1,8 @@
 βTorrent
 ========
 
+[![Join the chat at https://gitter.im/DiegoRBaquero/BTorrent](https://badges.gitter.im/DiegoRBaquero/BTorrent.svg)](https://gitter.im/DiegoRBaquero/BTorrent?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 **[βTorrent]** is a fully-featured **[WebTorrent]** browser client written in [Jade], [CoffeeScript] and [Sass]
 
 ### Features
