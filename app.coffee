@@ -63,7 +63,7 @@ app = angular.module 'BTorrent', ['ngRoute', 'ui.grid', 'ui.grid.resizeColumns',
 
 app.controller 'BTorrentCtrl', ['$scope','$rootScope','$http','$log','$location', 'ngNotify', ($scope, $rootScope, $http, $log, $location, ngNotify) ->
   ngNotify.config
-    duration: 10000
+    duration: 5000
     html: true
 
   if !WebTorrent.WEBRTC_SUPPORT?
@@ -169,7 +169,7 @@ app.controller 'BTorrentCtrl', ['$scope','$rootScope','$http','$log','$location'
 
 app.controller 'FullCtrl', ['$scope','$rootScope','$http','$log','$location', 'ngNotify', ($scope, $rootScope, $http, $log, $location, ngNotify) ->
   ngNotify.config
-    duration: 10000
+    duration: 5000
     html: true
 
   $scope.addMagnet = ->
@@ -216,7 +216,7 @@ app.controller 'FullCtrl', ['$scope','$rootScope','$http','$log','$location', 'n
 
 app.controller 'DownloadCtrl', ['$scope','$rootScope','$http','$log','$location', 'ngNotify', ($scope, $rootScope, $http, $log, $location, ngNotify) ->
   ngNotify.config
-    duration: 10000
+    duration: 5000
     html: true
 
   $scope.addMagnet = ->
@@ -233,7 +233,7 @@ app.controller 'DownloadCtrl', ['$scope','$rootScope','$http','$log','$location'
 
 app.controller 'ViewCtrl', ['$scope','$rootScope','$http','$log','$location', 'ngNotify', ($scope, $rootScope, $http, $log, $location, ngNotify) ->
   ngNotify.config
-    duration: 10000
+    duration: 2000
     html: true
 
   onTorrent = (torrent, isSeed) ->
