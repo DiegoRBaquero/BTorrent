@@ -50,15 +50,15 @@ app = angular.module 'BTorrent', ['ngRoute', 'ui.grid', 'ui.grid.resizeColumns',
     requireBase: false
   ).hashPrefix '#'
   
-  $routeProvider.when '/stream',
-    templateUrl: 'views/stream.html'
-    controller: 'StreamCtrl'
+  $routeProvider.when '/view',
+    templateUrl: 'views/view.html'
+    controller: 'ViewCtrl'
   .when '/download',
     templateUrl: 'views/download.html'
     controller: 'DownloadCtrl'
   .otherwise 
-    templateUrl: 'views/main.html'
-    controller: 'MainCtrl'
+    templateUrl: 'views/full.html'
+    controller: 'FullCtrl'
 ]
 
 app.controller 'BTorrentCtrl', ['$scope','$rootScope','$http','$log','$location', 'ngNotify', ($scope, $rootScope, $http, $log, $location, ngNotify) ->
@@ -103,11 +103,11 @@ app.controller 'BTorrentCtrl', ['$scope','$rootScope','$http','$log','$location'
     ngNotify.set err, 'error'
     er err, torrent
 
-  $rootScope.addMagnet = (magnet) ->
+  $rootScope.addMagnet = (magnet, onTorrent) ->
     if magnet? && magnet.length > 0
       dbg 'Adding magnet/hash ' + magnet
       $rootScope.client.processing = true
-      $rootScope.client.add magnet, opts, $rootScope.onTorrent
+      $rootScope.client.add magnet, opts, onTorrent || $rootScope.onTorrent
 
   $rootScope.destroyedTorrent = (err) ->
     if err
@@ -129,6 +129,8 @@ app.controller 'BTorrentCtrl', ['$scope','$rootScope','$http','$log','$location'
     torrent.safeTorrentFileURL = torrent.torrentFileBlobURL
     torrent.fileName = torrent.name + '.torrent'
     if !isSeed
+      dbg 'Received metadata', torrent
+      ngNotify.set 'Received ' + torrent.name + ' metadata'
       if !($rootScope.selectedTorrent?)
         $rootScope.selectedTorrent = torrent
       $rootScope.client.processing = false
@@ -145,11 +147,6 @@ app.controller 'BTorrentCtrl', ['$scope','$rootScope','$http','$log','$location'
         if !isSeed
           dbg 'Done ', file
           ngNotify.set '<b>' + file.name + '</b> ready for download', 'success'
-      if !isSeed
-        dbg 'Received metadata', file
-        ngNotify.set 'Received ' + torrent.name + ' metadata'
-      console.info $rootScope.client
-      console.info $rootScope.client
     torrent.on 'download', (chunkSize) ->
       #if !isSeed
       #  dbg 'Downloaded chunk', torrent
@@ -167,17 +164,10 @@ app.controller 'BTorrentCtrl', ['$scope','$rootScope','$http','$log','$location'
   $rootScope.onSeed = (torrent) ->
     $rootScope.onTorrent torrent, true
 
-  if $location.hash() != ''
-    $rootScope.client.processing = true
-    setTimeout ->
-      dbg 'Adding ' + $location.hash()
-      $rootScope.client.add $location.hash(), $rootScope.onTorrent
-    , 0
-
   dbg 'Ready'
 ]
 
-app.controller 'MainCtrl', ['$scope','$rootScope','$http','$log','$location', 'ngNotify', ($scope, $rootScope, $http, $log, $location, ngNotify) ->
+app.controller 'FullCtrl', ['$scope','$rootScope','$http','$log','$location', 'ngNotify', ($scope, $rootScope, $http, $log, $location, ngNotify) ->
   ngNotify.config
     duration: 10000
     html: true
@@ -215,6 +205,13 @@ app.controller 'MainCtrl', ['$scope','$rootScope','$http','$log','$location', 'n
         $rootScope.selectedTorrent = null
       else 
         $rootScope.selectedTorrent = row.entity
+
+  if $location.hash() != ''
+    $rootScope.client.processing = true
+    setTimeout ->
+      dbg 'Adding ' + $location.hash()
+      $rootScope.client.add $location.hash(), $rootScope.onTorrent
+    , 0
 ]
 
 app.controller 'DownloadCtrl', ['$scope','$rootScope','$http','$log','$location', 'ngNotify', ($scope, $rootScope, $http, $log, $location, ngNotify) ->
@@ -225,16 +222,56 @@ app.controller 'DownloadCtrl', ['$scope','$rootScope','$http','$log','$location'
   $scope.addMagnet = ->
     $rootScope.addMagnet($scope.torrentInput)
     $scope.torrentInput = ''
+
+  if $location.hash() != ''
+    $rootScope.client.processing = true
+    setTimeout ->
+      dbg 'Adding ' + $location.hash()
+      $rootScope.client.add $location.hash(), $rootScope.onTorrent
+    , 0
 ]
 
-app.controller 'StreamCtrl', ['$scope','$rootScope','$http','$log','$location', 'ngNotify', ($scope, $rootScope, $http, $log, $location, ngNotify) ->
+app.controller 'ViewCtrl', ['$scope','$rootScope','$http','$log','$location', 'ngNotify', ($scope, $rootScope, $http, $log, $location, ngNotify) ->
   ngNotify.config
     duration: 10000
     html: true
 
+  onTorrent = (torrent, isSeed) ->
+    dbg torrent.magnetURI
+    torrent.safeTorrentFileURL = torrent.torrentFileBlobURL
+    torrent.fileName = torrent.name + '.torrent'
+    $rootScope.selectedTorrent = torrent
+    $rootScope.client.processing = false
+    dbg 'Received metadata', torrent
+    ngNotify.set 'Received ' + torrent.name + ' metadata'
+    torrent.files.forEach (file) ->
+      file.appendTo '#viewer' 
+      file.getBlobURL (err, url) ->
+        if err
+          throw err
+        file.url = url
+        dbg 'Done ', file
+    torrent.on 'download', (chunkSize) ->
+      #  dbg 'Downloaded chunk', torrent
+    torrent.on 'upload', (chunkSize) ->
+      #dbg 'Uploaded chunk', torrent
+    torrent.on 'done', ->
+      dbg 'Done', torrent
+    torrent.on 'wire', (wire, addr) ->
+      dbg 'Wire ' + addr, torrent
+    torrent.on 'error', (err) ->
+      er err
+    
   $scope.addMagnet = ->
-    $rootScope.addMagnet($scope.torrentInput)
+    $rootScope.addMagnet $scope.torrentInput, onTorrent
     $scope.torrentInput = ''
+
+  if $location.hash() != ''
+    $rootScope.client.processing = true
+    setTimeout ->
+      dbg 'Adding ' + $location.hash()
+      $rootScope.client.add $location.hash(), onTorrent
+    , 0
 ]
 
 app.filter 'html', ['$sce', ($sce) ->

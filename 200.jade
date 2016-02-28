@@ -8,7 +8,7 @@ html(ng-app='BTorrent', lang='en')
         meta(name='keywords', content='βTorrent, btorrent, client, webtorrent, browser, torrent, stream, bittorrent, torrenting, sharing, filesharing')
         meta(name='author', content='Diego Rodríguez Baquero - DiegoRBaquero')
         meta(name='viewport', content='width=device-width, initial-scale=1')
-        script(src='https://cdn.jsdelivr.net/g/webtorrent@0.78,momentjs@2.11,angularjs@1.4(angular.min.js+angular-route.min.js+angular-sanitize.min.js),angular.ui-grid@3.1,angular.ng-notify@0.7,angular.file-upload@12')
+        script(src='https://cdn.jsdelivr.net/g/webtorrent@0.79,momentjs@2.11,angularjs@1.4(angular.min.js+angular-route.min.js+angular-sanitize.min.js),angular.ui-grid@3.1,angular.ng-notify@0.7,angular.file-upload@12')
         link(rel='stylesheet', href='https://cdn.jsdelivr.net/g/normalize@3.0,skeleton@2.0,angular.ng-notify@0.7(ng-notify.min.css)')
         link(rel='stylesheet', href='https://cdn.jsdelivr.net/fontawesome/4.5/css/font-awesome.min.css')
         link(rel='stylesheet', href='https://cdn.jsdelivr.net/angular.ui-grid/3.1/ui-grid.min.css')
@@ -17,11 +17,14 @@ html(ng-app='BTorrent', lang='en')
         header
             h1
                 | βTorrent
-                span.version  v0.13.1
-            div.views 
+                span.version  v0.14.0
+            div.views(ng-show='$root.client.torrents.length == 0')
                 a(ng-href='/#') Full
                 |  | 
                 a(ng-href='/download') Single Download
+                |  | 
+                a(ng-href='/view') Stream / View
+        #viewer
         #view(ng-view)
         footer
             a.button(href="https://github.com/DiegoRBaquero/BTorrent/issues", target="_blank")
