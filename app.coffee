@@ -237,6 +237,7 @@ app.controller 'ViewCtrl', ['$scope','$rootScope','$http','$log','$location', 'n
     html: true
 
   onTorrent = (torrent, isSeed) ->
+    $rootScope.viewerStyle = {'margin-top': '-20px'}
     dbg torrent.magnetURI
     torrent.safeTorrentFileURL = torrent.torrentFileBlobURL
     torrent.fileName = torrent.name + '.torrent'

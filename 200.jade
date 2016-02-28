@@ -24,7 +24,7 @@ html(ng-app='BTorrent', lang='en')
                 a(ng-href='/download') Single Download
                 |  | 
                 a(ng-href='/view') Stream / View
-        #viewer
+        #viewer(ng-style="$root.viewerStyle")
         #view(ng-view)
         footer
             a.button(href="https://github.com/DiegoRBaquero/BTorrent/issues", target="_blank")
