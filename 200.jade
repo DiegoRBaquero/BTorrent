@@ -1,49 +1,52 @@
 doctype html
-html(ng-app='BTorrent', lang='en')
+html(ng-app="BTorrent" lang="en")
     head
-        base(href='')
-        meta(charset='UTF-8')
+        base(href="")
+        meta(charset="UTF-8")
         title βTorrent: Browser WebTorrent Client
-        meta(name='description', content='βTorrent is the first fully-featured Browser WebTorrent Client')
-        meta(name='keywords', content='βTorrent, btorrent, client, webtorrent, browser, torrent, stream, bittorrent, torrenting, sharing, filesharing')
-        meta(name='author', content='Diego Rodríguez Baquero - DiegoRBaquero')
-        meta(name='viewport', content='width=device-width, initial-scale=1')
-        script(src='https://cdn.jsdelivr.net/g/webtorrent@0,momentjs@2,angularjs@1.4(angular.min.js+angular-route.min.js+angular-sanitize.min.js),angular.ui-grid@3.1,angular.ng-notify@0.7,angular.file-upload@12')
-        link(rel='stylesheet', href='https://cdn.jsdelivr.net/g/normalize@3.0,skeleton@2.0,angular.ng-notify@0.7(ng-notify.min.css)')
-        link(rel='stylesheet', href='https://cdn.jsdelivr.net/fontawesome/4.5/css/font-awesome.min.css')
-        link(rel='stylesheet', href='https://cdn.jsdelivr.net/angular.ui-grid/3.1/ui-grid.min.css')
-        link(rel='stylesheet', href='style.css')
-    body(ng-controller='BTorrentCtrl', ng-cloak='')
+        meta(name="description" content="βTorrent is the first fully-featured Browser WebTorrent Client")
+        meta(name="keywords" content="βTorrent, btorrent, client, webtorrent, browser, torrent, stream, bittorrent, torrenting, sharing, filesharing")
+        meta(name="author" content="Diego Rodríguez Baquero - DiegoRBaquero")
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        script(src="https://cdn.jsdelivr.net/g/webtorrent@0,momentjs@2,angularjs@1.4(angular.min.js+angular-route.min.js+angular-sanitize.min.js),angular.ui-grid@3.1,angular.ng-notify@0.7,angular.file-upload@12")
+        link(rel="stylesheet" href="https://cdn.jsdelivr.net/g/normalize@3.0,skeleton@2.0,angular.ng-notify@0.7(ng-notify.min.css)")
+        link(rel="stylesheet" href="https://cdn.jsdelivr.net/fontawesome/4.5/css/font-awesome.min.css")
+        link(rel="stylesheet" href="https://cdn.jsdelivr.net/angular.ui-grid/3.1/ui-grid.min.css")
+        link(rel="stylesheet" href="style.css")
+    body(ng-controller="BTorrentCtrl" ng-cloak="")
         header
             h1
                 | βTorrent
                 span.version  v0.14
-            div.views(ng-show='$root.client.torrents.length == 0')
-                a(ng-href='/#') Full
+            div.views(ng-show="$root.client.torrents.length == 0")
+                a(ng-href="/#") Full
                 |  | 
-                a(ng-href='/download') Single Download
+                a(ng-href="/download") Single Download
                 |  | 
-                a(ng-href='/view') Stream / View
+                a(ng-href="/view") Stream / View
         #viewer(ng-style="$root.viewerStyle")
         #view(ng-view)
         footer
-            a.button(href="https://github.com/DiegoRBaquero/BTorrent/issues", target="_blank")
+            a.button(href="https://github.com/DiegoRBaquero/BTorrent/issues" target="_blank")
                 i.fa.fa-github
                 |  Suggest a feature / Report a bug 
                 i.fa.fa-comment
             br
-            | βTorrent is an Open-Source project by 
-            a(href='http://diegorbaquero.com') DiegoRBaquero
+            b βTorrent is an Open-Source project by 
+                a(href="http://diegorbaquero.com" target="_blank") DiegoRBaquero
+            br
+            b 
+                a(href="https://tracker.btorrent.xyz/stats" target="_blank") βTorrent's Tracker Stats
             br
             | Powered by 
-            a(href='https://github.com/feross/webtorrent') WebTorrent
+            a(href="https://github.com/feross/webtorrent" target="_blank") WebTorrent
             br
             small Hosted by 
-                a(href='https://m.do.co/c/0b25a910e6e4') Digital Ocean
+                a(href="https://m.do.co/c/0b25a910e6e4" target="_blank") Digital Ocean
                 |  | 
-                a(href="http://www.vultr.com/?ref=6823526") Vultr
+                a(href="http://www.vultr.com/?ref=6823526" target="_blank") Vultr
                 |  | 
-                a(href="https://www.linode.com/?r=6d9b41c957019d7fe6d54d159635e5475048e319") Linode
+                a(href="https://www.linode.com/?r=6d9b41c957019d7fe6d54d159635e5475048e319" target="_blank") Linode
         .spinner(ng-show="client.processing")
             i.fa.fa-spinner.fa-spin.spinner-icon
-        script(src='app.js')
+        script(src="app.js")

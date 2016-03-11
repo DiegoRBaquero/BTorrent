@@ -1,16 +1,16 @@
 .container
-    div(ng-hide='$root.client.torrents.length != 0', style='vertical-align: middle; text-align: center')
+    div(ng-hide="$root.client.torrents.length != 0" style="vertical-align: middle; text-align: center")
         .row
-            form.no-margin(ng-submit='addMagnet()')
+            form.no-margin(ng-submit="addMagnet()")
                 label Enter magnet, hash or http(s) .torrent
-                input(type='text', placeholder='magnet, hash or http(s) .torrent', ng-model='torrentInput', ng-disabled='$root.disabled', style='width: 50%')
-            //button(ng-click='addMagnet()', ng-disabled='!torrentInput.length || $root.disabled', ng-class='{"button-primary": torrentInput.length}')
+                input(type="text" placeholder="magnet, hash or http(s) .torrent" ng-model="torrentInput" ng-disabled="$root.disabled" style="width: 50%")
+            //button(ng-click="addMagnet()" ng-disabled="!torrentInput.length || $root.disabled" ng-class="{"button-primary": torrentInput.length}")
                 i.fa.fa-download
                 |  Download
         .row
             label or...
-            button(type='file', ngf-select='$root.openTorrentFile($file)', ng-disabled='$root.disabled', ng-class='{"button-primary": !$root.disabled}')
+            button(type="file" ngf-select="$root.openTorrentFile($file)" ng-disabled="$root.disabled" ng-class="{'button-primary': !$root.disabled}")
                 i.fa.fa-folder-open
                 |  Open torrent file
-    .div(ng-if="selectedTorrent", style="text-align: center")
+    .div(ng-if="selectedTorrent" style="text-align: center")
         | Downloaded {{$root.selectedTorrent.downloaded | pbytes}}/{{$root.selectedTorrent.length | pbytes}} ({{$root.selectedTorrent.progress | progress}}) at {{$root.selectedTorrent.downloadSpeed | pbytes:1}} from {{$root.selectedTorrent.numPeers}} peers. ETA: {{$root.selectedTorrent.timeRemaining | humanTime}}
