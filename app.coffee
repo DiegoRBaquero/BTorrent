@@ -67,6 +67,8 @@ app = angular.module 'BTorrent', ['ngRoute', 'ui.grid', 'ui.grid.resizeColumns',
 ]
 
 app.controller 'BTorrentCtrl', ['$scope','$rootScope','$http','$log','$location', 'ngNotify', ($scope, $rootScope, $http, $log, $location, ngNotify) ->
+  $rootScope.version = VERSION
+  
   ngNotify.config
     duration: 5000
     html: true
