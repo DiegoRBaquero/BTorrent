@@ -81,7 +81,7 @@ app.controller 'BTorrentCtrl', ['$scope','$rootScope','$http','$log','$location'
   setInterval updateAll, 500
 
   $rootScope.seedFiles = (files) ->
-    if files?
+    if files? && files.length > 0
       if files.length == 1
         dbg 'Seeding file ' + files[0].name
       else
