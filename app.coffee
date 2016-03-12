@@ -1,3 +1,6 @@
+VERSION = "0.14"
+BUILD = "1"
+
 trackers = [
   'wss://tracker.btorrent.xyz'
   'wss://tracker.webtorrent.io'
@@ -39,6 +42,8 @@ dbg = (string, item, color) ->
 
 er = (err, item) ->
   dbg err, item, '#FF0000'
+
+dbg "Starting... v#{VERSION}b#{BUILD}"
 
 client = new WebTorrent {rtcConfig: rtcConfig}
 scope = null
@@ -164,7 +169,7 @@ app.controller 'BTorrentCtrl', ['$scope','$rootScope','$http','$log','$location'
   $rootScope.onSeed = (torrent) ->
     $rootScope.onTorrent torrent, true
 
-  dbg 'Ready'
+  dbg "Ready"
 ]
 
 app.controller 'FullCtrl', ['$scope','$rootScope','$http','$log','$location', 'ngNotify', ($scope, $rootScope, $http, $log, $location, ngNotify) ->

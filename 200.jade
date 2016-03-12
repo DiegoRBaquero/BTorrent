@@ -17,7 +17,7 @@ html(ng-app="BTorrent" lang="en")
         header
             h1
                 | βTorrent
-                span.version  v0.14
+                span.version  v{{$root.version}}
             div.views(ng-show="$root.client.torrents.length == 0")
                 a(ng-href="/#") Full
                 |  | 
