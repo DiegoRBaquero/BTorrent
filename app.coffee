@@ -60,6 +60,7 @@ app.controller 'BTorrentCtrl', ['$scope','$rootScope','$http','$log','$location'
 
   $rootScope.seedFiles = (files) ->
     if files? && files.length > 0
+      opts = {}
       if files.length == 1
         dbg 'Seeding file ' + files[0].name
       else
@@ -68,13 +69,12 @@ app.controller 'BTorrentCtrl', ['$scope','$rootScope','$http','$log','$location'
         opts.name = name
       $rootScope.client.processing = true
       $rootScope.client.seed files, opts, $rootScope.onSeed
-      delete opts.name
 
   $rootScope.openTorrentFile = (file) ->
     if file?
       dbg 'Adding torrent file ' + file.name
       $rootScope.client.processing = true
-      $rootScope.client.add file, opts, $rootScope.onTorrent
+      $rootScope.client.add file, $rootScope.onTorrent
 
   $rootScope.client.on 'error', (err, torrent) ->
     $rootScope.client.processing = false
@@ -85,7 +85,7 @@ app.controller 'BTorrentCtrl', ['$scope','$rootScope','$http','$log','$location'
     if magnet? && magnet.length > 0
       dbg 'Adding magnet/hash ' + magnet
       $rootScope.client.processing = true
-      $rootScope.client.add magnet, opts, onTorrent || $rootScope.onTorrent
+      $rootScope.client.add magnet, onTorrent || $rootScope.onTorrent
 
   $rootScope.destroyedTorrent = (err) ->
     if err
@@ -214,7 +214,7 @@ app.controller 'ViewCtrl', ['$scope','$rootScope','$http','$log','$location', 'n
     duration: 2000
     html: true
 
-  onTorrent = (torrent, isSeed) ->
+  onTorrent = (torrent) ->
     $rootScope.viewerStyle = {'margin-top': '-20px', 'text-align': 'center'}
     dbg torrent.magnetURI
     torrent.safeTorrentFileURL = torrent.torrentFileBlobURL
