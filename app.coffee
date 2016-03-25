@@ -16,7 +16,7 @@ er = (err, item) ->
 
 dbg "Starting... v#{VERSION}b#{BUILD}"
 
-client = new WebTorrent {rtcConfig: rtcConfig}
+client = new WebTorrent()
 scope = null
 
 app = angular.module 'BTorrent', ['ngRoute', 'ui.grid', 'ui.grid.resizeColumns', 'ui.grid.selection', 'ngFileUpload', 'ngNotify'], ['$compileProvider','$locationProvider', '$routeProvider', ($compileProvider, $locationProvider, $routeProvider) ->
