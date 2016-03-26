@@ -1,5 +1,25 @@
 VERSION = "0.15"
-BUILD = "1"
+BUILD = "2"
+
+trackers = [
+  'wss://tracker.btorrent.xyz'
+  'wss://tracker.webtorrent.io'
+  'wss://tracker.openwebtorrent.com'
+  'wss://tracker.fastcast.nz'
+]
+
+opts = {
+  announce: trackers
+}
+
+rtcConfig = {
+  "iceServers": [
+    {
+      "url": "stun:23.21.150.121"
+      "urls": "stun:23.21.150.121"
+    }
+  ]
+}
 
 debug = window.localStorage.getItem('debug')?
 
@@ -16,7 +36,7 @@ er = (err, item) ->
 
 dbg "Starting... v#{VERSION}b#{BUILD}"
 
-client = new WebTorrent()
+client = new WebTorrent rtcConfig: rtcConfig
 scope = null
 
 app = angular.module 'BTorrent', ['ngRoute', 'ui.grid', 'ui.grid.resizeColumns', 'ui.grid.selection', 'ngFileUpload', 'ngNotify'], ['$compileProvider','$locationProvider', '$routeProvider', ($compileProvider, $locationProvider, $routeProvider) ->
@@ -60,7 +80,6 @@ app.controller 'BTorrentCtrl', ['$scope','$rootScope','$http','$log','$location'
 
   $rootScope.seedFiles = (files) ->
     if files? && files.length > 0
-      opts = {}
       if files.length == 1
         dbg 'Seeding file ' + files[0].name
       else
@@ -69,12 +88,13 @@ app.controller 'BTorrentCtrl', ['$scope','$rootScope','$http','$log','$location'
         opts.name = name
       $rootScope.client.processing = true
       $rootScope.client.seed files, opts, $rootScope.onSeed
+      delete opts.name
 
   $rootScope.openTorrentFile = (file) ->
     if file?
       dbg 'Adding torrent file ' + file.name
       $rootScope.client.processing = true
-      $rootScope.client.add file, $rootScope.onTorrent
+      $rootScope.client.add file, opts, $rootScope.onTorrent
 
   $rootScope.client.on 'error', (err, torrent) ->
     $rootScope.client.processing = false
@@ -85,7 +105,7 @@ app.controller 'BTorrentCtrl', ['$scope','$rootScope','$http','$log','$location'
     if magnet? && magnet.length > 0
       dbg 'Adding magnet/hash ' + magnet
       $rootScope.client.processing = true
-      $rootScope.client.add magnet, onTorrent || $rootScope.onTorrent
+      $rootScope.client.add magnet, opts, onTorrent || $rootScope.onTorrent
 
   $rootScope.destroyedTorrent = (err) ->
     if err
@@ -151,7 +171,7 @@ app.controller 'FullCtrl', ['$scope','$rootScope','$http','$log','$location', 'n
     html: true
 
   $scope.addMagnet = ->
-    $rootScope.addMagnet($scope.torrentInput)
+    $rootScope.addMagnet $scope.torrentInput
     $scope.torrentInput = ''
     
   $scope.columns = [
@@ -188,7 +208,7 @@ app.controller 'FullCtrl', ['$scope','$rootScope','$http','$log','$location', 'n
     $rootScope.client.processing = true
     setTimeout ->
       dbg 'Adding ' + $location.hash()
-      $rootScope.client.add $location.hash(), $rootScope.onTorrent
+      $rootScope.addMagnet $location.hash()
     , 0
 ]
 
@@ -205,7 +225,7 @@ app.controller 'DownloadCtrl', ['$scope','$rootScope','$http','$log','$location'
     $rootScope.client.processing = true
     setTimeout ->
       dbg 'Adding ' + $location.hash()
-      $rootScope.client.add $location.hash(), $rootScope.onTorrent
+      $rootScope.addMagnet $location.hash()
     , 0
 ]
 
@@ -249,7 +269,7 @@ app.controller 'ViewCtrl', ['$scope','$rootScope','$http','$log','$location', 'n
     $rootScope.client.processing = true
     setTimeout ->
       dbg 'Adding ' + $location.hash()
-      $rootScope.client.add $location.hash(), onTorrent
+      $rootScope.addMagnet $location.hash(), onTorrent
     , 0
 ]
 
