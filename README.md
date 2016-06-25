@@ -1,6 +1,6 @@
 βTorrent
 ========
-**[βTorrent]** is a fully-featured **[WebTorrent]** browser client written in [Jade], [CoffeeScript] and [Sass]
+**[βTorrent]** is a fully-featured **[WebTorrent]** browser client written in HTML, JS and CSS
 
 [![Join the chat at https://gitter.im/DiegoRBaquero/BTorrent](https://badges.gitter.im/DiegoRBaquero/BTorrent.svg)](https://gitter.im/DiegoRBaquero/BTorrent?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -33,18 +33,14 @@ Website powered by [jsDelivr] and [CloudFlare]. I use [nginx] in my server.
 
 Don't like CloudFlare? No problem! Check [Direct-βTorrent].
 
-### Easily built, tested and served
-**I use [Harp] to rapidly test and compile the project**
+### HTML5 serving
+**You must serve index.html as the default**
 
-Build the project into HTML, JS and CSS easily. Just use:
-```bash
-harp compile
+For nginx, use this conf:
 ```
-This will create a www folder with the compiled files
-
-If you need to serve the files and view the compiled version instantly just use:
-```bash
-harp server
+    location / {
+        try_files $uri$args $uri$args/ /index.html;
+    }
 ```
 
 ### Enable Debugging

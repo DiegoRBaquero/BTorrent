@@ -1,0 +1,20 @@
+
+<div class="container">
+  <div ng-hide="$root.client.torrents.length != 0" style="vertical-align: middle; text-align: center">
+    <div class="row">
+      <form class="no-margin" ng-submit="addMagnet()">
+        <label>Enter magnet, hash or http(s) .torrent</label>
+        <input type="text" placeholder="magnet, hash or http(s) .torrent" ng-model="torrentInput" ng-disabled="$root.disabled" style="width: 50%"/>
+      </form>
+      <!--button(ng-click="addMagnet()" ng-disabled="!torrentInput.length || $root.disabled" ng-class="{"button-primary": torrentInput.length}")
+      i.fa.fa-download
+      |  Download
+      -->
+    </div>
+    <div class="row">
+      <label>or...</label>
+      <button type="file" ngf-select="$root.openTorrentFile($file)" ng-disabled="$root.disabled" ng-class="{'button-primary': !$root.disabled}"><i class="fa fa-folder-open"></i> Open torrent file</button>
+    </div>
+  </div>
+  <div class="div" ng-if="selectedTorrent" style="text-align: center">Downloaded {{$root.selectedTorrent.downloaded | pbytes}}/{{$root.selectedTorrent.length | pbytes}} ({{$root.selectedTorrent.progress | progress}}) at {{$root.selectedTorrent.downloadSpeed | pbytes:1}} from {{$root.selectedTorrent.numPeers}} peers. ETA: {{$root.selectedTorrent.timeRemaining | humanTime}}</div>
+</div>
