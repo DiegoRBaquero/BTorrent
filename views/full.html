@@ -18,8 +18,8 @@
   <div class="row" ng-if="selectedTorrent">
     <div class="six columns" style="overflow: auto">
       <h5>{{$root.selectedTorrent.name}}  
-        <button ng-if="!$root.selectedTorrent.swarm.paused" ng-click="$root.selectedTorrent.pause()"><i class="fa fa-pause"></i> Pause</button> 
-        <button ng-if="$root.selectedTorrent.swarm.paused" ng-click="$root.selectedTorrent.resume()"><i class="fa fa-play"></i> Resume</button> 
+        <button ng-if="!$root.selectedTorrent.paused" ng-click="$root.selectedTorrent.pause()"><i class="fa fa-pause"></i> Pause</button> 
+        <button ng-if="$root.selectedTorrent.paused" ng-click="$root.selectedTorrent.resume()"><i class="fa fa-play"></i> Resume</button> 
         <button class="button-danger" ng-click="$root.selectedTorrent.destroy($root.destroyedTorrent)"><i class="fa fa-times"></i> Remove</button>
       </h5>
       <h6>Share</h6>
