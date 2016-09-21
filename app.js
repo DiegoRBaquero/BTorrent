@@ -4,7 +4,7 @@ VERSION = '0.15'
 
 BUILD = '2'
 
-trackers = ['wss://tracker.btorrent.xyz', 'wss://tracker.webtorrent.io', 'wss://tracker.openwebtorrent.com', 'wss://tracker.fastcast.nz']
+trackers = ['wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com', 'wss://tracker.fastcast.nz']
 
 opts = {
   announce: trackers
