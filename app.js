@@ -2,9 +2,9 @@ let BUILD, VERSION, app, client, dbg, debug, er, opts, rtcConfig, trackers
 
 VERSION = '0.15'
 
-BUILD = '2'
+BUILD = '3'
 
-trackers = ['wss://tracker.btorrent.xyz', 'wss://tracker.webtorrent.io', 'wss://tracker.openwebtorrent.com', 'wss://tracker.fastcast.nz']
+trackers = ['wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com', 'wss://tracker.fastcast.nz']
 
 opts = {
   announce: trackers
