@@ -31,7 +31,7 @@
 
 Website powered by [jsDelivr] and [CloudFlare]. I use [nginx] in my server.
 
-Don't like CloudFlare? No problem! Check [Direct-βTorrent] or [GitHub-βTorrent]
+Don't like CloudFlare? No problem! Check [Direct-βTorrent]
 
 ### HTML5 serving
 **You must serve index.html as the default**
@@ -66,7 +66,6 @@ MIT. Copyright (c) [Diego Rodríguez Baquero](http://diegorbaquero.com)
 
 [βTorrent]: https://btorrent.xyz
 [Direct-βTorrent]: https://direct.btorrent.xyz
-[GitHub-βTorrent]: https://diegorbaquero.github.io/BTorrent/
 [WebTorrent]: https://webtorrent.io
 [AngularJS]: https://angularjs.org/
 [Skeleton]: http://getskeleton.com/
