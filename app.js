@@ -1,8 +1,8 @@
 let BUILD, VERSION, app, client, dbg, debug, er, opts, rtcConfig, trackers
 
-VERSION = '0.15'
+VERSION = '0.16'
 
-BUILD = '3'
+BUILD = '1'
 
 trackers = ['wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com', 'wss://tracker.fastcast.nz']
 
@@ -13,8 +13,8 @@ opts = {
 rtcConfig = {
   'iceServers': [
     {
-      'url': 'stun:23.21.150.121',
-      'urls': 'stun:23.21.150.121'
+      'url': 'stun:stun.l.google.com:19305',
+      'urls': 'stun:stun.l.google.com:19305'
     }
   ]
 }
