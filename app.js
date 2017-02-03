@@ -319,7 +319,7 @@ app.controller('ViewCtrl', ['$scope', '$rootScope', '$http', '$log', '$location'
         dbg('Done ', file)
       })
     })
-    torrent.on('done', dbg('Done', torrent))
+    torrent.on('done', function () { dbg('Done', torrent) })
     torrent.on('wire', function (wire, addr) { dbg(`Wire ${addr}`, torrent) })
     torrent.on('error', er)
   }
