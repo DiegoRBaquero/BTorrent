@@ -1,10 +1,19 @@
 /* global WebTorrent, angular, moment, prompt */
 
-const VERSION = '0.17.0'
+const VERSION = '0.17.1'
 
 const tracker = ['wss://tracker.btorrent.xyz']
 const opts = {
   announce: tracker
+}
+
+const rtcConfig = {
+  'iceServers': [
+    {
+      'url': 'stun:stun.l.google.com:19305',
+      'urls': 'stun:stun.l.google.com:19305'
+    }
+  ]
 }
 
 const debug = window.localStorage.getItem('debug') != null
@@ -25,6 +34,7 @@ const er = function (err, item) { dbg(err, item, '#FF0000') }
 dbg(`Starting... v${VERSION}`)
 
 const client = new WebTorrent({
+  rtcConfig: rtcConfig,
   tracker: opts
 })
 
