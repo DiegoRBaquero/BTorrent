@@ -1,16 +1,13 @@
-let BUILD, VERSION, app, client, dbg, debug, er, opts, rtcConfig, trackers
+/* global WebTorrent, angular, moment, prompt */
 
-VERSION = '0.16'
+const VERSION = '0.16.2'
 
-BUILD = '1'
-
-trackers = ['wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com', 'wss://tracker.fastcast.nz']
-
-opts = {
+const trackers = ['wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com', 'wss://tracker.fastcast.nz']
+const opts = {
   announce: trackers
 }
 
-rtcConfig = {
+const rtcConfig = {
   'iceServers': [
     {
       'url': 'stun:stun.l.google.com:19305',
@@ -19,9 +16,9 @@ rtcConfig = {
   ]
 }
 
-debug = window.localStorage.getItem('debug') != null
+const debug = window.localStorage.getItem('debug') != null
 
-dbg = function (string, item, color) {
+const dbg = function (string, item, color) {
   color = color != null ? color : '#333333'
   if (debug) {
     if ((item != null) && item.name) {
@@ -32,18 +29,18 @@ dbg = function (string, item, color) {
   }
 }
 
-er = function (err, item) { dbg(err, item, '#FF0000') }
+const er = function (err, item) { dbg(err, item, '#FF0000') }
 
-dbg(`Starting... v${VERSION}b${BUILD}`)
+dbg(`Starting... v${VERSION}`)
 
-client = new WebTorrent({
+const client = new WebTorrent({
   tracker: {
     rtcConfig: rtcConfig,
     announce: trackers
   }
 })
 
-app = angular.module('BTorrent',
+const app = angular.module('BTorrent',
   ['ngRoute', 'ui.grid', 'ui.grid.resizeColumns', 'ui.grid.selection', 'ngFileUpload', 'ngNotify'],
   ['$compileProvider', '$locationProvider', '$routeProvider', function ($compileProvider, $locationProvider, $routeProvider) {
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|magnet|blob|javascript):/)
@@ -80,7 +77,6 @@ app.controller('BTorrentCtrl', ['$scope', '$rootScope', '$http', '$log', '$locat
     })
   }
   $rootScope.client = client
-  scope = $rootScope
   updateAll = function () {
     if ($rootScope.client.processing) {
       return
@@ -277,7 +273,7 @@ app.controller('DownloadCtrl', ['$scope', '$rootScope', '$http', '$log', '$locat
     duration: 5000,
     html: true
   })
-  $scope.addMagnet = function() {
+  $scope.addMagnet = function () {
     $rootScope.addMagnet($scope.torrentInput)
     $scope.torrentInput = ''
   }
