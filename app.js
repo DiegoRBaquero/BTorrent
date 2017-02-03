@@ -1,11 +1,8 @@
 /* global WebTorrent, angular, moment, prompt */
 
-const VERSION = '0.17.3'
+const VERSION = '0.17.4'
 
-const tracker = ['wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com', 'wss://tracker.fastcast.nz']
-const opts = {
-  announce: tracker
-}
+const trackers = ['wss://trackers.btorrent.xyz', 'wss://trackers.openwebtorrent.com', 'wss://trackers.fastcast.nz']
 
 const rtcConfig = {
   'iceServers': [
@@ -14,6 +11,15 @@ const rtcConfig = {
       'urls': 'stun:stun.l.google.com:19305'
     }
   ]
+}
+
+const torrentOpts = {
+  announce: trackers
+}
+
+const trackerOpts = {
+  announce: trackers,
+  rtcConfig: rtcConfig
 }
 
 const debug = window.localStorage.getItem('debug') != null
@@ -34,8 +40,7 @@ const er = function (err, item) { dbg(err, item, '#FF0000') }
 dbg(`Starting... v${VERSION}`)
 
 const client = new WebTorrent({
-  rtcConfig: rtcConfig,
-  tracker: opts
+  tracker: trackerOpts
 })
 
 const app = angular.module('BTorrent',
@@ -90,18 +95,18 @@ app.controller('BTorrentCtrl', ['$scope', '$rootScope', '$http', '$log', '$locat
       } else {
         dbg(`Seeding ${files.length} files`)
         name = prompt('Please name your torrent', 'My Awesome Torrent') || 'My Awesome Torrent'
-        opts.name = name
+        torrentOpts.name = name
       }
       $rootScope.client.processing = true
-      $rootScope.client.seed(files, opts, $rootScope.onSeed)
-      delete opts.name
+      $rootScope.client.seed(files, torrentOpts, $rootScope.onSeed)
+      delete torrentOpts.name
     }
   }
   $rootScope.openTorrentFile = function (file) {
     if (file != null) {
       dbg(`Adding torrent file ${file.name}`)
       $rootScope.client.processing = true
-      $rootScope.client.add(file, opts, $rootScope.onTorrent)
+      $rootScope.client.add(file, torrentOpts, $rootScope.onTorrent)
     }
   }
   $rootScope.client.on('error', function (err, torrent) {
@@ -113,7 +118,7 @@ app.controller('BTorrentCtrl', ['$scope', '$rootScope', '$http', '$log', '$locat
     if ((magnet != null) && magnet.length > 0) {
       dbg(`Adding magnet/hash ${magnet}`)
       $rootScope.client.processing = true
-      $rootScope.client.add(magnet, opts, onTorrent || $rootScope.onTorrent)
+      $rootScope.client.add(magnet, torrentOpts, onTorrent || $rootScope.onTorrent)
     }
   }
   $rootScope.destroyedTorrent = function (err) {
