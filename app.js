@@ -2,18 +2,9 @@
 
 const VERSION = '0.16.2'
 
-const trackers = ['wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com', 'wss://tracker.fastcast.nz']
+const tracker = ['wss://tracker.btorrent.xyz']
 const opts = {
-  announce: trackers
-}
-
-const rtcConfig = {
-  'iceServers': [
-    {
-      'url': 'stun:stun.l.google.com:19305',
-      'urls': 'stun:stun.l.google.com:19305'
-    }
-  ]
+  announce: tracker
 }
 
 const debug = window.localStorage.getItem('debug') != null
@@ -34,10 +25,7 @@ const er = function (err, item) { dbg(err, item, '#FF0000') }
 dbg(`Starting... v${VERSION}`)
 
 const client = new WebTorrent({
-  tracker: {
-    rtcConfig: rtcConfig,
-    announce: trackers
-  }
+  tracker: opts
 })
 
 const app = angular.module('BTorrent',
