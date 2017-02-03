@@ -1,13 +1,12 @@
 /* global WebTorrent, angular, moment, prompt */
 
-const VERSION = '0.17.5'
+const VERSION = '0.17.6'
 
 const trackers = ['wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com', 'wss://tracker.fastcast.nz']
 
 const rtcConfig = {
   'iceServers': [
     {
-      'url': 'stun:stun.l.google.com:19305',
       'urls': 'stun:stun.l.google.com:19305'
     }
   ]
