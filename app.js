@@ -1,6 +1,6 @@
 /* global WebTorrent, angular, moment, prompt */
 
-const VERSION = '0.16.2'
+const VERSION = '0.17.0'
 
 const tracker = ['wss://tracker.btorrent.xyz']
 const opts = {
