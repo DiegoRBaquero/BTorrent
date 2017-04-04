@@ -62,7 +62,7 @@ localStorage.removeItem('debug')
 - [whitef0x0](https://github.com/whitef0x0) For cleanup and ng-file-upload and other ideas
 
 ### License
-MIT. Copyright (c) [Diego Rodríguez Baquero](http://diegorbaquero.com)
+MIT. Copyright (c) [Diego Rodríguez Baquero](https://diegorbaquero.com)
 
 [βTorrent]: https://btorrent.xyz
 [Direct-βTorrent]: https://direct.btorrent.xyz
