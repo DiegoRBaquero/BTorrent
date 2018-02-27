@@ -1,6 +1,6 @@
 /* global WebTorrent, angular, moment, prompt */
 
-const VERSION = '0.17.6'
+const VERSION = '0.17.7'
 
 const trackers = ['wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com', 'wss://tracker.fastcast.nz']
 
@@ -21,13 +21,13 @@ const trackerOpts = {
   rtcConfig: rtcConfig
 }
 
-const debug = window.localStorage.getItem('debug') != null
+const debug = window.localStorage.getItem('debug') !== null
 
 const dbg = function (string, item, color) {
-  color = color != null ? color : '#333333'
+  color = color !== null ? color : '#333333'
   if (debug) {
-    if ((item != null) && item.name) {
-      return console.debug(`%cβTorrent:${item.infoHash != null ? 'torrent ' : 'torrent ' + item._torrent.name + ':file '}${item.name}${item.infoHash != null ? ' (' + item.infoHash + ')' : ''} %c${string}`, 'color: #33C3F0', `color: ${color}`)
+    if (item && item.name) {
+      return console.debug(`%cβTorrent:${item.infoHash !== null ? 'torrent ' : 'torrent ' + item._torrent.name + ':file '}${item.name}${item.infoHash !== null ? ' (' + item.infoHash + ')' : ''} %c${string}`, 'color: #33C3F0', `color: ${color}`)
     } else {
       return console.debug(`%cβTorrent:client %c${string}`, 'color: #33C3F0', `color: ${color}`)
     }
@@ -70,7 +70,7 @@ app.controller('BTorrentCtrl', ['$scope', '$rootScope', '$http', '$log', '$locat
     duration: 5000,
     html: true
   })
-  if (WebTorrent.WEBRTC_SUPPORT == null) {
+  if (!WebTorrent.WEBRTC_SUPPORT) {
     $rootScope.disabled = true
     ngNotify.set('Please use latest Chrome, Firefox or Opera', {
       type: 'error',
@@ -371,4 +371,4 @@ app.filter('humanTime', function () {
   }
 })
 
-app.filter('progress', function () { return function (num) { `${(100 * num).toFixed(1)}%` } })
+app.filter('progress', function () { return function (num) { return `${(100 * num).toFixed(1)}%` } })

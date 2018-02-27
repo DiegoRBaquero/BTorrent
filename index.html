@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html ng-app="BTorrent" lang="en">
-  <head>
+<head>
     <base href="">
     <meta charset="UTF-8">
     <title>βTorrent: Browser WebTorrent Client</title>
@@ -13,21 +13,22 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontawesome/4.6/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/angular.ui-grid/3.1/ui-grid.min.css">
     <link rel="stylesheet" href="style.css">
-  </head>
-  <body ng-controller="BTorrentCtrl" ng-cloak="">
-    <header>
-      <h1>βTorrent<span class="version"> v{{$root.version}}</span></h1>
-      <div class="views" ng-show="$root.client.torrents.length == 0"><a ng-href="/#">Full</a> | <a ng-href="/download">Single Download</a> | <a ng-href="/view">Stream / View</a></div>
-    </header>
-    <div id="viewer" ng-style="$root.viewerStyle"></div>
-    <div id="view" ng-view></div>
-    <footer>
-        <a class="button" href="https://github.com/DiegoRBaquero/BTorrent/issues" target="_blank"><i class="fa fa-github"></i> Suggest a feature / Report a bug <i class="fa fa-comment"></i></a><br>
-        <b>βTorrent is an Open-Source project by <a href="https://diegorbaquero.com" target="_blank">DiegoRBaquero</a></b><br>
-        <b> <a href="https://tracker.btorrent.xyz/stats" target="_blank">βTorrent's Tracker Stats</a></b><br>
-        Powered by <a href="https://github.com/feross/webtorrent" target="_blank">WebTorrent</a><br>
-    </footer>
-    <div class="spinner" ng-show="client.processing"><i class="fa fa-spinner fa-spin spinner-icon"></i></div>
-    <script src="app.js"></script>
-  </body>
+</head>
+<body ng-controller="BTorrentCtrl" ng-cloak="">
+<header>
+    <h1>βTorrent<span class="version"> v{{$root.version}}</span></h1>
+    <div class="views" ng-show="$root.client.torrents.length == 0"><a ng-href="/#">Full</a> | <a ng-href="/download">Single Download</a> | <a ng-href="/view">Stream / View</a></div>
+</header>
+<div id="viewer" ng-style="$root.viewerStyle"></div>
+<div id="view" ng-view></div>
+<footer>
+    <a class="button" href="https://github.com/DiegoRBaquero/BTorrent/issues" target="_blank"><i class="fa fa-github"></i> Suggest a feature / Report a bug <i class="fa fa-comment"></i></a><br>
+    <b>βTorrent is an Open-Source project by <a href="https://diegorbaquero.com" target="_blank">DiegoRBaquero</a></b><br>
+    <b> <a href="https://tracker.btorrent.xyz/stats" target="_blank">βTorrent's Tracker Stats</a></b><br>
+    Powered by <a href="https://github.com/webtorrent/webtorrent" target="_blank">WebTorrent</a><br>
+    <a href="https://www.vultr.com/?ref=6823526"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
+</footer>
+<div class="spinner" ng-show="client.processing"><i class="fa fa-spinner fa-spin spinner-icon"></i></div>
+<script src="app.js"></script>
+</body>
 </html>
