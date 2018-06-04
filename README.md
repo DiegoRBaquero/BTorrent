@@ -31,8 +31,6 @@
 
 Website powered by [jsDelivr] and [CloudFlare]. I use [nginx] in my server.
 
-Don't like CloudFlare? No problem! Check [Direct-βTorrent]
-
 ### HTML5 serving
 **You must serve index.html as the default**
 
