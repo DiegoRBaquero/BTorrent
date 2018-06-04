@@ -63,7 +63,6 @@ localStorage.removeItem('debug')
 MIT. Copyright (c) [Diego Rodríguez Baquero](https://diegorbaquero.com)
 
 [βTorrent]: https://btorrent.xyz
-[Direct-βTorrent]: https://direct.btorrent.xyz
 [WebTorrent]: https://webtorrent.io
 [AngularJS]: https://angularjs.org/
 [Skeleton]: http://getskeleton.com/
