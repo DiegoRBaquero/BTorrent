@@ -1,6 +1,6 @@
 /* global WebTorrent, angular, moment, prompt, CoinHive */
 
-const VERSION = '0.17.7'
+const VERSION = '0.18.0'
 
 const trackers = ['wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com', 'wss://tracker.fastcast.nz']
 
