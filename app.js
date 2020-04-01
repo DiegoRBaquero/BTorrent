@@ -2,7 +2,7 @@
 
 const VERSION = '0.18.0'
 
-const trackers = ['wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com', 'wss://tracker.fastcast.nz']
+const trackers = ['wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com']
 
 const rtcConfig = {
   'iceServers': [
