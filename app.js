@@ -1,13 +1,16 @@
 /* global WebTorrent, angular, moment, prompt, CoinHive */
 
-const VERSION = '0.18.0'
+const VERSION = '0.18.1'
 
 const trackers = ['wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com']
 
 const rtcConfig = {
   'iceServers': [
     {
-      'urls': 'stun:stun.l.google.com:19305'
+      'urls': 'stun:stun.l.google.com:19302'
+    },
+    {
+      'urls': 'stun:stun1.l.google.com:19302'
     }
   ]
 }
