@@ -1,4 +1,4 @@
-/* global WebTorrent, angular, moment, prompt, CoinHive */
+/* global WebTorrent, angular, moment, prompt */
 
 const VERSION = '0.18.1'
 
