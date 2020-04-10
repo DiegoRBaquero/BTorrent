@@ -7,10 +7,7 @@ const trackers = ['wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.co
 const rtcConfig = {
   'iceServers': [
     {
-      'urls': 'stun:stun.l.google.com:19302'
-    },
-    {
-      'urls': 'stun:stun1.l.google.com:19302'
+      'urls': ['stun:stun.l.google.com:19305', 'stun:stun1.l.google.com:19305']
     }
   ]
 }
