@@ -2,8 +2,6 @@
 ========
 **[βTorrent]** is a fully-featured **[WebTorrent]** browser client written in HTML, JS and CSS
 
-[![Join the chat at https://gitter.im/DiegoRBaquero/BTorrent](https://badges.gitter.im/DiegoRBaquero/BTorrent.svg)](https://gitter.im/DiegoRBaquero/BTorrent?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 ### Features
 - [x] Informative GUI with easy sharing options
 - [x] Downloading from an info hash or magnet URI
