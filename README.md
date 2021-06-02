@@ -1,6 +1,6 @@
-βTorrent-Clean
+βTorrent Clean
 ========
-**[βTorrent-Clean]** is a fully-featured **[WebTorrent]** browser client written in HTML, JS and CSS without the garbage ad-ware in the regular version and more trackers and ice servers.
+**[βTorrent Clean]** is a fully-featured **[WebTorrent]** browser client written in HTML, JS and CSS without the garbage ad-ware in the regular version and more trackers and ice servers.
 
 ### Features
 - [x] Informative GUI with easy sharing options
@@ -40,7 +40,7 @@ For nginx, use this conf:
 ```
 
 ### Enable Debugging
-Enable βTorrent (Debug logging) and WebTorrent (Logs logging) debug logs by running this in the developer console:
+Enable βTorrent Clean (Debug logging) and WebTorrent (Logs logging) debug logs by running this in the developer console:
 ```js
 localStorage.debug = '*'
 ```
