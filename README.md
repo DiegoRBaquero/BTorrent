@@ -49,16 +49,17 @@ Disable by running this:
 localStorage.removeItem('debug')
 ```
 
-### Help βTorrent
-- **[Create a new issue](https://github.com/DiegoRBaquero/bTorrent/issues/new)** to report bugs or suggest new features
-- **[Send a PR](https://github.com/DiegoRBaquero/BTorrent/pull/new/master)** with your changes
+### Help βTorrent-Clean
+- **[Create a new issue](https://github.com/Brenden2008/BTorrent-Clean/issues/new)** to report bugs or suggest new features
+- **[Send a PR](https://github.com/Brenden2008/BTorrent-Clean/pull/new/master)** with your changes
 
 ### Thanks
 - [jasalo](https://github.com/jasalo) For the logo and favicon
 - [whitef0x0](https://github.com/whitef0x0) For cleanup and ng-file-upload and other ideas
 
 ### License
-MIT. Copyright (c) [Diego Rodríguez Baquero](https://diegorbaquero.com)
+βTorrent: MIT. Copyright (c) [Diego Rodríguez Baquero](https://diegorbaquero.com)
+βTorrent Clean: MIT. Copyright (c) [Brenden Stahle](https://github.com/Brenden2008/BTorrent-Clean)
 
 [βTorrent]: https://btorrent.xyz
 [WebTorrent]: https://webtorrent.io
