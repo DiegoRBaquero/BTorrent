@@ -2,12 +2,12 @@
 
 const VERSION = '0.18.1'
 
-const trackers = ['wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com', 'wss://tracker.fastcast.nz', 'udp://tracker.justseed.it:1337/announce', 'http://tr.kxmp.cf:80/announce']
+const trackers = ['wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com']
 
 const rtcConfig = {
   'iceServers': [
     {
-      'urls': ['stun:stun.l.google.com:19305', 'stun:stun1.l.google.com:19305', 'stun:stun.sipgate.net:3478', 'stun:stun4.l.google.com:19302']
+      'urls': ['stun:stun.l.google.com:19305', 'stun:stun1.l.google.com:19305']
     }
   ]
 }
