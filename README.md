@@ -1,6 +1,6 @@
-βTorrent
+βTorrent-Clean
 ========
-**[βTorrent]** is a fully-featured **[WebTorrent]** browser client written in HTML, JS and CSS
+**[βTorrent-Clean]** is a fully-featured **[WebTorrent]** browser client written in HTML, JS and CSS without the garbage ad-ware in the regular version.
 
 ### Features
 - [x] Informative GUI with easy sharing options
