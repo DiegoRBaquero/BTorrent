@@ -2,8 +2,7 @@
 
 const VERSION = '0.18.1'
 
-const trackers = ['wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com', 'wss://tracker.fastcast.nz', 'udp://tracker.justseed.it:1337/announce', 'http://tr.kxmp.cf:80/announce
-']
+const trackers = ['wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com', 'wss://tracker.fastcast.nz', 'udp://tracker.justseed.it:1337/announce', 'http://tr.kxmp.cf:80/announce']
 
 const rtcConfig = {
   'iceServers': [
