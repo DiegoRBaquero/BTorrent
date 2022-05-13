@@ -36,7 +36,7 @@ const dbg = function (string, item, color) {
 
 const er = function (err, item) { dbg(err, item, '#FF0000') }
 
-dbg(`Starting... v${VERSION}`)
+dbg(`Starting v${VERSION}. WebTorrent ${WebTorrent.VERSION}`)
 
 const client = new WebTorrent({
   tracker: trackerOpts
@@ -66,13 +66,14 @@ const app = angular.module('BTorrent',
 app.controller('BTorrentCtrl', ['$scope', '$rootScope', '$http', '$log', '$location', 'ngNotify', function ($scope, $rootScope, $http, $log, $location, ngNotify) {
   let updateAll
   $rootScope.version = VERSION
+  $rootScope.webtorrentVersion = WebTorrent.VERSION
   ngNotify.config({
     duration: 5000,
     html: true
   })
   if (!WebTorrent.WEBRTC_SUPPORT) {
     $rootScope.disabled = true
-    ngNotify.set('Please use latest Chrome, Firefox or Opera', {
+    ngNotify.set('Please use a WebRTC compatible browser', {
       type: 'error',
       sticky: true,
       button: false
