@@ -1,45 +1,45 @@
 <!DOCTYPE html>
 <html ng-app="BTorrent" lang="en">
-<head>
-  <base href="">
-  <meta charset="UTF-8">
-  <title>βTorrent: Browser WebTorrent Client</title>
-  <meta name="description" content="βTorrent is the first fully-featured Browser WebTorrent Client">
-  <meta name="keywords" content="βTorrent, btorrent, client, webtorrent, browser, torrent, stream, bittorrent, torrenting, sharing, filesharing">
-  <meta name="author" content="Diego Rodríguez Baquero - DiegoRBaquero">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="https://cdn.jsdelivr.net/combine/npm/webtorrent/webtorrent.min.js,npm/moment@2,npm/angular@1.5/angular.min.js,npm/angular-route@1.5/angular-route.min.js,npm/angular-sanitize@1.5/angular-sanitize.min.js,npm/angular-ui-grid@3/ui-grid.min.js,gh/matowens/ng-notify/dist/ng-notify.min.js,npm/ng-file-upload@12.2.13/dist/ng-file-upload.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/g/normalize@3,skeleton@2,angular.ng-notify@0.8(ng-notify.min.css)">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontawesome/4/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/angular.ui-grid/3/ui-grid.min.css">
-  <link rel="stylesheet" href="style.css">
-</head>
-<style>
-body {
-  background-color: white;
-}
-.dark-mode {
-  background-color: #202124;
-  color: white;
-}
-</style>
-<body ng-controller="BTorrentCtrl" ng-cloak="">
-<header>
-  <h1>βTorrent<span class="version"> v{{$root.version}}</span></h1>
-  <div class="views" ng-show="$root.client.torrents.length == 0"><a ng-href="/#">Full</a> | <a ng-href="/download">Single Download</a> | <a ng-href="/view">Stream / View</a> | <a ng-href="#" href="#" onclick="modeTheme()">Dark/Light</a> </div>
-  <div class="aligncenter" style="width: 468px; display: inline-block;">
-  </div>
-</header>
-<div id="viewer" ng-style="$root.viewerStyle"></div>
-<div id="view" ng-view></div>
-<footer>
-  <a class="button" href="https://github.com/DiegoRBaquero/BTorrent/issues" target="_blank"><i class="fa fa-github"></i> Suggest a feature / Report a bug <i class="fa fa-comment"></i></a><br>
-  <b><a href="https://github.com/DiegoRBaquero/btorrent" target="_blank" style="text-decoration: none">βTorrent</a> is an FOSS project made with <span style="color: red">♥</span> by <a href="https://diegorbaquero.com" target="_blank" style="text-decoration: none">DiegoRBaquero</a></b><br>
-  <b> <a href="https://tracker.btorrent.xyz/stats" target="_blank">βTorrent's Tracker Stats</a></b><br>
-  Powered by <a href="https://github.com/webtorrent/webtorrent" target="_blank">WebTorrent v{{$root.webtorrentVersion}}</a><br>
-  </div>
-</footer>
-<div class="spinner" ng-show="client.processing"><i class="fa fa-spinner fa-spin spinner-icon"></i></div>
-<script src="app.js"></script>
-</body>
+   <head>
+      <base href="">
+      <meta charset="UTF-8">
+      <title>βTorrent: Browser WebTorrent Client</title>
+      <meta name="description" content="βTorrent is the first fully-featured Browser WebTorrent Client">
+      <meta name="keywords" content="βTorrent, btorrent, client, webtorrent, browser, torrent, stream, bittorrent, torrenting, sharing, filesharing">
+      <meta name="author" content="Diego Rodríguez Baquero - DiegoRBaquero">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <script src="https://cdn.jsdelivr.net/combine/npm/webtorrent/webtorrent.min.js,npm/moment@2,npm/angular@1.5/angular.min.js,npm/angular-route@1.5/angular-route.min.js,npm/angular-sanitize@1.5/angular-sanitize.min.js,npm/angular-ui-grid@3/ui-grid.min.js,gh/matowens/ng-notify/dist/ng-notify.min.js,npm/ng-file-upload@12.2.13/dist/ng-file-upload.min.js"></script>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/g/normalize@3,skeleton@2,angular.ng-notify@0.8(ng-notify.min.css)">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontawesome/4/css/font-awesome.min.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/angular.ui-grid/3/ui-grid.min.css">
+      <link rel="stylesheet" href="style.css">
+   </head>
+   <style>
+      body {
+      background-color: white;
+      }
+      .dark-mode {
+      background-color: #202124;
+      color: white;
+      }
+   </style>
+   <body ng-controller="BTorrentCtrl" ng-cloak="">
+      <header>
+         <h1>βTorrent<span class="version"> v{{$root.version}}</span></h1>
+         <div class="views" ng-show="$root.client.torrents.length == 0"><a ng-href="/#">Full</a> | <a ng-href="/download">Single Download</a> | <a ng-href="/view">Stream / View</a> | <a ng-href="#" href="#" onclick="modeTheme()">Dark/Light</a> </div>
+         <div class="aligncenter" style="width: 468px; display: inline-block;">
+         </div>
+      </header>
+      <div id="viewer" ng-style="$root.viewerStyle"></div>
+      <div id="view" ng-view></div>
+      <footer>
+         <a class="button" href="https://github.com/DiegoRBaquero/BTorrent/issues" target="_blank"><i class="fa fa-github"></i> Suggest a feature / Report a bug <i class="fa fa-comment"></i></a><br>
+         <b><a href="https://github.com/DiegoRBaquero/btorrent" target="_blank" style="text-decoration: none">βTorrent</a> is an FOSS project made with <span style="color: red">♥</span> by <a href="https://diegorbaquero.com" target="_blank" style="text-decoration: none">DiegoRBaquero</a></b><br>
+         <b> <a href="https://tracker.btorrent.xyz/stats" target="_blank">βTorrent's Tracker Stats</a></b><br>
+         Powered by <a href="https://github.com/webtorrent/webtorrent" target="_blank">WebTorrent v{{$root.webtorrentVersion}}</a><br>
+         </div>
+      </footer>
+      <div class="spinner" ng-show="client.processing"><i class="fa fa-spinner fa-spin spinner-icon"></i></div>
+      <script src="app.js"></script>
+   </body>
 </html>
