@@ -1,10 +1,14 @@
-function modeTheme() {
+// license: https://www.w3schools.com/howto/howto_js_toggle_dark_mode.asp
+function darkTheme() { 
    var element = document.body;
    element.classList.toggle("dark-mode");
-   document.getElementById("btn1").style.color = "white";
-   document.getElementById("btn2").style.color = "white";
-   document.getElementById("btn3").style.color = "white";
-   document.getElementById("btn4").style.color = "white";
-   document.getElementById("btn5").style.color = "white";
-   document.getElementById("btn6").style.color = "white";
+   var button = document.querySelector("button")
+   button.classList.add("dark-modeBtn")
+}
+
+function lightTheme() { 
+   var body = document.querySelector("body")
+   body.classList.remove("dark-mode")
+   var button = document.querySelector("button")
+   button.classList.remove("dark-modeBtn")
 }
