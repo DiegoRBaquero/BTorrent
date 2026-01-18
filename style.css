@@ -1,9 +1,25 @@
 body {
-  height: 100%;
-  width: 100%; }
+  
+  background-color: rgb(177, 211, 220); 
+  padding: 15px 15px 15px 15px;
+  text-align: left;
+  justify-content: left;
+  margin-right: auto;
+}
 
+.toptext {
+  text-align: left;
+}
+.links {
+  width: 30%;
+}
+.footertext {
+  width: 70%;
+}
 header, footer, .center {
-  text-align: center; }
+  text-align: center; 
+  display: flex;
+}
 
 th, td {
   padding: 2px 15px;
@@ -15,7 +31,9 @@ h2, h3, h4, h5, h6, ul, li {
   margin-bottom: 0; }
 
 footer {
-  margin-top: 10px; }
+  margin-top: 10px; 
+  display: flex;
+}
 
 .container {
   width: 95%;
@@ -26,16 +44,33 @@ footer {
   width: 100%;
   height: 200px; }
 
+.ui {
+  padding: 14px 14px 14px 14px;
+  outline: 2px solid rgb(77, 133, 156);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  width: 90%;
+  border-radius: 48px;
+  background-color: rgb(206, 245, 255);
+}
 .version {
-  color: #ccc;
+  color: #494949e3;
   font-size: 0.3em; }
 
 .views {
-  margin-top: -20px;
-  margin-bottom: 10px; }
+  margin-top: 20px;
+  margin-bottom: 10px; 
+  padding-left: 20px;
+  text-align: left;
+  font-size: 20px;
+}
 
 .download-button {
-  margin-left: 10px; }
+  margin-left: 10px; 
+}
+button.fa-download{
+
+  background-color: #C43E3A;
+}
 
 .no-margin {
   margin: 0px; }
@@ -83,5 +118,6 @@ input[type="button"].button-danger:focus {
   border-color: #C43E3A; }
 
 a {
-  text-decoration: none
+  text-decoration: none;
+  color: black;
 }
