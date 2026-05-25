@@ -245,7 +245,7 @@ app.controller('FullCtrl', ['$scope', '$rootScope', '$http', '$log', '$location'
   $scope.gridOptions.onRegisterApi = function (gridApi) {
     $scope.gridApi = gridApi
     gridApi.selection.on.rowSelectionChanged($scope, function (row) {
-      if (!row.isSelected && ($rootScope.selectedTorrent != null) && ($rootScope.selectedTorrent.infoHash = row.entity.infoHash)) {
+      if (!row.isSelected && ($rootScope.selectedTorrent != null) && ($rootScope.selectedTorrent.infoHash === row.entity.infoHash)) {
         $rootScope.selectedTorrent = null
       } else {
         $rootScope.selectedTorrent = row.entity
