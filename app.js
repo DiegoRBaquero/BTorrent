@@ -1,6 +1,7 @@
 /* global WebTorrent, angular, moment, prompt */
+import WebTorrent from 'https://cdn.jsdelivr.net/npm/webtorrent@3/dist/webtorrent.min.js'
 
-const VERSION = '1.1'
+const VERSION = '2'
 const trackers = ['wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com']
 const rtcConfig = {
   'iceServers': [
@@ -138,7 +139,7 @@ app.controller('BTorrentCtrl', ['$scope', '$rootScope', '$http', '$log', '$locat
   }
   $rootScope.onTorrent = function (torrent, isSeed) {
     dbg(torrent.magnetURI)
-    torrent.safeTorrentFileURL = torrent.torrentFileBlobURL
+    torrent.safeTorrentFileURL = URL.createObjectURL(torrent.torrentFileBlob)
     torrent.fileName = `${torrent.name}.torrent`
     if (!isSeed) {
       dbg('Received metadata', torrent)
@@ -148,24 +149,16 @@ app.controller('BTorrentCtrl', ['$scope', '$rootScope', '$http', '$log', '$locat
       }
       $rootScope.client.processing = false
     }
-    torrent.files.forEach(function (file) {
-      file.getBlobURL(function (err, url) {
-        if (err) {
-          throw err
+    torrent.files.forEach(async function (file) {
+      if (isSeed) {
+        dbg('Started seeding', torrent)
+        if (!($rootScope.selectedTorrent != null)) {
+          $rootScope.selectedTorrent = torrent
         }
-        if (isSeed) {
-          dbg('Started seeding', torrent)
-          if (!($rootScope.selectedTorrent != null)) {
-            $rootScope.selectedTorrent = torrent
-          }
-          $rootScope.client.processing = false
-        }
-        file.url = url
-        if (!isSeed) {
-          dbg('Done ', file)
-          ngNotify.set(`<b>${file.name}</b> ready for download`, 'success')
-        }
-      })
+        $rootScope.client.processing = false
+      }
+      const blob = await file.blob()
+      file.url = URL.createObjectURL(blob)
     })
     torrent.on('done', function () {
       if (!isSeed) {
@@ -300,20 +293,18 @@ app.controller('ViewCtrl', ['$scope', '$rootScope', '$http', '$log', '$location'
       'text-align': 'center'
     }
     dbg(torrent.magnetURI)
-    torrent.safeTorrentFileURL = torrent.torrentFileBlobURL
+    torrent.safeTorrentFileURL = URL.createObjectURL(torrent.torrentFileBlob)
     torrent.fileName = `${torrent.name}.torrent`
     $rootScope.selectedTorrent = torrent
     $rootScope.client.processing = false
     dbg('Received metadata', torrent)
     ngNotify.set(`Received ${torrent.name} metadata`)
     torrent.files.forEach(function (file) {
-      file.appendTo('#viewer')
-      file.getBlobURL(function (err, url) {
-        if (err) {
-          throw err
-        }
-        file.url = url
+      file.streamTo(document.querySelector('#viewer'))
+      file.on('done', async function () {
         dbg('Done ', file)
+        const blob = await file.blob()
+        file.url = URL.createObjectURL(blob)
       })
     })
     torrent.on('done', function () { dbg('Done', torrent) })
