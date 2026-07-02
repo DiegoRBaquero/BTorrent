@@ -2,7 +2,7 @@
 import WebTorrent from 'https://cdn.jsdelivr.net/npm/webtorrent@3/dist/webtorrent.min.js'
 
 const VERSION = '2'
-const trackers = ['wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com']
+const trackers = ['wss://tracker.btorrent.xyz', 'wss://tracker.openwebtorrent.com', 'wss://open.ftorrent.com']
 const rtcConfig = {
   'iceServers': [
     {
